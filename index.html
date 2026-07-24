@@ -12,7 +12,15 @@
       --text-color: #212529;
       --sub-color: #6c757d;
       --accent-color: #0d6efd;
-      --ex-color: #495057;
+      --ex-color: #343a40;
+      --en-color: #868e96;
+
+      /* 品詞ごとのタグカラー */
+      --tag-verb: #e6fcf5;      --tag-verb-text: #0ca678;   /* 動詞：エメラルド */
+      --tag-m-noun: #e7f5ff;    --tag-m-noun-text: #1c7ed6; /* 男性名詞：ブルー */
+      --tag-f-noun: #fff0f6;    --tag-f-noun-text: #d6336c; /* 女性名詞：ピンク */
+      --tag-adj: #fff9db;       --tag-adj-text: #f59f00;    /* 形容詞：イエロー */
+      --tag-other: #f1f3f5;     --tag-other-text: #495057;  /* その他：グレー */
     }
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -58,10 +66,10 @@
       box-sizing: border-box;
     }
 
-    .word-container {
+    .word-header {
       display: flex;
       justify-content: space-between;
-      align-items: baseline;
+      align-items: center;
       margin-bottom: 6px;
     }
 
@@ -71,11 +79,21 @@
       color: var(--text-color);
     }
 
-    .num-tag {
-      font-size: 0.75rem;
-      color: #adb5bd;
+    /* 品詞バッジ */
+    .type-badge {
+      font-size: 0.7rem;
       font-weight: bold;
+      padding: 3px 8px;
+      border-radius: 6px;
+      letter-spacing: 0.5px;
     }
+
+    /* 品詞別スタイル割り当て */
+    .type-v { background-color: var(--tag-verb); color: var(--tag-verb-text); }
+    .type-m { background-color: var(--tag-m-noun); color: var(--tag-m-noun-text); }
+    .type-f { background-color: var(--tag-f-noun); color: var(--tag-f-noun-text); }
+    .type-adj { background-color: var(--tag-adj); color: var(--tag-adj-text); }
+    .type-other { background-color: var(--tag-other); color: var(--tag-other-text); }
 
     .meaning {
       font-size: 1.1rem;
@@ -87,22 +105,32 @@
     .example-box {
       background-color: #f8f9fa;
       border-left: 3px solid var(--accent-color);
-      padding: 8px 12px;
+      padding: 10px 12px;
       border-radius: 0 8px 8px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
     }
 
     .example-es {
       font-size: 0.95rem;
       color: var(--ex-color);
-      font-weight: 500;
-      margin-bottom: 2px;
+      font-weight: 600;
       line-height: 1.3;
+    }
+
+    .example-en {
+      font-size: 0.82rem;
+      color: var(--en-color);
+      font-style: italic;
+      line-height: 1.2;
     }
 
     .example-ja {
       font-size: 0.85rem;
       color: var(--sub-color);
       line-height: 1.3;
+      margin-top: 2px;
     }
 
     .loading-sentinel {
@@ -128,7 +156,7 @@
 </head>
 <body>
 
-  <div class="header">単語・意味・例文リスト</div>
+  <div class="header">Mi Vocabulario</div>
 
   <div class="card-list" id="cardList"></div>
   
@@ -137,122 +165,143 @@
   </div>
 
   <script>
-    const vocabulary = [
+    const rawVocabulary = [
       // --- 動詞 ---
-      { spanish: "ser", japanese: "〜である（本質）", exEs: "Soy de Japón.", exJa: "私は日本出身です。" },
-      { spanish: "estar", japanese: "〜である（状態・位置）", exEs: "¿Cómo estás hoy?", exJa: "今日の調子はどう？" },
-      { spanish: "haber", japanese: "〜がある、〜した", exEs: "Hay una duda.", exJa: "疑問が一つあります。" },
-      { spanish: "tener", japanese: "持っている", exEs: "Tengo mucho trabajo.", exJa: "仕事がたくさんあります。" },
-      { spanish: "hacer", japanese: "する、作る", exEs: "¿Qué haces ahora?", exJa: "今何してるの？" },
-      { spanish: "ir", japanese: "行く", exEs: "Voy a la oficina.", exJa: "オフィスに行きます。" },
-      { spanish: "poder", japanese: "〜できる", exEs: "Puedo hacerlo solo.", exJa: "一人でできます。" },
-      { spanish: "decir", japanese: "言う", exEs: "Dime la verdad.", exJa: "本当のことを言って。" },
-      { spanish: "ver", japanese: "見る、会う", exEs: "Nos vemos mañana.", exJa: "また明日会いましょう。" },
-      { spanish: "comer", japanese: "食べる", exEs: "Vamos a comer algo.", exJa: "何か食べに行こう。" },
-      { spanish: "tomar", japanese: "取る、飲む、乗る", exEs: "Tomo un café.", exJa: "コーヒーを一杯飲みます。" },
-      { spanish: "querer", japanese: "〜したい、欲する", exEs: "Quiero aprender más.", exJa: "もっと学びたいです。" },
-      { spanish: "saber", japanese: "知っている、〜できる", exEs: "No sé la respuesta.", exJa: "答えが分かりません。" },
-      { spanish: "conocer", japanese: "知っている、知り合う", exEs: "Mucho gusto en conocerte.", exJa: "お会いできて嬉しいです。" },
-      { spanish: "llegar", japanese: "到着する", exEs: "Llego a tiempo.", exJa: "時間通りに着きます。" },
-      { spanish: "pasar", japanese: "通る、起こる", exEs: "¿Qué pasó?", exJa: "何があったの？" },
-      { spanish: "deber", japanese: "〜すべきである", exEs: "Debo estudiar hoy.", exJa: "今日勉強しなければならない。" },
-      { spanish: "poner", japanese: "置く、つける", exEs: "Pon el libro aquí.", exJa: "本をここに置いて。" },
-      { spanish: "parecer", japanese: "〜に見える、思える", exEs: "Me parece una buena idea.", exJa: "良いアイデアだと思います。" },
-      { spanish: "hablar", japanese: "話す", exEs: "Hablo un poco de español.", exJa: "スペイン語を少し話します。" },
-      { spanish: "dar", japanese: "与える", exEs: "Dame un momento.", exJa: "少し時間をください。" },
-      { spanish: "llevar", japanese: "持っていく", exEs: "Llevo este bolso.", exJa: "このバッグを持っていきます。" },
-      { spanish: "dejar", japanese: "残す、やめる", exEs: "Déjame ver.", exJa: "私に見せて。" },
-      { spanish: "seguir", japanese: "続ける、従う", exEs: "Sigue adelante.", exJa: "前へ進み続けなさい。" },
-      { spanish: "encontrar", japanese: "見つける", exEs: "No encuentro mis llaves.", exJa: "鍵が見つかりません。" },
-      { spanish: "pensar", japanese: "考える", exEs: "Pienso que sí.", exJa: "そう思います。" },
-      { spanish: "salir", japanese: "出る、出かける", exEs: "Salgo a las seis.", exJa: "6時に出かけます。" },
-      { spanish: "volver", japanese: "戻る、帰る", exEs: "Vuelvo pronto.", exJa: "すぐに戻ります。" },
-      { spanish: "pedir", japanese: "頼む、注文する", exEs: "Quiero pedir esto.", exJa: "これを注文したいです。" },
-      { spanish: "entender", japanese: "理解する", exEs: "Entiendo perfectamente.", exJa: "完全に理解しています。" },
-      { spanish: "lograr", japanese: "達成する", exEs: "Logramos la meta.", exJa: "目標を達成しました。" },
-      { spanish: "trabajar", japanese: "働く", exEs: "Trabajo desde casa.", exJa: "在宅で働いています。" },
-      { spanish: "necesitar", japanese: "必要とする", exEs: "Necesito ayuda.", exJa: "助けが必要です。" },
-      { spanish: "esperar", japanese: "待つ、期待する", exEs: "Te espero aquí.", exJa: "ここで君を待っているよ。" },
-      { spanish: "buscar", japanese: "探す", exEs: "Busco una solución.", exJa: "解決策を探しています。" },
+      { spanish: "ser", japanese: "〜である（本質）", type: "v", typeName: "動詞", exEs: "Soy de Japón.", exEn: "I am from Japan.", exJa: "私は日本出身です。" },
+      { spanish: "estar", japanese: "〜である（状態・位置）", type: "v", typeName: "動詞", exEs: "¿Cómo estás hoy?", exEn: "How are you today?", exJa: "今日の調子はどう？" },
+      { spanish: "haber", japanese: "〜がある、〜した", type: "v", typeName: "動詞", exEs: "Hay una duda.", exEn: "There is a doubt.", exJa: "疑問が一つあります。" },
+      { spanish: "tener", japanese: "持っている", type: "v", typeName: "動詞", exEs: "Tengo mucho trabajo.", exEn: "I have a lot of work.", exJa: "仕事がたくさんあります。" },
+      { spanish: "hacer", japanese: "する、作る", type: "v", typeName: "動詞", exEs: "¿Qué haces ahora?", exEn: "What are you doing now?", exJa: "今何してるの？" },
+      { spanish: "ir", japanese: "行く", type: "v", typeName: "動詞", exEs: "Voy a la oficina.", exEn: "I am going to the office.", exJa: "オフィスに行きます。" },
+      { spanish: "poder", japanese: "〜できる", type: "v", typeName: "動詞", exEs: "Puedo hacerlo solo.", exEn: "I can do it alone.", exJa: "一人でできます。" },
+      { spanish: "decir", japanese: "言う", type: "v", typeName: "動詞", exEs: "Dime la verdad.", exEn: "Tell me the truth.", exJa: "本当のことを言って。" },
+      { spanish: "ver", japanese: "見る、会う", type: "v", typeName: "動詞", exEs: "Nos vemos mañana.", exEn: "See you tomorrow.", exJa: "また明日会いましょう。" },
+      { spanish: "comer", japanese: "食べる", type: "v", typeName: "動詞", exEs: "Vamos a comer algo.", exEn: "Let's eat something.", exJa: "何か食べに行こう。" },
+      { spanish: "tomar", japanese: "取る、飲む、乗る", type: "v", typeName: "動詞", exEs: "Tomo un café.", exEn: "I'll have a coffee.", exJa: "コーヒーを一杯飲みます。" },
+      { spanish: "querer", japanese: "〜したい、欲する", type: "v", typeName: "動詞", exEs: "Quiero aprender más.", exEn: "I want to learn more.", exJa: "もっと学びたいです。" },
+      { spanish: "saber", japanese: "知っている、〜できる", type: "v", typeName: "動詞", exEs: "No sé la respuesta.", exEn: "I don't know the answer.", exJa: "答えが分かりません。" },
+      { spanish: "conocer", japanese: "知っている、知り合う", type: "v", typeName: "動詞", exEs: "Mucho gusto en conocerte.", exEn: "Nice to meet you.", exJa: "お会いできて嬉しいです。" },
+      { spanish: "llegar", japanese: "到着する", type: "v", typeName: "動詞", exEs: "Llego a tiempo.", exEn: "I arrive on time.", exJa: "時間通りに着きます。" },
+      { spanish: "pasar", japanese: "通る、起こる", type: "v", typeName: "動詞", exEs: "¿Qué pasó?", exEn: "What happened?", exJa: "何があったの？" },
+      { spanish: "deber", japanese: "〜すべきである", type: "v", typeName: "動詞", exEs: "Debo estudiar hoy.", exEn: "I must study today.", exJa: "今日勉強しなければならない。" },
+      { spanish: "poner", japanese: "置く、つける", type: "v", typeName: "動詞", exEs: "Pon el libro aquí.", exEn: "Put the book here.", exJa: "本をここに置いて。" },
+      { spanish: "parecer", japanese: "〜に見える、思える", type: "v", typeName: "動詞", exEs: "Me parece una buena idea.", exEn: "It seems like a good idea to me.", exJa: "良いアイデアだと思います。" },
+      { spanish: "hablar", japanese: "話す", type: "v", typeName: "動詞", exEs: "Hablo un poco de español.", exEn: "I speak a little Spanish.", exJa: "スペイン語を少し話します。" },
+      { spanish: "dar", japanese: "与える", type: "v", typeName: "動詞", exEs: "Dame un momento.", exEn: "Give me a moment.", exJa: "少し時間をください。" },
+      { spanish: "llevar", japanese: "持っていく", type: "v", typeName: "動詞", exEs: "Llevo este bolso.", exEn: "I'll take this bag.", exJa: "このバッグを持っていきます。" },
+      { spanish: "dejar", japanese: "残す、やめる", type: "v", typeName: "動詞", exEs: "Déjame ver.", exEn: "Let me see.", exJa: "私に見せて。" },
+      { spanish: "seguir", japanese: "続ける、従う", type: "v", typeName: "動詞", exEs: "Sigue adelante.", exEn: "Keep going forward.", exJa: "前へ進み続けなさい。" },
+      { spanish: "encontrar", japanese: "見つける", type: "v", typeName: "動詞", exEs: "No encuentro mis llaves.", exEn: "I can't find my keys.", exJa: "鍵が見つかりません。" },
+      { spanish: "pensar", japanese: "考える", type: "v", typeName: "動詞", exEs: "Pienso que sí.", exEn: "I think so.", exJa: "そう思います。" },
+      { spanish: "salir", japanese: "出る、出かける", type: "v", typeName: "動詞", exEs: "Salgo a las seis.", exEn: "I leave at six.", exJa: "6時に出かけます。" },
+      { spanish: "volver", japanese: "戻る、帰る", type: "v", typeName: "動詞", exEs: "Vuelvo pronto.", exEn: "I'll return soon.", exJa: "すぐに戻ります。" },
+      { spanish: "pedir", japanese: "頼む、注文する", type: "v", typeName: "動詞", exEs: "Quiero pedir esto.", exEn: "I want to order this.", exJa: "これを注文したいです。" },
+      { spanish: "entender", japanese: "理解する", type: "v", typeName: "動詞", exEs: "Entiendo perfectamente.", exEn: "I understand perfectly.", exJa: "完全に理解しています。" },
+      { spanish: "lograr", japanese: "達成する", type: "v", typeName: "動詞", exEs: "Logramos la meta.", exEn: "We achieved the goal.", exJa: "目標を達成しました。" },
+      { spanish: "trabajar", japanese: "働く", type: "v", typeName: "動詞", exEs: "Trabajo desde casa.", exEn: "I work from home.", exJa: "在宅で働いています。" },
+      { spanish: "necesitar", japanese: "必要とする", type: "v", typeName: "動詞", exEs: "Necesito ayuda.", exEn: "I need help.", exJa: "助けが必要です。" },
+      { spanish: "esperar", japanese: "待つ、期待する", type: "v", typeName: "動詞", exEs: "Te espero aquí.", exEn: "I'll wait for you here.", exJa: "ここで君を待っているよ。" },
+      { spanish: "buscar", japanese: "探す", type: "v", typeName: "動詞", exEs: "Busco una solución.", exEn: "I'm looking for a solution.", exJa: "解決策を探しています。" },
 
       // --- 名詞 ---
-      { spanish: "tiempo", japanese: "時間、天候", exEs: "No tengo tiempo.", exJa: "時間がありません。" },
-      { spanish: "vez", japanese: "回、度", exEs: "Una vez más, por favor.", exJa: "もう一度お願いします。" },
-      { spanish: "día", japanese: "日", exEs: "¡Buen día!", exJa: "良い一日を！" },
-      { spanish: "año", japanese: "年", exEs: "Feliz año nuevo.", exJa: "明けましておめでとう。" },
-      { spanish: "cosa", japanese: "もの、こと", exEs: "Hay otra cosa.", exJa: "もう一つ別のことがあります。" },
-      { spanish: "hombre", japanese: "男性", exEs: "Es un hombre sabio.", exJa: "彼は賢い人です。" },
-      { spanish: "mujer", japanese: "女性", exEs: "Es una mujer fuerte.", exJa: "彼女は強い女性です。" },
-      { spanish: "vida", japanese: "生活、人生", exEs: "La vida es bella.", exJa: "人生は美しい。" },
-      { spanish: "forma", japanese: "方法、形", exEs: "De esta forma es fácil.", exJa: "この方法なら簡単です。" },
-      { spanish: "casa", japanese: "家", exEs: "Estoy en casa.", exJa: "家にいます。" },
-      { spanish: "mundo", japanese: "世界", exEs: "En todo el mundo.", exJa: "世界中で。" },
-      { spanish: "trabajo", japanese: "仕事", exEs: "Buen trabajo.", exJa: "お疲れ様（良い仕事をしました）。" },
-      { spanish: "lugar", japanese: "場所", exEs: "Un lugar tranquilo.", exJa: "静かな場所。" },
-      { spanish: "problema", japanese: "問題", exEs: "No hay problema.", exJa: "問題ありません。" },
-      { spanish: "persona", japanese: "人", exEs: "Es una buena persona.", exJa: "彼は良い人です。" },
-      { spanish: "parte", japanese: "部分", exEs: "Una gran parte del proyecto.", exJa: "プロジェクトの大きな部分。" },
-      { spanish: "momento", japanese: "瞬間、時間", exEs: "Un momento, por favor.", exJa: "少々お待ちください。" },
-      { spanish: "ciudad", japanese: "都市", exEs: "Vivo en esta ciudad.", exJa: "私はこの街に住んでいます。" },
-      { spanish: "nombre", japanese: "名前", exEs: "¿Cuál es tu nombre?", exJa: "お名前は何ですか？" },
-      { spanish: "país", japanese: "国", exEs: "Es un país hermoso.", exJa: "美しい国です。" },
-      { spanish: "hora", japanese: "時間、時刻", exEs: "¿Qué hora es?", exJa: "今何時ですか？" },
-      { spanish: "calle", japanese: "通り", exEs: "Cruza la calle.", exJa: "通りを渡りなさい。" },
-      { spanish: "verdad", japanese: "真実", exEs: "Es la verdad.", exJa: "それは真実です。" },
-      { spanish: "desarrollo", japanese: "開発、発展", exEs: "Desarrollo de software.", exJa: "ソフトウェア開発。" },
-      { spanish: "desafío", japanese: "挑戦、課題", exEs: "Es un nuevo desafío.", exJa: "新しい挑戦です。" },
+      { spanish: "tiempo", japanese: "時間、天候", type: "m", typeName: "男性名詞", exEs: "No tengo tiempo.", exEn: "I don't have time.", exJa: "時間がありません。" },
+      { spanish: "vez", japanese: "回、度", type: "f", typeName: "女性名詞", exEs: "Una vez más, por favor.", exEn: "One more time, please.", exJa: "もう一度お願いします。" },
+      { spanish: "día", japanese: "日", type: "m", typeName: "男性名詞", exEs: "¡Buen día!", exEn: "Good day!", exJa: "良い一日を！" },
+      { spanish: "año", japanese: "年", type: "m", typeName: "男性名詞", exEs: "Feliz año nuevo.", exEn: "Happy New Year.", exJa: "明けましておめでとう。" },
+      { spanish: "cosa", japanese: "もの、こと", type: "f", typeName: "女性名詞", exEs: "Hay otra cosa.", exEn: "There is another thing.", exJa: "もう一つ別のことがあります。" },
+      { spanish: "hombre", japanese: "男性", type: "m", typeName: "男性名詞", exEs: "Es un hombre sabio.", exEn: "He is a wise man.", exJa: "彼は賢い人です。" },
+      { spanish: "mujer", japanese: "女性", type: "f", typeName: "女性名詞", exEs: "Es una mujer fuerte.", exEn: "She is a strong woman.", exJa: "彼女は強い女性です。" },
+      { spanish: "vida", japanese: "生活、人生", type: "f", typeName: "女性名詞", exEs: "La vida es bella.", exEn: "Life is beautiful.", exJa: "人生は美しい。" },
+      { spanish: "forma", japanese: "方法、形", type: "f", typeName: "女性名詞", exEs: "De esta forma es fácil.", exEn: "In this way it's easy.", exJa: "この方法なら簡単です。" },
+      { spanish: "casa", japanese: "家", type: "f", typeName: "女性名詞", exEs: "Estoy en casa.", exEn: "I'm at home.", exJa: "家にいます。" },
+      { spanish: "mundo", japanese: "世界", type: "m", typeName: "男性名詞", exEs: "En todo el mundo.", exEn: "All over the world.", exJa: "世界中で。" },
+      { spanish: "trabajo", japanese: "仕事", type: "m", typeName: "男性名詞", exEs: "Buen trabajo.", exEn: "Good job.", exJa: "お疲れ様。" },
+      { spanish: "lugar", japanese: "場所", type: "m", typeName: "男性名詞", exEs: "Un lugar tranquilo.", exEn: "A quiet place.", exJa: "静かな場所。" },
+      { spanish: "problema", japanese: "問題", type: "m", typeName: "男性名詞", exEs: "No hay problema.", exEn: "No problem.", exJa: "問題ありません。" },
+      { spanish: "persona", japanese: "人", type: "f", typeName: "女性名詞", exEs: "Es una buena persona.", exEn: "He/She is a good person.", exJa: "良い人です。" },
+      { spanish: "parte", japanese: "部分", type: "f", typeName: "女性名詞", exEs: "Una gran parte del proyecto.", exEn: "A big part of the project.", exJa: "プロジェクトの大きな部分。" },
+      { spanish: "momento", japanese: "瞬間、時間", type: "m", typeName: "男性名詞", exEs: "Un momento, por favor.", exEn: "One moment, please.", exJa: "少々お待ちください。" },
+      { spanish: "ciudad", japanese: "都市", type: "f", typeName: "女性名詞", exEs: "Vivo en esta ciudad.", exEn: "I live in this city.", exJa: "私はこの街に住んでいます。" },
+      { spanish: "nombre", japanese: "名前", type: "m", typeName: "男性名詞", exEs: "¿Cuál es tu nombre?", exEn: "What is your name?", exJa: "お名前は何ですか？" },
+      { spanish: "país", japanese: "国", type: "m", typeName: "男性名詞", exEs: "Es un país hermoso.", exEn: "It is a beautiful country.", exJa: "美しい国です。" },
+      { spanish: "hora", japanese: "時間、時刻", type: "f", typeName: "女性名詞", exEs: "¿Qué hora es?", exEn: "What time is it?", exJa: "今何時ですか？" },
+      { spanish: "calle", japanese: "通り", type: "f", typeName: "女性名詞", exEs: "Cruza la calle.", exEn: "Cross the street.", exJa: "通りを渡りなさい。" },
+      { spanish: "verdad", japanese: "真実", type: "f", typeName: "女性名詞", exEs: "Es la verdad.", exEn: "It's the truth.", exJa: "それは真実です。" },
+      { spanish: "desarrollo", japanese: "開発、発展", type: "m", typeName: "男性名詞", exEs: "Desarrollo de software.", exEn: "Software development.", exJa: "ソフトウェア開発。" },
+      { spanish: "desafío", japanese: "挑戦、課題", type: "m", typeName: "男性名詞", exEs: "Es un nuevo desafío.", exEn: "It's a new challenge.", exJa: "新しい挑戦です。" },
 
       // --- 形容詞 ---
-      { spanish: "bueno", japanese: "良い", exEs: "¡Es muy bueno!", exJa: "とても良いですね！" },
-      { spanish: "malo", japanese: "悪い", exEs: "No es una mala idea.", exJa: "悪いアイデアではない。" },
-      { spanish: "grande", japanese: "大きい", exEs: "Una casa grande.", exJa: "大きな家。" },
-      { spanish: "pequeño", japanese: "小さい", exEs: "Un detalle pequeño.", exJa: "小さな詳細。" },
-      { spanish: "nuevo", japanese: "新しい", exEs: "Tengo un nuevo plan.", exJa: "新しい計画があります。" },
-      { spanish: "viejo", japanese: "古い", exEs: "Un amigo viejo.", exJa: "古い友人。" },
-      { spanish: "primer", japanese: "最初の", exEs: "Es el primer paso.", exJa: "これが一歩目です。" },
-      { spanish: "último", japanese: "最後の、最近の", exEs: "La última versión.", exJa: "最新バージョン。" },
-      { spanish: "mismo", japanese: "同じ", exEs: "Es lo mismo.", exJa: "同じことです。" },
-      { spanish: "otro", japanese: "別の", exEs: "Otra pregunta, por favor.", exJa: "もう一つ質問をお願いします。" },
-      { spanish: "mucho", japanese: "たくさんの", exEs: "Muchas gracias.", exJa: "本当にありがとうございます。" },
-      { spanish: "poco", japanese: "少ない、少しの", exEs: "Un poco de tiempo.", exJa: "少しの時間。" },
-      { spanish: "importante", japanese: "重要な", exEs: "Es un dato importante.", exJa: "重要なデータです。" },
-      { spanish: "posible", japanese: "可能な", exEs: "Lo antes posible.", exJa: "できるだけ早く。" },
-      { spanish: "fácil", japanese: "簡単な", exEs: "Es muy fácil.", exJa: "とても簡単です。" },
-      { spanish: "difícil", japanese: "難しい", exEs: "Es un examen difícil.", exJa: "難しい試験です。" },
-      { spanish: "constante", japanese: "一定の、絶え間ない", exEs: "Un esfuerzo constante.", exJa: "絶え間ない努力。" },
+      { spanish: "bueno", japanese: "良い", type: "adj", typeName: "形容詞", exEs: "¡Es muy bueno!", exEn: "It's very good!", exJa: "とても良いですね！" },
+      { spanish: "malo", japanese: "悪い", type: "adj", typeName: "形容詞", exEs: "No es una mala idea.", exEn: "It's not a bad idea.", exJa: "悪いアイデアではない。" },
+      { spanish: "grande", japanese: "大きい", type: "adj", typeName: "形容詞", exEs: "Una casa grande.", exEn: "A big house.", exJa: "大きな家。" },
+      { spanish: "pequeño", japanese: "小さい", type: "adj", typeName: "形容詞", exEs: "Un detalle pequeño.", exEn: "A small detail.", exJa: "小さな詳細。" },
+      { spanish: "nuevo", japanese: "新しい", type: "adj", typeName: "形容詞", exEs: "Tengo un nuevo plan.", exEn: "I have a new plan.", exJa: "新しい計画があります。" },
+      { spanish: "viejo", japanese: "古い", type: "adj", typeName: "形容詞", exEs: "Un amigo viejo.", exEn: "An old friend.", exJa: "古い友人。" },
+      { spanish: "primer", japanese: "最初の", type: "adj", typeName: "形容詞", exEs: "Es el primer paso.", exEn: "It is the first step.", exJa: "これが一歩目です。" },
+      { spanish: "último", japanese: "最後の、最近の", type: "adj", typeName: "形容詞", exEs: "La última versión.", exEn: "The latest version.", exJa: "最新バージョン。" },
+      { spanish: "mismo", japanese: "同じ", type: "adj", typeName: "形容詞", exEs: "Es lo mismo.", exEn: "It's the same thing.", exJa: "同じことです。" },
+      { spanish: "otro", japanese: "別の", type: "adj", typeName: "形容詞", exEs: "Otra pregunta, por favor.", exEn: "Another question, please.", exJa: "もう一つ質問をお願いします。" },
+      { spanish: "mucho", japanese: "たくさんの", type: "adj", typeName: "形容詞", exEs: "Muchas gracias.", exEn: "Thank you very much.", exJa: "本当にありがとうございます。" },
+      { spanish: "poco", japanese: "少ない、少しの", type: "adj", typeName: "形容詞", exEs: "Un poco de tiempo.", exEn: "A little time.", exJa: "少しの時間。" },
+      { spanish: "importante", japanese: "重要な", type: "adj", typeName: "形容詞", exEs: "Es un dato importante.", exEn: "It is important data.", exJa: "重要なデータです。" },
+      { spanish: "posible", japanese: "可能な", type: "adj", typeName: "形容詞", exEs: "Lo antes posible.", exEn: "As soon as possible.", exJa: "できるだけ早く。" },
+      { spanish: "fácil", japanese: "簡単な", type: "adj", typeName: "形容詞", exEs: "Es muy fácil.", exEn: "It is very easy.", exJa: "とても簡単です。" },
+      { spanish: "difícil", japanese: "難しい", type: "adj", typeName: "形容詞", exEs: "Es un examen difícil.", exEn: "It's a difficult exam.", exJa: "難しい試験です。" },
+      { spanish: "constante", japanese: "一定の、絶え間ない", type: "adj", typeName: "形容詞", exEs: "Un esfuerzo constante.", exEn: "A constant effort.", exJa: "絶え間ない努力。" },
 
       // --- 副詞・接続詞・その他 ---
-      { spanish: "ahora", japanese: "今", exEs: "Empieza ahora.", exJa: "今すぐ始めなさい。" },
-      { spanish: "hoy", japanese: "今日", exEs: "Hoy es un gran día.", exJa: "今日は素晴らしい日だ。" },
-      { spanish: "siempre", japanese: "いつも", exEs: "Siempre estás aquí.", exJa: "君はいつもここにいるね。" },
-      { spanish: "nunca", japanese: "決して〜ない", exEs: "Nunca me rindo.", exJa: "絶対に諦めない。" },
-      { spanish: "también", japanese: "〜もまた", exEs: "Yo también quiero ir.", exJa: "私も行きたいです。" },
-      { spanish: "tampoco", japanese: "〜もまた〜ない", exEs: "Tampoco lo sé.", exJa: "私もそれを知りません。" },
-      { spanish: "muy", japanese: "とても", exEs: "Muy bien, gracias.", exJa: "とても良いです、ありがとう。" },
-      { spanish: "más", japanese: "より多く", exEs: "Un poco más.", exJa: "もう少し。" },
-      { spanish: "menos", japanese: "より少なく", exEs: "Más o menos.", exJa: "だいたい（多かれ少なかれ）。" },
-      { spanish: "aquí", japanese: "ここ", exEs: "Ven aquí.", exJa: "ここに来て。" },
-      { spanish: "allí", japanese: "そこ、あそこ", exEs: "Está allí.", exJa: "あそこにあります。" },
-      { spanish: "bien", japanese: "よく、上手く", exEs: "Todo está bien.", exJa: "すべて順調です。" },
-      { spanish: "así", japanese: "そのように", exEs: "Así es.", exJa: "その通りです。" },
-      { spanish: "casi", japanese: "ほとんど", exEs: "Casi termino.", exJa: "もうすぐ終わります。" },
-      { spanish: "luego", japanese: "後で", exEs: "Hasta luego.", exJa: "また後で。" },
-      { spanish: "entonces", japanese: "それでは", exEs: "¿Entonces qué hacemos?", exJa: "それではどうしましょうか？" },
-      { spanish: "pero", japanese: "しかし", exEs: "Sí, pero es difícil.", exJa: "はい、でも難しいです。" },
-      { spanish: "porque", japanese: "〜だから", exEs: "Porque es importante.", exJa: "なぜなら重要だからです。" },
-      { spanish: "cuando", japanese: "〜の時", exEs: "Llama cuando llegues.", exJa: "着いたら電話して。" },
-      { spanish: "donde", japanese: "〜する場所", exEs: "¿Dónde está la estación?", exJa: "駅はどこですか？" },
-      { spanish: "como", japanese: "〜のように", exEs: "Hazlo como quieras.", exJa: "好きなようにやりなさい。" },
-      { spanish: "si", japanese: "もし〜ならば", exEs: "Si tienes tiempo, ven.", exJa: "時間があったら来てね。" },
-      { spanish: "gracias", japanese: "ありがとう", exEs: "Muchas gracias por todo.", exJa: "いろいろとありがとう。" }
+      { spanish: "ahora", japanese: "今", type: "adv", typeName: "副詞", exEs: "Empieza ahora.", exEn: "Start now.", exJa: "今すぐ始めなさい。" },
+      { spanish: "hoy", japanese: "今日", type: "adv", typeName: "副詞", exEs: "Hoy es un gran día.", exEn: "Today is a great day.", exJa: "今日は素晴らしい日だ。" },
+      { spanish: "siempre", japanese: "いつも", type: "adv", typeName: "副詞", exEs: "Siempre estás aquí.", exEn: "You are always here.", exJa: "君はいつもここにいるね。" },
+      { spanish: "nunca", japanese: "決して〜ない", type: "adv", typeName: "副詞", exEs: "Nunca me rindo.", exEn: "I never give up.", exJa: "絶対に諦めない。" },
+      { spanish: "también", japanese: "〜もまた", type: "adv", typeName: "副詞", exEs: "Yo también quiero ir.", exEn: "I also want to go.", exJa: "私も行きたいです。" },
+      { spanish: "tampoco", japanese: "〜もまた〜ない", type: "adv", typeName: "副詞", exEs: "Tampoco lo sé.", exEn: "I don't know either.", exJa: "私もそれを知りません。" },
+      { spanish: "muy", japanese: "とても", type: "adv", typeName: "副詞", exEs: "Muy bien, gracias.", exEn: "Very well, thank you.", exJa: "とても良いです、ありがとう。" },
+      { spanish: "más", japanese: "より多く", type: "adv", typeName: "副詞", exEs: "Un poco más.", exEn: "A little more.", exJa: "もう少し。" },
+      { spanish: "menos", japanese: "より少なく", type: "adv", typeName: "副詞", exEs: "Más o menos.", exEn: "More or less.", exJa: "だいたい。" },
+      { spanish: "aquí", japanese: "ここ", type: "adv", typeName: "副詞", exEs: "Ven aquí.", exEn: "Come here.", exJa: "ここに来て。" },
+      { spanish: "allí", japanese: "そこ、あそこ", type: "adv", typeName: "副詞", exEs: "Está allí.", exEn: "It is there.", exJa: "あそこにあります。" },
+      { spanish: "bien", japanese: "よく、上手く", type: "adv", typeName: "副詞", exEs: "Todo está bien.", exEn: "Everything is fine.", exJa: "すべて順調です。" },
+      { spanish: "así", japanese: "そのように", type: "adv", typeName: "副詞", exEs: "Así es.", exEn: "That's right.", exJa: "その通りです。" },
+      { spanish: "casi", japanese: "ほとんど", type: "adv", typeName: "副詞", exEs: "Casi termino.", exEn: "I'm almost finished.", exJa: "もうすぐ終わります。" },
+      { spanish: "luego", japanese: "後で", type: "adv", typeName: "副詞", exEs: "Hasta luego.", exEn: "See you later.", exJa: "また後で。" },
+      { spanish: "entonces", japanese: "それでは", type: "conj", typeName: "接続詞", exEs: "¿Entonces qué hacemos?", exEn: "So what do we do?", exJa: "それではどうしましょうか？" },
+      { spanish: "pero", japanese: "しかし", type: "conj", typeName: "接続詞", exEs: "Sí, pero es difícil.", exEn: "Yes, but it's difficult.", exJa: "はい、でも難しいです。" },
+      { spanish: "porque", japanese: "〜だから", type: "conj", typeName: "接続詞", exEs: "Porque es importante.", exEn: "Because it's important.", exJa: "なぜなら重要だからです。" },
+      { spanish: "cuando", japanese: "〜の時", type: "conj", typeName: "接続詞", exEs: "Llama cuando llegues.", exEn: "Call when you arrive.", exJa: "着いたら電話して。" },
+      { spanish: "donde", japanese: "〜する場所", type: "other", typeName: "関係詞", exEs: "¿Dónde está la estación?", exEn: "Where is the station?", exJa: "駅はどこですか？" },
+      { spanish: "como", japanese: "〜のように", type: "conj", typeName: "接続詞", exEs: "Hazlo como quieras.", exEn: "Do it as you like.", exJa: "好きなようにやりなさい。" },
+      { spanish: "si", japanese: "もし〜ならば", type: "conj", typeName: "接続詞", exEs: "Si tienes tiempo, ven.", exEn: "If you have time, come.", exJa: "時間があったら来てね。" },
+      { spanish: "gracias", japanese: "ありがとう", type: "other", typeName: "間投詞", exEs: "Muchas gracias por todo.", exEn: "Thank you very much for everything.", exJa: "いろいろとありがとう。" }
     ];
 
+    // 配列をシャッフル（フィッシャー–イェーツのシャッフル）
+    function shuffle(array) {
+      const arr = [...array];
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+
+    const vocabulary = shuffle(rawVocabulary);
+
     let dataIndex = 0;
-    let totalCount = 0;
     let isLoading = false;
 
     const cardList = document.getElementById("cardList");
     const sentinel = document.getElementById("sentinel");
+
+    function getBadgeClass(type) {
+      switch(type) {
+        case 'v': return 'type-v';
+        case 'm': return 'type-m';
+        case 'f': return 'type-f';
+        case 'adj': return 'type-adj';
+        default: return 'type-other';
+      }
+    }
 
     function loadMoreCards(batchSize = 10) {
       if (isLoading) return;
@@ -260,19 +309,21 @@
 
       for (let i = 0; i < batchSize; i++) {
         const item = vocabulary[dataIndex];
-        totalCount++;
 
         const card = document.createElement("div");
         card.className = "card";
 
+        const badgeClass = getBadgeClass(item.type);
+
         card.innerHTML = `
-          <div class="word-container">
-            <div class="word">${item.spanish}</div>
-            <div class="num-tag">#${totalCount}</div>
+          <div class="word-header">
+            <span class="word">${item.spanish}</span>
+            <span class="type-badge ${badgeClass}">${item.typeName}</span>
           </div>
           <div class="meaning">${item.japanese}</div>
           <div class="example-box">
             <div class="example-es">${item.exEs}</div>
+            <div class="example-en">${item.exEn}</div>
             <div class="example-ja">${item.exJa}</div>
           </div>
         `;
@@ -304,4 +355,4 @@
     loadMoreCards(15);
   </script>
 </body>
-</html>
+</html>d
