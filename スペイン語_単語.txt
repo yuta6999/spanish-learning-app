@@ -1,0 +1,358 @@
+spanish	japanese	type	typeName	exEs	exEn	exJa
+ser	〜である（本質）	v	動詞	Soy de Japón.	I am from Japan.	私は日本出身です。
+estar	〜である（状態・位置）	v	動詞	¿Cómo estás hoy?	How are you today?	今日の調子はどう？
+haber	〜がある、〜した	v	動詞	Hay una duda.	There is a doubt.	疑問が一つあります。
+tener	持っている	v	動詞	Tengo mucho trabajo.	I have a lot of work.	仕事がたくさんあります。
+hacer	する、作る	v	動詞	¿Qué haces ahora?	What are you doing now?	今何してるの？
+ir	行く	v	動詞	Voy a la oficina.	I am going to the office.	オフィスに行きます。
+poder	〜できる	v	動詞	Puedo hacerlo solo.	I can do it alone.	一人でできます。
+decir	言う	v	動詞	Dime la verdad.	Tell me the truth.	本当のことを言って。
+ver	見る、会う	v	動詞	Nos vemos mañana.	See you tomorrow.	また明日会いましょう。
+comer	食べる	v	動詞	Vamos a comer algo.	Let's eat something.	何か食べに行こう。
+tomar	取る、飲む、乗る	v	動詞	Tomo un café.	I'll have a coffee.	コーヒーを一杯飲みます。
+querer	〜したい、欲する	v	動詞	Quiero aprender más.	I want to learn more.	もっと学びたいです。
+saber	知っている、〜できる	v	動詞	No sé la respuesta.	I don't know the answer.	答えが分かりません。
+conocer	知っている、知り合う	v	動詞	Mucho gusto en conocerte.	Nice to meet you.	お会いできて嬉しいです。
+llegar	到着する	v	動詞	Llego a tiempo.	I arrive on time.	時間通りに着きます。
+pasar	通る、起こる	v	動詞	¿Qué pasó?	What happened?	何があったの？
+deber	〜すべきである	v	動詞	Debo estudiar hoy.	I must study today.	今日勉強しなければならない。
+poner	置く、つける	v	動詞	Pon el libro aquí.	Put the book here.	本をここに置いて。
+parecer	〜に見える、思える	v	動詞	Me parece una buena idea.	It seems like a good idea to me.	良いアイデアだと思います。
+hablar	話す	v	動詞	Hablo un poco de español.	I speak a little Spanish.	スペイン語を少し話します。
+dar	与える	v	動詞	Dame un momento.	Give me a moment.	少し時間をください。
+llevar	持っていく	v	動詞	Llevo este bolso.	I'll take this bag.	このバッグを持っていきます。
+dejar	残す、やめる	v	動詞	Déjame ver.	Let me see.	私に見せて。
+seguir	続ける、従う	v	動詞	Sigue adelante.	Keep going forward.	前へ進み続けなさい。
+encontrar	見つける	v	動詞	No encuentro mis llaves.	I can't find my keys.	鍵が見つかりません。
+pensar	考える	v	動詞	Pienso que sí.	I think so.	そう思います。
+salir	出る、出かける	v	動詞	Salgo a las seis.	I leave at six.	6時に出かけます。
+volver	戻る、帰る	v	動詞	Vuelvo pronto.	I'll return soon.	すぐに戻ります。
+pedir	頼む、注文する	v	動詞	Quiero pedir esto.	I want to order this.	これを注文したいです。
+entender	理解する	v	動詞	Entiendo perfectamente.	I understand perfectly.	完全に理解しています。
+lograr	達成する	v	動詞	Logramos la meta.	We achieved the goal.	目標を達成しました。
+trabajar	働く	v	動詞	Trabajo desde casa.	I work from home.	在宅で働いています。
+necesitar	必要とする	v	動詞	Necesito ayuda.	I need help.	助けが必要です。
+esperar	待つ、期待する	v	動詞	Te espero aquí.	I'll wait for you here.	ここで君を待っているよ。
+buscar	探す	v	動詞	Busco una solución.	I'm looking for a solution.	解決策を探しています。
+tiempo	時間、天候	m	男性名詞	No tengo tiempo.	I don't have time.	時間がありません。
+vez	回、度	f	女性名詞	Una vez más, por favor.	One more time, please.	もう一度お願いします。
+día	日	m	男性名詞	¡Buen día!	Good day!	良い一日を！
+año	年	m	男性名詞	Feliz año nuevo.	Happy New Year.	明けましておめでとう。
+cosa	もの、こと	f	女性名詞	Hay otra cosa.	There is another thing.	もう一つ別のことがあります。
+hombre	男性	m	男性名詞	Es un hombre sabio.	He is a wise man.	彼は賢い人です。
+mujer	女性	f	女性名詞	Es una mujer fuerte.	She is a strong woman.	彼女は強い女性です。
+vida	生活、人生	f	女性名詞	La vida es bella.	Life is beautiful.	人生は美しい。
+forma	方法、形	f	女性名詞	De esta forma es fácil.	In this way it's easy.	この方法なら簡単です。
+casa	家	f	女性名詞	Estoy en casa.	I'm at home.	家にいます。
+mundo	世界	m	男性名詞	En todo el mundo.	All over the world.	世界中で。
+trabajo	仕事	m	男性名詞	Buen trabajo.	Good job.	お疲れ様。
+lugar	場所	m	男性名詞	Un lugar tranquilo.	A quiet place.	静かな場所。
+problema	問題	m	男性名詞	No hay problema.	No problem.	問題ありません。
+persona	人	f	女性名詞	Es una buena persona.	He/She is a good person.	良い人です。
+parte	部分	f	女性名詞	Una gran parte del proyecto.	A big part of the project.	プロジェクトの大きな部分。
+momento	瞬間、時間	m	男性名詞	Un momento, por favor.	One moment, please.	少々お待ちください。
+ciudad	都市	f	女性名詞	Vivo en esta ciudad.	I live in this city.	私はこの街に住んでいます。
+nombre	名前	m	男性名詞	¿Cuál es tu nombre?	What is your name?	お名前は何ですか？
+país	国	m	男性名詞	Es un país hermoso.	It is a beautiful country.	美しい国です。
+hora	時間、時刻	f	女性名詞	¿Qué hora es?	What time is it?	今何時ですか？
+calle	通り	f	女性名詞	Cruza la calle.	Cross the street.	通りを渡りなさい。
+verdad	真実	f	女性名詞	Es la verdad.	It's the truth.	それは真実です。
+desarrollo	開発、発展	m	男性名詞	Desarrollo de software.	Software development.	ソフトウェア開発。
+desafío	挑戦、課題	m	男性名詞	Es un nuevo desafío.	It's a new challenge.	新しい挑戦です。
+bueno	良い	adj	形容詞	¡Es muy bueno!	It's very good!	とても良いですね！
+malo	悪い	adj	形容詞	No es una mala idea.	It's not a bad idea.	悪いアイデアではない。
+grande	大きい	adj	形容詞	Una casa grande.	A big house.	大きな家。
+pequeño	小さい	adj	形容詞	Un detalle pequeño.	A small detail.	小さな詳細。
+nuevo	新しい	adj	形容詞	Tengo un nuevo plan.	I have a new plan.	新しい計画があります。
+viejo	古い	adj	形容詞	Un amigo viejo.	An old friend.	古い友人。
+primero	最初の	adj	形容詞	Es el primer paso.	It is the first step.	これが一歩目です。
+último	最後の、最近の	adj	形容詞	La última versión.	The latest version.	最新バージョン。
+mismo	同じ	adj	形容詞	Es lo mismo.	It's the same thing.	同じことです。
+otro	別の	adj	形容詞	Otra pregunta, por favor.	Another question, please.	もう一つ質問をお願いします。
+mucho	たくさんの	adj	形容詞	Muchas gracias.	Thank you very much.	本当にありがとうございます。
+poco	少ない、少しの	adj	形容詞	Un poco de tiempo.	A little time.	少しの時間。
+importante	重要な	adj	形容詞	Es un dato importante.	It is important data.	重要なデータです。
+posible	可能な	adj	形容詞	Lo antes posible.	As soon as possible.	できるだけ早く。
+fácil	簡単な	adj	形容詞	Es muy fácil.	It is very easy.	とても簡単です。
+difícil	難しい	adj	形容詞	Es un examen difícil.	It's a difficult exam.	難しい試験です。
+constante	一定の、絶え間ない	adj	形容詞	Un esfuerzo constante.	A constant effort.	絶え間ない努力。
+ahora	今	adv	副詞	Empieza ahora.	Start now.	今すぐ始めなさい。
+hoy	今日	adv	副詞	Hoy es un gran día.	Today is a great day.	今日は素晴らしい日だ。
+siempre	いつも	adv	副詞	Siempre estás aquí.	You are always here.	君はいつもここにいるね。
+nunca	決して〜ない	adv	副詞	Nunca me rindo.	I never give up.	絶対に諦めない。
+también	〜もまた	adv	副詞	Yo también quiero ir.	I also want to go.	私も行きたいです。
+tampoco	〜もまた〜ない	adv	副詞	Tampoco lo sé.	I don't know either.	私もそれを知りません。
+muy	とても	adv	副詞	Muy bien, gracias.	Very well, thank you.	とても良いです、ありがとう。
+más	より多く	adv	副詞	Un poco más.	A little more.	もう少し。
+menos	より少なく	adv	副詞	Más o menos.	More or less.	だいたい。
+aquí	ここ	adv	副詞	Ven aquí.	Come here.	ここに来て。
+allí	そこ、あそこ	adv	副詞	Está allí.	It is there.	あそこにあります。
+bien	よく、上手く	adv	副詞	Todo está bien.	Everything is fine.	すべて順調です。
+así	そのように	adv	副詞	Así es.	That's right.	その通りです。
+casi	ほとんど	adv	副詞	Casi termino.	I'm almost finished.	もうすぐ終わります。
+luego	後で	adv	副詞	Hasta luego.	See you later.	また後で。
+entonces	それでは	conj	接続詞	¿Entonces qué hacemos?	So what do we do?	それではどうしましょうか？
+pero	しかし	conj	接続詞	Sí, pero es difícil.	Yes, but it's difficult.	はい、でも難しいです。
+porque	〜だから	conj	接続詞	Porque es importante.	Because it's important.	なぜなら重要だからです。
+cuando	〜の時	conj	接続詞	Llama cuando llegues.	Call when you arrive.	着いたら電話して。
+donde	〜する場所	conj	接続詞	¿Dónde está la estación?	Where is the station?	駅はどこですか？
+como	〜のように	conj	接続詞	Hazlo como quieras.	Do it as you like.	好きなようにやりなさい。
+si	もし〜ならば	conj	接続詞	Si tienes tiempo, ven.	If you have time, come.	時間があったら来てね。
+gracias	ありがとう	interj	間投詞	Muchas gracias por todo.	Thank you very much for everything.	いろいろとありがとう。
+afirmar	主張する、断言する	v	動詞	El experto afirmó su teoría.	The expert affirmed his theory.	専門家は自身の理論を主張した。
+asumir	引き受ける、想定する	v	動詞	Debemos asumir el riesgo.	We must assume the risk.	私たちはリスクを引き受けなければならない。
+comprobar	確認する、証明する	v	動詞	Voy a comprobar los datos.	I am going to check the data.	データを確認します。
+demostrar	証明する、実演する	v	動詞	Demostró su gran habilidad.	He demonstrated his great skill.	彼は素晴らしい能力を証明した。
+determinar	決定する、特定する	v	動詞	Determinar las causas del error.	Determine the causes of the error.	エラーの原因を特定する。
+evaluar	評価する、査定する	v	動詞	Evaluamos el rendimiento anual.	We evaluate the annual performance.	私たちは年間パフォーマンスを評価します。
+examinar	検証する、調べる	v	動詞	Examinar el documento con atención.	Examine the document carefully.	書類を慎重に調べる。
+identificar	特定する、確認する	v	動詞	Identificar el problema principal.	Identify the main problem.	問題の核心を特定する。
+interpretar	解釈する、通訳する	v	動詞	¿Cómo interpretas estos resultados?	How do you interpret these results?	これらの結果をどう解釈しますか？
+justificar	正当化する、理由を述べる	v	動詞	Tienes que justificar tu decisión.	You have to justify your decision.	決定の理由を説明しなければならない。
+observar	観察する、注視する	v	動詞	Observamos los cambios detalladamente.	We observe the changes in detail.	私たちは変化を詳細に観察する。
+percibir	知覚する、察知する	v	動詞	Puedo percibir la diferencia.	I can perceive the difference.	違いを察知することができる。
+adaptar	適応させる、順応する	v	動詞	Adaptarse al nuevo entorno.	Adapt to the new environment.	新しい環境に適応する。
+aplicar	適用する、応用する	v	動詞	Aplicar la nueva regla.	Apply the new rule.	新しいルールを適用する。
+afrontar	立ち向かう、直面する	v	動詞	Afrontar los desafíos futuros.	Face future challenges.	将来の課題に立ち向かう。
+alcanzar	達する、到達する	v	動詞	Alcanzar el nivel deseado.	Reach the desired level.	目標とするレベルに到達する。
+aportar	貢献する、提供する	v	動詞	Aportar nuevas ideas.	Contribute new ideas.	新しいアイデアを提供する。
+aprobar	承認する、合格する	v	動詞	Aprobar el presupuesto oficial.	Approve the official budget.	公式予算を承認する。
+asegurar	確保する、保証する	v	動詞	Asegurar la calidad del producto.	Ensure the quality of the product.	製品の品質を確保する。
+aumentar	増加させる、増える	v	動詞	Aumentar las ventas este mes.	Increase sales this month.	今月の売上を伸ばす。
+colaborar	協力する、共同作業する	v	動詞	Colaborar con otros equipos.	Collaborate with other teams.	他のチームと協力する。
+comparar	比較する	v	動詞	Comparar dos opciones distintas.	Compare two different options.	異なる2つの選択肢を比較する。
+conducir	導く、運転する	v	動詞	Esto puede conducir al éxito.	This can lead to success.	これが成功へと導く可能性がある。
+confirmar	確認する、確定する	v	動詞	Confirmar la asistencia hoy.	Confirm attendance today.	本日の出席を確定する。
+consolidar	固める、統合・強固にする	v	動詞	Consolidar la posición en el mercado.	Consolidate market position.	市場での地位を固める。
+contribuir	寄与する、貢献する	v	動詞	Contribuir al desarrollo local.	Contribute to local development.	地域社会の開発に貢献する。
+coordinar	調整する、コーディネートする	v	動詞	Coordinar las tareas del grupo.	Coordinate group tasks.	グループのタスクを調整する。
+definir	定義する、明確にする	v	動詞	Definir los objetivos clave.	Define the key objectives.	鍵となる目標を明確にする。
+diseñar	設計する、デザインする	v	動詞	Diseñar un nuevo sistema.	Design a new system.	新しいシステムを設計する。
+ejecutar	実行する、遂行する	v	動詞	Ejecutar el plan estratégico.	Execute the strategic plan.	戦略計画を実行に移す。
+elaborar	作成する、精緻に作る	v	動詞	Elaborar un informe detallado.	Prepare a detailed report.	詳細なレポートを作成する。
+facilitar	容易にする、提供する	v	動詞	Facilitar el acceso a la información.	Facilitate access to information.	情報へのアクセスを容易にする。
+generar	生み出す、発生させる	v	動詞	Generar nuevos ingresos.	Generate new revenue.	新しい収益を生み出す。
+gestionar	管理・運用する、手配する	v	動詞	Gestionar los recursos eficientemente.	Manage resources efficiently.	リソースを効率的に管理する。
+implementar	実装する、導入する	v	動詞	Implementar un nuevo proceso.	Implement a new process.	新しいプロセスを導入する。
+optimizar	最適化する	v	動詞	Optimizar el tiempo de respuesta.	Optimize response time.	応答時間を最適化する。
+prever	予測する、予見する	v	動詞	Es difícil prever el futuro.	It is difficult to foresee the future.	未来を予測するのは困難だ。
+renovar	刷新する、更新する	v	動詞	Renovar el contrato anual.	Renew the annual contract.	年間契約を更新する。
+transformar	変革する、変化させる	v	動詞	Transformar la estructura digital.	Transform the digital structure.	デジタル構造を変革する。
+actitud	態度、姿勢	f	女性名詞	Tener una actitud positiva.	Have a positive attitude.	前向きな姿勢を持つ。
+análisis	分析、解析	m	男性名詞	Un análisis riguroso de datos.	A rigorous data analysis.	厳密なデータ分析。
+capacidad	能力、容量	f	女性名詞	Demostrar capacidad técnica.	Demonstrate technical capability.	技術的能力を示す。
+compromiso	約束、コミットメント、責任	m	男性名詞	Demostrar compromiso total.	Show full commitment.	全面的なコミットメントを示す。
+concepto	概念、コンセプト	m	男性名詞	Entender el concepto básico.	Understand the basic concept.	基本概念を理解する。
+criterio	基準、判断規範	m	男性名詞	Establecer criterios claros.	Establish clear criteria.	明確な基準を確立する。
+eficiencia	効率性、能率	f	女性名詞	Mejorar la eficiencia operativa.	Improve operational efficiency.	業務の効率性を向上させる。
+estrategia	戦略	f	女性名詞	Una estrategia a largo plazo.	A long-term strategy.	長期的な戦略。
+estructura	構造、仕組み	f	女性名詞	La estructura del proyecto.	The project structure.	プロジェクトの構造。
+factor	要因、要素	m	男性名詞	Un factor determinante.	A determining factor.	決定的な要因。
+función	機能、役割	f	女性名詞	La función principal del sistema.	The main function of the system.	システムの主な機能。
+gestión	管理、運営	f	女性名詞	Gestión de proyectos complejos.	Management of complex projects.	複雑なプロジェクトの管理。
+hipótesis	仮説	f	女性名詞	Confirmar la hipótesis inicial.	Confirm the initial hypothesis.	初期の仮説を確認する。
+innovación	革新、イノベーション	f	女性名詞	Impulsar la innovación continua.	Drive continuous innovation.	継続的な革新を推進する。
+tendencia	傾向、トレンド	f	女性名詞	Seguir las tendencias del mercado.	Follow market trends.	市場のトレンドを追う。
+proceso	プロセス、過程	m	男性名詞	Un proceso automatizado.	An automated process.	自動化されたプロセス。
+revisión	見直し、点検	f	女性名詞	Hacer una revisión profunda.	Conduct a thorough review.	徹底的な見直しを行う。
+riesgo	リスク、危険	m	男性名詞	Evaluar el riesgo financiero.	Evaluate the financial risk.	財務リスクを評価する。
+sector	分野、部門	m	男性名詞	El sector tecnológico.	The technology sector.	テクノロジー分野。
+sistema	システム、体系	m	男性名詞	Un sistema integrado.	An integrated system.	統合されたシステム。
+adecuado	適切な、適した	adj	形容詞	Buscar el lugar adecuado.	Find the appropriate place.	適切な場所を探す。
+complejo	複雑な	adj	形容詞	Un problema muy complejo.	A very complex problem.	非常に複雑な問題。
+crítico	批判的な、危機的な、決定的な	adj	形容詞	Un momento crítico para la empresa.	A critical moment for the company.	会社にとって決定的な瞬間。
+eficiente	効率的な	adj	形容詞	Un flujo de trabajo eficiente.	An efficient workflow.	効率的なワークフロー。
+evidente	明白な、明らかな	adj	形容詞	Es una ventaja evidente.	It is an obvious advantage.	それは明白な利点だ。
+flexible	柔軟な、融通の利く	adj	形容詞	Horario de trabajo flexible.	Flexible working hours.	柔軟な勤務時間。
+fundamental	根本的な、非常に重要な	adj	形容詞	Es un principio fundamental.	It is a fundamental principle.	それは根本的な原則だ。
+inevitable	避けられない、不可避の	adj	形容詞	Un cambio inevitable.	An inevitable change.	避けられない変化。
+innovador	革新的な	adj	形容詞	Un enfoque muy innovador.	A very innovative approach.	非常に革新的なアプローチ。
+integral	総合的な、欠かせない	adj	形容詞	Una solución integral.	A comprehensive solution.	総合的な解決策。
+notable	顕著な、目覚ましい	adj	形容詞	Un progreso notable.	Remarkable progress.	目覚ましい進歩。
+preciso	正確な、まさにその	adj	形容詞	Datos muy precisos.	Very precise data.	非常に正確なデータ。
+principal	主要な、メインの	adj	形容詞	La razón principal.	The main reason.	主要な理由。
+relevante	関連性のある、重要・顕著な	adj	形容詞	Información relevante.	Relevant information.	関連する重要な情報。
+significativo	重要な、意義深い	adj	形容詞	Un aumento significativo.	A significant increase.	意味のある大きな増加。
+actualmente	現在は、今や	adv	副詞	Actualmente vivo aquí.	Currently I live here.	現在はここに住んでいます。
+definitivamente	決定的に、間違いなく	adv	副詞	Definitivamente es mejor.	It is definitely better.	間違いなくそちらの方が良い。
+especialmente	特に、とりわけ	adv	副詞	Especialmente en verano.	Especially in summer.	特に夏場において。
+eventualmente	時折、ひょっとすると	adv	副詞	Eventualmente todo cambiará.	Possibly everything will change.	ひょっとするとすべてが変わるかもしれない。
+fundamentalmente	根本的に、基本的に	adv	副詞	Es fundamentalmente correcto.	It is fundamentally correct.	根本的に正しい。
+obviamente	明らかに、言うまでもなく	adv	副詞	Obviamente no es fácil.	Obviously it is not easy.	言うまでもなく簡単ではない。
+posteriormente	その後で、追って	adv	副詞	Lo analizaremos posteriormente.	We will analyze it later.	後ほどそれを分析します。
+principalmente	主として、主に	adv	副詞	Trabajo principalmente con datos.	I mainly work with data.	主にデータを扱って仕事をしています。
+recientemente	最近、近頃	adv	副詞	He leído un libro recientemente.	I read a book recently.	最近本を読みました。
+relativamente	比較的	adv	副詞	Es un método relativamente nuevo.	It is a relatively new method.	比較的新しい方法です。
+a través de	〜を通して、〜経由で	phrase	熟語・成句	A través del análisis de datos.	Through data analysis.	データ分析を通して。
+al mismo tiempo	同時に	phrase	熟語・成句	Al mismo tiempo, hay riesgos.	At the same time, there are risks.	同時に、リスクも存在する。
+con el fin de	〜する目的で	phrase	熟語・成句	Con el fin de mejorar la calidad.	In order to improve quality.	品質を向上させる目的で。
+con respecto a	〜に関して	phrase	熟語・成句	Con respecto a este problema.	With respect to this problem.	この問題に関して。
+de modo que	〜となるように、したがって	conj	接続詞	Trabaja de modo que funcione.	Work so that it functions.	しっかり機能するように作業しなさい。
+en cambio	それに対して、一方で	phrase	熟語・成句	En cambio, la segunda opción es mejor.	In contrast, the second option is better.	それに対して、2つ目の選択肢の方が良い。
+en consecuencia	その結果として	phrase	熟語・成句	En consecuencia, tomamos medidas.	Consequently, we took measures.	その結果、私たちは対策を講じた。
+en todo caso	いずれにせよ、ともかく	phrase	熟語・成句	En todo caso, debemos continuar.	In any case, we must continue.	いずれにせよ、私たちは続けなければならない。
+hasta cierto punto	ある程度までは	phrase	熟語・成句	Es verdad hasta cierto punto.	It is true up to a point.	ある程度までは事実だ。
+por el contrario	反対に、それどころか	phrase	熟語・成句	Por el contrario, esto ayuda.	On the contrary, this helps.	反対に、これは助けになる。
+sin duda	疑いなく、確実に	phrase	熟語・成句	Sin duda es el mejor camino.	Without a doubt it is the best way.	疑いなくそれが最善の道だ。
+tarde o temprano	遅かれ早かれ	phrase	熟語・成句	Tarde o temprano llegará.	Sooner or later it will arrive.	遅かれ早かれそれはやってくる。
+tener en cuenta	考慮に入れる	phrase	熟語・成句	Hay que tener en cuenta el costo.	One must take into account the cost.	コストを考慮に入れる必要がある。
+vale la pena	〜する価値がある	phrase	熟語・成句	Vale la pena intentarlo.	It is worth trying.	試してみる価値はある。
+ya que	〜である以上、〜なので（= since / as）	conj	接続詞	Ya que estás aquí, hablemos.	Since you are here, let's talk.	せっかくここにいるのだから、話しましょう。
+bueno	えーと、そうだね、じゃあ	interj	間投詞	Bueno, vamos a empezar.	Well, let's start.	じゃあ、始めようか。
+o sea	つまり、要するに	phrase	熟語	O sea, ¿no quieres ir?	In other words, you don't want to go?	つまり、行きたくないってこと？
+la verdad	実は、正直なところ	phrase	熟語	La verdad, no me gusta mucho.	To be honest, I don't really like it.	正直、あまり好きじゃないんだ。
+por cierto	ところで、ちなみに	phrase	熟語	Por cierto, ¿qué hiciste ayer?	By the way, what did you do yesterday?	ところで、昨日は何したの？
+en fin	まあ何はともあれ、とにかく	phrase	熟語	En fin, todo salió bien.	Anyway, everything turned out well.	まあ何はともあれ、すべて上手くいったよ。
+claro	もちろん、なるほど、そうだよね	interj	間投詞	¡Claro que sí!	Of course!	もちろんだよ！
+seguro	たしかに、きっと	adv	副詞	Seguro que viene.	I'm sure he is coming.	きっと彼は来るよ。
+¡Qué lástima!	それは残念！	interj	間投詞	¿No puedes venir? ¡Qué lástima!	You can't come? What a pity!	来られないの？残念！
+¡Qué bueno!	よかったね！最高！	interj	間投詞	¿Pasaste el examen? ¡Qué bueno!	You passed the exam? That's great!	試験受かったの？よかったね！
+depende	〜による、場合による	v	動詞	Depende del tiempo.	It depends on the weather.	天気次第かな。
+quedarse	とどまる、〜に残る	v	動詞	Me quedo en casa hoy.	I'm staying at home today.	今日は家にいます。
+olvidar	忘れる	v	動詞	Olvidé traer la llave.	I forgot to bring the key.	鍵を持ってくるのを忘れた。
+cambiar	変える、変わる	v	動詞	Todo cambia rápido.	Everything changes quickly.	すべてが素早く変わる。
+funcionar	機能する、上手くいく	v	動詞	Este plan funciona muy bien.	This plan works very well.	この計画はすごく上手くいっている。
+sentirse	〜と感じる、〜な気分である	v	動詞	Me siento muy bien hoy.	I feel very good today.	今日はとても気分が良いです。
+quizás	たぶん、もしかすると	adv	副詞	Quizás vaya mañana.	Maybe I will go tomorrow.	もしかしたら明日行くかも。
+de repente	突然、いきなり	adv	副詞	De repente empezó a llover.	Suddenly it started to rain.	突然雨が降り出した。
+despacio	ゆっくり	adv	副詞	Habla más despacio, por favor.	Speak more slowly, please.	もう少しゆっくり話してください。
+enseguida	すぐに、ただちに	adv	副詞	Vuelvo enseguida.	I'll be right back.	すぐ戻ります。
+bastante	かなり、十分な	adv	副詞	Es bastante interesante.	It is quite interesting.	かなり面白いね。
+esto	これ（指示代名詞）	other	代名詞	¿Qué es esto?	What is this?	これは何ですか？
+eso	それ（指示代名詞）	other	代名詞	Eso es使いやすさ. / Eso es verdad.	That is true.	それは本当です。
+alguien	誰か	other	代名詞	¿Hay alguien aquí?	Is there anyone here?	誰かここにいますか？
+algo	何か	other	代名詞	Quiero comer algo.	I want to eat something.	何か食べたいです。
+nada	何も〜ない	other	代名詞	No pasa nada.	Nothing is happening. / It's fine.	問題ないよ、何でもないよ。
+cerca	近い、近くに	adv	副詞	Está muy cerca de aquí.	It is very close to here.	ここからとても近いです。
+lejos	遠い、遠くに	adv	副詞	¿Está lejos la estación?	Is the station far away?	駅は遠いですか？
+antes	以前に、前に	adv	副詞	Llegué antes que tú.	I arrived before you.	君より前に着いたよ。
+después	後で、〜の後に	adv	副詞	Nos vemos después.	See you later.	また後で会いましょう。
+ya	すでに、もう	adv	副詞	Ya estoy listo.	I am already ready.	もう準備ができました。
+todavía	まだ、今なお	adv	副詞	Todavía no lo sé.	I still don't know it.	まだそれを知りません。
+seguro	確信して、安全な	adj	形容詞	¿Estás seguro?	Are you sure?	確かですか（本気ですか）？
+mismo	同じ（代名詞・強調）	adj	形容詞	Yo mismo lo hice.	I did it myself.	自分自身でそれをやりました。
+parecerse	〜に似ている	v	動詞	Te pareces a tu padre.	You look like your father.	お父さんに似ているね。
+darse cuenta	〜に気づく	phrase	熟語	Me di cuenta del error.	I realized the error.	エラー（間違い）に気づきました。
+tratar	扱う、試みる（tratar de）	v	動詞	Trato de aprender todos los días.	I try to learn every day.	毎日学ぶように努めています。
+significar	意味する	v	動詞	¿Qué significa esta palabra?	What does this word mean?	この単語はどういう意味ですか？
+suponer	想定する、思い込む	v	動詞	Supongo que sí.	I suppose so.	そうだと思います（たぶんね）。
+esperanza	希望	f	女性名詞	Tengo la esperanza de viajar.	I have the hope of traveling.	旅行に行けるという希望を持っています。
+éxito	成功	m	男性名詞	¡Mucho éxito en tu proyecto!	Much success in your project!	プロジェクトの成功を祈っています！
+opinión	意見、考え	f	女性名詞	¿Cuál es tu opinión al respecto?	What is your opinion on this matter?	これについての君の意見は何？
+posibilidad	可能性	f	女性名詞	Existe la posibilidad de cambio.	There is a possibility of change.	変更の可能性があります。
+solución	解決策、ソリューション	f	女性名詞	Encontramos una solución práctica.	We found a practical solution.	実用的な解決策を見つけました。
+duda	疑問、ためらい	f	女性名詞	No tengo ninguna duda.	I have no doubt at all.	何の疑問（迷い）もありません。
+propósito	目的、意図	m	男性名詞	¿Cuál es el propósito del plan?	What is the purpose of the plan?	その計画の目的は何ですか？
+depender	依存する、〜次第である	v	動詞	Todo depende de la situación.	Everything depends on the situation.	すべては状況次第です。
+sugerir	提案する	v	動詞	Te sugiero probar otra forma.	I suggest you try another way.	別の方法を試すことを提案します。
+explicar	説明する	v	動詞	¿Puedes explicar esto de nuevo?	Can you explain this again?	これをもっと詳しく説明できますか？
+aprovechar	活かす、活用する、利用する	v	動詞	Hay que aprovechar la oportunidad.	We must take advantage of the opportunity.	その機会を活かす必要があります。
+evitar	避ける、防ぐ	v	動詞	Debemos evitar errores graves.	We must avoid serious mistakes.	重大なミスを避けなければならない。
+suficiente	十分な	adj	形容詞	Tenemos tiempo suficiente.	We have enough time.	十分な時間があります。
+necesario	必要な	adj	形容詞	Es necesario hacer una prueba.	It is necessary to run a test.	テストを行うことが必要です。
+frecuente	頻繁な、度々の	adj	形容詞	Es un problema bastante frecuente.	It is a fairly frequent problem.	これはかなり頻繁に起きる問題です。
+probablemente	たぶん、おそらく	adv	副詞	Probablemente sea la mejor opción.	It is probably the best option.	おそらくそれが最善の選択肢でしょう。
+desafortunadamente	あいにく、残念ながら	adv	副詞	Desafortunadamente no puedo ir.	Unfortunately I cannot go.	残念ながら私は行けません。
+sin embargo	しかしながら、けれども	conj	接続詞	Es difícil, sin embargo posible.	It is difficult, however possible.	難しいですが、しかし可能です。
+por lo tanto	したがって、それゆえに	conj	接続詞	Por lo tanto, debemos decidir hoy.	Therefore, we must decide today.	したがって、今日決定する必要があります。
+a menos que	〜でない限り（※要接続法）	conj	接続詞	No iré a menos que me llames.	I won't go unless you call me.	君が電話してくらない限り行かないよ。
+en lugar de	〜の代わりに	phrase	熟語	Usamos agua en lugar de leche.	We use water instead of milk.	牛乳の代わりに水を使います。
+por supuesto	もちろんです、当然ながら	phrase	熟語	Por supuesto que te ayudaré.	Of course I will help you.	もちろん手伝いますよ。
+aconsejar	助言する、勧められる	v	動詞	Te aconsejo que estudies todos los días.	I advise you to study every day.	毎日勉強することをお勧めします。
+advertir	警告する、気づかせる	v	動詞	El experto advirtió sobre los riesgos del proyecto.	The expert warned about the risks of the project.	専門家はプロジェクトのリスクについて警告した。
+amenazar	脅かす、脅迫する	v	動詞	El cambio climático amenaza la biodiversidad.	Climate change threatens biodiversity.	気候変動は生物多様性を脅かしている。
+añadir	追加する、付け加える	v	動詞	Quisiera añadir un punto clave a la discusión.	I would like to add a key point to the discussion.	議論に重要なポイントを1つ付け加えたいと思います。
+anunciar	発表する、告知する	v	動詞	La empresa anunció el lanzamiento del nuevo producto.	The company announced the launch of the new product.	会社は新製品の発売を発表した。
+asegurar	確信させる、保証する	v	動詞	Nos aseguró que todo estaría listo a tiempo.	He assured us that everything would be ready on time.	彼はすべて時間通りに準備できると約束してくれた。
+atender	対応する、世話をする	v	動詞	Debemos atender las necesidades del cliente rápidamente.	We must attend to the customer's needs quickly.	私たちは顧客のニーズに迅速に対応しなければならない。
+aumentar	増加する、増やす	v	動詞	La demanda de tecnología sigue aumentando este año.	The demand for technology continues to increase this year.	テクノロジーの需要は今年増加し続けている。
+averiguar	調べる、突き止める	v	動詞	Voy a averiguar la causa principal del fallo.	I'm going to find out the main cause of the failure.	障害の主な原因を突き止めるつもりです。
+carecer	欠けている、不足している	v	動詞	El informe carece de datos suficientes para decidir.	The report lacks sufficient data to make a decision.	その報告書は決定を下すための十分なデータに欠けている。
+comprobar	確かめる、検証する	v	動詞	Es necesario comprobar los resultados antes de publicar.	It is necessary to check the results before publishing.	公開する前に結果を検証することが必要だ。
+conseguir	手に入れる、達成する	v	動詞	Consiguió solucionar el problema sin ayuda externa.	He managed to solve the problem without external help.	彼は外部の助けを借りずに問題を解決することができた。
+considerar	検討する、〜とみなす	v	動詞	Consideramos imprescindible mejorar el proceso actual.	We consider it essential to improve the current process.	現在のプロセスを改善することは不可欠であると考えています。
+convenir	〜に都合が良い、望ましい	v	動詞	Conviene revisar las cláusulas antes de firmar.	It is advisable to review the clauses before signing.	署名する前に条項を見直すのが望ましい。
+despertar	目覚めさせる、喚起する	v	動詞	La conferencia despertó un gran interés público.	The lecture aroused great public interest.	その講演は世間の大きな関心を呼び起こした。
+destacar	強調する、目立つ	v	動詞	Cabe destacar la importancia de la seguridad.	It is worth highlighting the importance of security.	セキュリティの重要性を強調しておく価値がある。
+disminuir	減少する、減らす	v	動詞	Buscamos disminuir los costos de producción este trimestre.	We seek to reduce production costs this quarter.	今四半期は製造コストを削減することを目指しています。
+exigir	要求する、求める	v	動詞	El nuevo cargo exige una alta responsabilidad.	The new position requires high responsibility.	新しい職務は高い責任を要求する。
+garantizar	保証する、約束する	v	動詞	No podemos garantizar un éxito inmediato sin esfuerzo.	We cannot guarantee immediate success without effort.	努力なしに即座の成功を保証することはできません。
+impedir	妨げる、邪魔する	v	動詞	La lluvia impidió que el evento se llevara a cabo.	The rain prevented the event from taking place.	雨のためイベントの実施が妨げられた。
+influir	影響を与える	v	動詞	Factores externos pueden influir en el resultado final.	External factors can influence the final result.	外部要因が最終結果に影響を与える可能性がある。
+insistir	主張する、強く求める	v	動詞	Ella insistió en revisar el documento otra vez.	She insisted on reviewing the document again.	彼女は文書をもう一度見直すことを強く主張した。
+investigar	調査する、研究する	v	動詞	Un equipo especializado investigará el incidente.	A specialized team will investigate the incident.	専門チームがそのインシデントを調査する。
+mantener	維持する、保つ	v	動詞	Es crucial mantener un equilibrio entre calidad y costo.	It is crucial to maintain a balance between quality and cost.	品質とコストのバランスを維持することが重要である。
+negarse	拒否する、断る	v	動詞	Se negó a aceptar las condiciones impuestas.	He refused to accept the imposed conditions.	彼は課された条件を受け入れることを拒否した。
+permitir	許可する、可能にする	v	動詞	Esta herramienta permite optimizar el flujo de trabajo.	This tool allows optimizing the workflow.	このツールによりワークフローを最適化できる。
+proponer	提案する	v	動詞	Propongo organizar una reunión la próxima semana.	I propose organizing a meeting next week.	来週ミーティングを開催することを提案します。
+recomendar	勧める、推挙する	v	動詞	Recomiendo que leas este libro de negocios.	I recommend that you read this business book.	このビジネス書を読むことをお勧めします。
+reconocer	認める、認識する	v	動詞	El director reconoció el esfuerzo de todo el equipo.	The director recognized the effort of the whole team.	ディレクターはチーム全員の努力を認めた。
+reducir	減らす、縮小する	v	動詞	Es urgente reducir la emisión de gases contaminantes.	It is urgent to reduce the emission of polluting gases.	汚染ガスの排出量を削減することは緊急の課題だ。
+resolver	解決する、決断する	v	動詞	Debemos resolver este conflicto lo antes posible.	We must resolve this conflict as soon as possible.	できるだけ早くこのコンフリクト（対立）を解決しなければならない。
+soportar	耐える、我慢する	v	動詞	No puedo soportar el ruido durante el trabajo.	I cannot bear the noise during work.	作業中の騒音には耐えられない。
+sostener	支える、持論を主張する	v	動詞	El ponente sostuvo su teoría con datos precisos.	The speaker supported his theory with precise data.	登壇者は正確なデータで持論を裏付けた。
+sustituir	取って代わる、交換する	v	動詞	Vamos a sustituir el sistema antiguo por uno moderno.	We are going to replace the old system with a modern one.	古いシステムを現代的なシステムにリプレイスする予定です。
+variar	変化する、異なる	v	動詞	Los precios pueden variar según la temporada.	Prices may vary depending on the season.	価格は季節によって変動することがある。
+avance	進展、進歩	m	男性名詞	El avance tecnológico cambia nuestra forma de vivir.	Technological progress changes our way of living.	技術の進歩は私たちの生き方を変える。
+consecuencia	結果、影響	f	女性名詞	Cada acción tiene una consecuencia inevitable.	Every action has an inevitable consequence.	あらゆる行動には避けられない結果が伴う。
+contexto	文脈、状況・背景	m	男性名詞	Es importante entender la palabra según el contexto.	It is important to understand the word according to context.	文脈に応じて単語を理解することが重要だ。
+desarrollo	開発、成長	m	男性名詞	El desarrollo personal requiere paciencia y constancia.	Personal development requires patience and perseverance.	自己成長には忍耐と継続が必要だ。
+discurso	スピーチ、演説	m	男性名詞	El presidente dio un discurso muy inspirador.	The president gave a very inspiring speech.	社長は非常に励みになるスピーチを行った。
+efecto	効果、影響	m	男性名詞	La medida tuvo un efecto positivo inmediato.	The measure had an immediate positive effect.	その施策は即座に好影響をもたらした。
+enfoque	アプローチ、着眼点	m	男性名詞	Necesitamos un nuevo enfoque para resolver el problema.	We need a new approach to solve the problem.	問題を解決するために新しいアプローチが必要です。
+entorno	環境、周囲の状況	m	男性名詞	Debemos adaptarnos a un entorno digital cambiante.	We must adapt to a changing digital environment.	変化するデジタル環境に適応しなければならない。
+evidencia	証拠、明白さ	f	女性名詞	No hay evidencia suficiente para confirmar la hipótesis.	There is not enough evidence to confirm the hypothesis.	仮説を証明する十分な証拠がない。
+experiencia	経験、体験	f	女性名詞	La experiencia práctica es tan valiosa como la teoría.	Practical experience is as valuable as theory.	実践的な経験は理論と同じくらい価値がある。
+impacto	影響、インパクト	m	男性名詞	El proyecto tuvo un gran impacto en la sociedad.	The project had a great impact on society.	そのプロジェクトは社会に大きなインパクトを与えた。
+objetivo	目的、目標	m	男性名詞	El objetivo principal es aumentar la satisfacción.	The main objective is to increase satisfaction.	主な目標は満足度を高めることだ。
+origen	起源、由来	m	男性名詞	El origen del problema aún es desconocido.	The origin of the problem is still unknown.	問題の原因（起源）は未だ不明である。
+perspectiva	視点、見地	f	女性名詞	Ver la situación desde otra perspectiva ayuda mucho.	Seeing the situation from another perspective helps a lot.	別の視点から状況を見ることが大きな助けになる。
+prioridad	優先事項、優先順位	f	女性名詞	Nuestra prioridad absoluta es la seguridad de los datos.	Our absolute priority is data security.	私たちの最優先事項はデータセキュリティです。
+recurso	資源、リソース	m	男性名詞	Optimizamos el uso de los recursos disponibles.	We optimize the use of available resources.	利用可能なリソースの活用を最適化します。
+resultado	結果、成果	m	男性名詞	Los resultados trimestrales superaron las expectativas.	Quarterly results exceeded expectations.	四半期業績は予想を上回った。
+solución	解決策	f	女性名詞	Buscamos una solución sostenible a largo plazo.	We are looking for a long-term sustainable solution.	長期的で持続可能な解決策を探しています。
+técnica	技術、手法	f	女性名詞	Esta técnica permite aprender más rápido.	This technique allows you to learn faster.	この手法を使えばより素早く学習できる。
+ventaja	利点、アドバンテージ	f	女性名詞	La automatización ofrece una ventaja competitiva.	Automation offers a competitive advantage.	自動化は競争上の優位性（強み）をもたらす。
+actual	現在の、現代の	adj	形容詞	La situación actual requiere decisiones rápidas.	The current situation requires fast decisions.	現在の状況は迅速な意思決定を求めている。
+amplio	広い、広範な	adj	形容詞	El candidato posee un amplio conocimiento técnico.	The candidate has broad technical knowledge.	その候補者は広範な技術的知識を持っている。
+anterior	前の、前述の	adj	形容詞	Como mencionamos en la sección anterior, es crucial.	As mentioned in the previous section, it is crucial.	前述のセクションで述べたように、これは重要である。
+capaz	能力がある、〜できる	adj	形容詞	Es un ingeniero capaz de resolver problemas complejos.	He is an engineer capable of solving complex problems.	彼は複雑な問題を解決できる能力を持ったエンジニアだ。
+clave	鍵となる、決定的な	adj	形容詞	El análisis de datos es el elemento clave.	Data analysis is the key element.	データ分析が鍵となる要素である。
+constante	一定の、継続的な	adj	形容詞	El aprendizaje constante es esencial para el éxito.	Constant learning is essential for success.	絶え間ない学習が成功には不可欠だ。
+diverso	多様な、様々な	adj	形容詞	El equipo está formado por personas de diversos orígenes.	The team consists of people from diverse backgrounds.	チームは多様なバックグラウンドを持つ人々で構成されている。
+efectivo	効果的な、実質的な	adj	形容詞	Buscamos una estrategia efectiva de comunicación.	We are looking for an effective communication strategy.	効果的なコミュニケーション戦略を探しています。
+esencial	不可欠な、本質的な	adj	形容詞	Es esencial verificar el código antes del despliegue.	It is essential to verify code before deployment.	デプロイ前にコードを検証することは不可欠だ。
+extraño	奇妙な、珍しい	adj	形容詞	Sucedió algo extraño durante la prueba.	Something strange happened during the test.	テスト中に何か奇妙なことが起きた。
+frecuente	頻繁な	adj	形容詞	Los errores humanos son la causa más frecuente.	Human errors are the most frequent cause.	ヒューマンエラーが最も頻繁な原因である。
+grave	深刻な、重い	adj	形容詞	Cometer un error grave puede costar caro.	Making a serious error can cost dearly.	重大なエラーを犯すと高くつく可能性がある。
+imprescindible	絶対に不可欠な	adj	形容詞	El trabajo en equipo es imprescindible hoy en día.	Teamwork is indispensable nowadays.	今日、チームワークは絶対に不可欠だ。
+incapaz	〜できない、無能な	adj	形容詞	Fue incapaz de dar una respuesta clara.	He was unable to give a clear answer.	彼は明確な回答を出すことができなかった。
+móvil	可動性の、モバイルの	adj	形容詞	El uso de dispositivos móviles sigue creciendo.	The use of mobile devices continues to grow.	モバイル端末の利用は拡大し続けている。
+obvio	明白な、自明の	adj	形容詞	Es un hecho obvio que no necesita explicación.	It is an obvious fact that needs no explanation.	説明を要しない明白な事実だ。
+posterior	後方の、その後の	adj	形容詞	Los detalles se discutirán en una reunión posterior.	Details will be discussed in a later meeting.	詳細は後日の会議で議論される。
+profundo	深い、深刻な	adj	形容詞	Hicimos un análisis profundo sobre el mercado.	We conducted a deep analysis of the market.	市場に関する深い分析を行った。
+sensible	に敏感な、デリケートな	adj	形容詞	Esta información es muy sensible y confidencial.	This information is very sensitive and confidential.	この情報は非常にデリケートで機密性が高い。
+sostenible	持続可能な	adj	形容詞	Debemos promover un crecimiento económico sostenible.	We must promote sustainable economic growth.	持続可能な経済成長を促進しなければならない。
+útil	役に立つ、有用な	adj	形容詞	Es una aplicación muy útil para la productividad.	It is a very useful application for productivity.	生産性向上に非常に役立つアプリです。
+valioso	貴重な、価値のある	adj	形容詞	El tiempo es el recurso más valioso que tenemos.	Time is the most valuable resource we have.	時間は私たちが持つ最も貴重なリソースだ。
+alrededor de	〜の周りに、およそ	other	その他	Llegaremos alrededor de las tres de la tarde.	We will arrive around three in the afternoon.	午後3時頃に到着する予定です。
+a pesar de	〜にもかかわらず	other	その他	A pesar de las dificultades, logramos el objetivo.	Despite the difficulties, we achieved the goal.	困難にもかかわらず、目標を達成した。
+a medida que	〜するにつれて	other	その他	A medida que avanzamos, surgen nuevas ideas.	As we move forward, new ideas emerge.	前に進むにつれて、新しいアイデアが生まれる。
+a partir de	〜以降、〜から	other	その他	A partir de mañana, el horario cambiará.	Starting tomorrow, the schedule will change.	明日以降、スケジュールが変更になります。
+a causa de	〜が原因で	other	その他	El retraso se debió a causa del mal tiempo.	The delay was due to bad weather.	遅延は悪天候が原因であった。
+de acuerdo con	〜に従って、〜によれば	other	その他	De acuerdo con los informes, las ventas aumentaron.	According to the reports, sales increased.	報告書によれば、売上は増加した。
+debido a	〜に起因して、〜のために	other	その他	Cancelamos el evento debido a imprevistos.	We canceled the event due to unforeseen circumstances.	不測の事態のためにイベントを中止した。
+en cuanto a	〜に関しては、〜について言うと	other	その他	En cuanto a los costos, los discutiremos luego.	As for the costs, we will discuss them later.	コストに関しては、後ほど議論します。
+en relación con	〜に関連して	other	その他	Escribo en relación con su consulta reciente.	I am writing in relation to your recent inquiry.	最近のお問い合わせに関連してご連絡しております。
+frente a	〜に直面して、〜に対して	other	その他	Frente a la crisis, debemos actuar con calma.	In the face of the crisis, we must act calmly.	危機に直面して、私たちは冷静に行動しなければならない。
+gracias a	〜のおかげで	other	その他	Gracias a tu ayuda, terminamos a tiempo.	Thanks to your help, we finished on time.	君の助けのおかげで時間通りに終わった。
+junto a	〜のとなりに、〜と共に	other	その他	Trabajamos junto a expertos en la materia.	We work alongside experts in the field.	私たちはその分野の専門家と共に働いている。
+por medio de	〜手段によって、〜を通じて	other	その他	Comunicaremos la decisión por medio de un correo.	We will communicate the decision by means of an email.	メールを通じて決定を連絡します。
+respecto a	〜に関して	other	その他	No tengo comentarios respecto a ese tema.	I have no comments regarding that topic.	そのテーマに関してはコメントはありません。
+sin embargo	しかしながら、けれども	conj	接続詞	Es un plan arriesgado; sin embargo, vale la pena.	It is a risky plan; however, it is worth it.	リスクのある計画だが、しかしやってみる価値はある。
+no obstante	それにもかかわらず	conj	接続詞	Estudió mucho; no obstante, el examen fue duro.	He studied a lot; nevertheless, the exam was tough.	彼はよく勉強したが、それにもかかわらず試験は厳しかった。
+por lo tanto	したがって、それゆえに	conj	接続詞	No hay presupuesto; por lo tanto, debemos esperar.	There is no budget; therefore, we must wait.	予算がない、したがって待たなければならない。
+por consiguiente	結果として、したがって	conj	接続詞	Falló la prueba; por consiguiente, debemos repetir.	The test failed; consequently, we must repeat.	テストに失敗した、したがってやり直さなければならない。
+enの代わりに（en vez de）	〜の代わりに	other	その他	Es mejor prevenir en vez de lamentar.	It is better to prevent instead of regret.	後悔する代わりに予防する（転ばぬ先の杖）方が良い。
+siempre que	〜する限り（※要接続法）	conj	接続詞	Te ayudaré siempre que tengas una buena actitud.	I will help you as long as you have a good attitude.	前向きな姿勢でいる限り、手伝います。
+A fin de que	〜となるように（※要接続法）	conj	接続詞	Explicó todo a fin de que no hubiera dudas.	He explained everything so that there would be no doubts.	疑問が残らないよう、彼はすべてを説明した。
