@@ -64,6 +64,7 @@
       padding: 20px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.05);
       box-sizing: border-box;
+      position: relative;
     }
 
     .word-header {
@@ -71,12 +72,34 @@
       justify-content: space-between;
       align-items: center;
       margin-bottom: 6px;
+      padding-right: 32px; /* お気に入りアイコンのスペース確保 */
     }
 
     .word {
       font-size: 1.5rem;
       font-weight: 700;
       color: var(--text-color);
+    }
+
+    /* お気に入りボタン */
+    .fav-btn {
+      position: absolute;
+      top: 18px;
+      right: 18px;
+      background: none;
+      border: none;
+      font-size: 1.4rem;
+      cursor: pointer;
+      color: #adb5bd;
+      padding: 0;
+      line-height: 1;
+      transition: color 0.2s, transform 0.1s;
+    }
+    .fav-btn:active {
+      transform: scale(1.2);
+    }
+    .fav-btn.active {
+      color: #fcc419; /* 星の黄色 */
     }
 
     /* 品詞バッジ */
@@ -133,6 +156,18 @@
       margin-top: 2px;
     }
 
+    /* 進捗メッセージカード用スタイル */
+    .milestone-card {
+      background: #e7f5ff;
+      border: 2px dashed #1c7ed6;
+      border-radius: 16px;
+      padding: 16px;
+      text-align: center;
+      color: #1c7ed6;
+      font-weight: bold;
+      font-size: 1rem;
+    }
+
     .loading-sentinel {
       padding: 30px;
       text-align: center;
@@ -152,6 +187,13 @@
     .load-more-btn:active {
       opacity: 0.8;
     }
+
+    .end-message {
+      font-weight: bold;
+      color: var(--sub-color);
+      font-size: 1rem;
+      padding: 20px 0;
+    }
   </style>
 </head>
 <body>
@@ -166,379 +208,413 @@
 
   <script>
     const rawVocabulary = [
-
-    { id:"1", spanish:"ser", japanese: "〜である（本質）", type: "v", typeName: "動詞", exEs: "Soy de Japón.", exEn: "I am from Japan.", exJa: "私は日本出身です。" },
-    { id:"2", spanish:"estar", japanese: "〜である（状態・位置）", type: "v", typeName: "動詞", exEs: "¿Cómo estás hoy?", exEn: "How are you today?", exJa: "今日の調子はどう？" },
-    { id:"3", spanish:"haber", japanese: "〜がある、〜した", type: "v", typeName: "動詞", exEs: "Hay una duda.", exEn: "There is a doubt.", exJa: "疑問が一つあります。" },
-    { id:"4", spanish:"tener", japanese: "持っている", type: "v", typeName: "動詞", exEs: "Tengo mucho trabajo.", exEn: "I have a lot of work.", exJa: "仕事がたくさんあります。" },
-    { id:"5", spanish:"hacer", japanese: "する、作る", type: "v", typeName: "動詞", exEs: "¿Qué haces ahora?", exEn: "What are you doing now?", exJa: "今何してるの？" },
-    { id:"6", spanish:"ir", japanese: "行く", type: "v", typeName: "動詞", exEs: "Voy a la oficina.", exEn: "I am going to the office.", exJa: "オフィスに行きます。" },
-    { id:"7", spanish:"poder", japanese: "〜できる", type: "v", typeName: "動詞", exEs: "Puedo hacerlo solo.", exEn: "I can do it alone.", exJa: "一人でできます。" },
-    { id:"8", spanish:"decir", japanese: "言う", type: "v", typeName: "動詞", exEs: "Dime la verdad.", exEn: "Tell me the truth.", exJa: "本当のことを言って。" },
-    { id:"9", spanish:"ver", japanese: "見る、会う", type: "v", typeName: "動詞", exEs: "Nos vemos mañana.", exEn: "See you tomorrow.", exJa: "また明日会いましょう。" },
-    { id:"10", spanish:"comer", japanese: "食べる", type: "v", typeName: "動詞", exEs: "Vamos a comer algo.", exEn: "Let's eat something.", exJa: "何か食べに行こう。" },
-    { id:"11", spanish:"tomar", japanese: "取る、飲む、乗る", type: "v", typeName: "動詞", exEs: "Tomo un café.", exEn: "I'll have a coffee.", exJa: "コーヒーを一杯飲みます。" },
-    { id:"12", spanish:"querer", japanese: "〜したい、欲する", type: "v", typeName: "動詞", exEs: "Quiero aprender más.", exEn: "I want to learn more.", exJa: "もっと学びたいです。" },
-    { id:"13", spanish:"saber", japanese: "知っている、〜できる", type: "v", typeName: "動詞", exEs: "No sé la respuesta.", exEn: "I don't know the answer.", exJa: "答えが分かりません。" },
-    { id:"14", spanish:"conocer", japanese: "知っている、知り合う", type: "v", typeName: "動詞", exEs: "Mucho gusto en conocerte.", exEn: "Nice to meet you.", exJa: "お会いできて嬉しいです。" },
-    { id:"15", spanish:"llegar", japanese: "到着する", type: "v", typeName: "動詞", exEs: "Llego a tiempo.", exEn: "I arrive on time.", exJa: "時間通りに着きます。" },
-    { id:"16", spanish:"pasar", japanese: "通る、起こる", type: "v", typeName: "動詞", exEs: "¿Qué pasó?", exEn: "What happened?", exJa: "何があったの？" },
-    { id:"17", spanish:"deber", japanese: "〜すべきである", type: "v", typeName: "動詞", exEs: "Debo estudiar hoy.", exEn: "I must study today.", exJa: "今日勉強しなければならない。" },
-    { id:"18", spanish:"poner", japanese: "置く、つける", type: "v", typeName: "動詞", exEs: "Pon el libro aquí.", exEn: "Put the book here.", exJa: "本をここに置いて。" },
-    { id:"19", spanish:"parecer", japanese: "〜に見える、思える", type: "v", typeName: "動詞", exEs: "Me parece una buena idea.", exEn: "It seems like a good idea to me.", exJa: "良いアイデアだと思います。" },
-    { id:"20", spanish:"hablar", japanese: "話す", type: "v", typeName: "動詞", exEs: "Hablo un poco de español.", exEn: "I speak a little Spanish.", exJa: "スペイン語を少し話します。" },
-    { id:"21", spanish:"dar", japanese: "与える", type: "v", typeName: "動詞", exEs: "Dame un momento.", exEn: "Give me a moment.", exJa: "少し時間をください。" },
-    { id:"22", spanish:"llevar", japanese: "持っていく", type: "v", typeName: "動詞", exEs: "Llevo este bolso.", exEn: "I'll take this bag.", exJa: "このバッグを持っていきます。" },
-    { id:"23", spanish:"dejar", japanese: "残す、やめる", type: "v", typeName: "動詞", exEs: "Déjame ver.", exEn: "Let me see.", exJa: "私に見せて。" },
-    { id:"24", spanish:"seguir", japanese: "続ける、従う", type: "v", typeName: "動詞", exEs: "Sigue adelante.", exEn: "Keep going forward.", exJa: "前へ進み続けなさい。" },
-    { id:"25", spanish:"encontrar", japanese: "見つける", type: "v", typeName: "動詞", exEs: "No encuentro mis llaves.", exEn: "I can't find my keys.", exJa: "鍵が見つかりません。" },
-    { id:"26", spanish:"pensar", japanese: "考える", type: "v", typeName: "動詞", exEs: "Pienso que sí.", exEn: "I think so.", exJa: "そう思います。" },
-    { id:"27", spanish:"salir", japanese: "出る、出かける", type: "v", typeName: "動詞", exEs: "Salgo a las seis.", exEn: "I leave at six.", exJa: "6時に出かけます。" },
-    { id:"28", spanish:"volver", japanese: "戻る、帰る", type: "v", typeName: "動詞", exEs: "Vuelvo pronto.", exEn: "I'll return soon.", exJa: "すぐに戻ります。" },
-    { id:"29", spanish:"pedir", japanese: "頼む、注文する", type: "v", typeName: "動詞", exEs: "Quiero pedir esto.", exEn: "I want to order this.", exJa: "これを注文したいです。" },
-    { id:"30", spanish:"entender", japanese: "理解する", type: "v", typeName: "動詞", exEs: "Entiendo perfectamente.", exEn: "I understand perfectly.", exJa: "完全に理解しています。" },
-    { id:"31", spanish:"lograr", japanese: "達成する", type: "v", typeName: "動詞", exEs: "Logramos la meta.", exEn: "We achieved the goal.", exJa: "目標を達成しました。" },
-    { id:"32", spanish:"trabajar", japanese: "働く", type: "v", typeName: "動詞", exEs: "Trabajo desde casa.", exEn: "I work from home.", exJa: "在宅で働いています。" },
-    { id:"33", spanish:"necesitar", japanese: "必要とする", type: "v", typeName: "動詞", exEs: "Necesito ayuda.", exEn: "I need help.", exJa: "助けが必要です。" },
-    { id:"34", spanish:"esperar", japanese: "待つ、期待する", type: "v", typeName: "動詞", exEs: "Te espero aquí.", exEn: "I'll wait for you here.", exJa: "ここで君を待っているよ。" },
-    { id:"35", spanish:"buscar", japanese: "探す", type: "v", typeName: "動詞", exEs: "Busco una solución.", exEn: "I'm looking for a solution.", exJa: "解決策を探しています。" },
-    { id:"36", spanish:"tiempo", japanese: "時間、天候", type: "m", typeName: "男性名詞", exEs: "No tengo tiempo.", exEn: "I don't have time.", exJa: "時間がありません。" },
-    { id:"37", spanish:"vez", japanese: "回、度", type: "f", typeName: "女性名詞", exEs: "Una vez más, por favor.", exEn: "One more time, please.", exJa: "もう一度お願いします。" },
-    { id:"38", spanish:"día", japanese: "日", type: "m", typeName: "男性名詞", exEs: "¡Buen día!", exEn: "Good day!", exJa: "良い一日を！" },
-    { id:"39", spanish:"año", japanese: "年", type: "m", typeName: "男性名詞", exEs: "Feliz año nuevo.", exEn: "Happy New Year.", exJa: "明けましておめでとう。" },
-    { id:"40", spanish:"cosa", japanese: "もの、こと", type: "f", typeName: "女性名詞", exEs: "Hay otra cosa.", exEn: "There is another thing.", exJa: "もう一つ別のことがあります。" },
-    { id:"41", spanish:"hombre", japanese: "男性", type: "m", typeName: "男性名詞", exEs: "Es un hombre sabio.", exEn: "He is a wise man.", exJa: "彼は賢い人です。" },
-    { id:"42", spanish:"mujer", japanese: "女性", type: "f", typeName: "女性名詞", exEs: "Es una mujer fuerte.", exEn: "She is a strong woman.", exJa: "彼女は強い女性です。" },
-    { id:"43", spanish:"vida", japanese: "生活、人生", type: "f", typeName: "女性名詞", exEs: "La vida es bella.", exEn: "Life is beautiful.", exJa: "人生は美しい。" },
-    { id:"44", spanish:"forma", japanese: "方法、形", type: "f", typeName: "女性名詞", exEs: "De esta forma es fácil.", exEn: "In this way it's easy.", exJa: "この方法なら簡単です。" },
-    { id:"45", spanish:"casa", japanese: "家", type: "f", typeName: "女性名詞", exEs: "Estoy en casa.", exEn: "I'm at home.", exJa: "家にいます。" },
-    { id:"46", spanish:"mundo", japanese: "世界", type: "m", typeName: "男性名詞", exEs: "En todo el mundo.", exEn: "All over the world.", exJa: "世界中で。" },
-    { id:"47", spanish:"trabajo", japanese: "仕事", type: "m", typeName: "男性名詞", exEs: "Buen trabajo.", exEn: "Good job.", exJa: "お疲れ様。" },
-    { id:"48", spanish:"lugar", japanese: "場所", type: "m", typeName: "男性名詞", exEs: "Un lugar tranquilo.", exEn: "A quiet place.", exJa: "静かな場所。" },
-    { id:"49", spanish:"problema", japanese: "問題", type: "m", typeName: "男性名詞", exEs: "No hay problema.", exEn: "No problem.", exJa: "問題ありません。" },
-    { id:"50", spanish:"persona", japanese: "人", type: "f", typeName: "女性名詞", exEs: "Es una buena persona.", exEn: "He/She is a good person.", exJa: "良い人です。" },
-    { id:"51", spanish:"parte", japanese: "部分", type: "f", typeName: "女性名詞", exEs: "Una gran parte del proyecto.", exEn: "A big part of the project.", exJa: "プロジェクトの大きな部分。" },
-    { id:"52", spanish:"momento", japanese: "瞬間、時間", type: "m", typeName: "男性名詞", exEs: "Un momento, por favor.", exEn: "One moment, please.", exJa: "少々お待ちください。" },
-    { id:"53", spanish:"ciudad", japanese: "都市", type: "f", typeName: "女性名詞", exEs: "Vivo en esta ciudad.", exEn: "I live in this city.", exJa: "私はこの街に住んでいます。" },
-    { id:"54", spanish:"nombre", japanese: "名前", type: "m", typeName: "男性名詞", exEs: "¿Cuál es tu nombre?", exEn: "What is your name?", exJa: "お名前は何ですか？" },
-    { id:"55", spanish:"país", japanese: "国", type: "m", typeName: "男性名詞", exEs: "Es un país hermoso.", exEn: "It is a beautiful country.", exJa: "美しい国です。" },
-    { id:"56", spanish:"hora", japanese: "時間、時刻", type: "f", typeName: "女性名詞", exEs: "¿Qué hora es?", exEn: "What time is it?", exJa: "今何時ですか？" },
-    { id:"57", spanish:"calle", japanese: "通り", type: "f", typeName: "女性名詞", exEs: "Cruza la calle.", exEn: "Cross the street.", exJa: "通りを渡りなさい。" },
-    { id:"58", spanish:"verdad", japanese: "真実", type: "f", typeName: "女性名詞", exEs: "Es la verdad.", exEn: "It's the truth.", exJa: "それは真実です。" },
-    { id:"59", spanish:"desarrollo", japanese: "開発、発展", type: "m", typeName: "男性名詞", exEs: "Desarrollo de software.", exEn: "Software development.", exJa: "ソフトウェア開発。" },
-    { id:"60", spanish:"desafío", japanese: "挑戦、課題", type: "m", typeName: "男性名詞", exEs: "Es un nuevo desafío.", exEn: "It's a new challenge.", exJa: "新しい挑戦です。" },
-    { id:"61", spanish:"bueno", japanese: "良い", type: "adj", typeName: "形容詞", exEs: "¡Es muy bueno!", exEn: "It's very good!", exJa: "とても良いですね！" },
-    { id:"62", spanish:"malo", japanese: "悪い", type: "adj", typeName: "形容詞", exEs: "No es una mala idea.", exEn: "It's not a bad idea.", exJa: "悪いアイデアではない。" },
-    { id:"63", spanish:"grande", japanese: "大きい", type: "adj", typeName: "形容詞", exEs: "Una casa grande.", exEn: "A big house.", exJa: "大きな家。" },
-    { id:"64", spanish:"pequeño", japanese: "小さい", type: "adj", typeName: "形容詞", exEs: "Un detalle pequeño.", exEn: "A small detail.", exJa: "小さな詳細。" },
-    { id:"65", spanish:"nuevo", japanese: "新しい", type: "adj", typeName: "形容詞", exEs: "Tengo un nuevo plan.", exEn: "I have a new plan.", exJa: "新しい計画があります。" },
-    { id:"66", spanish:"viejo", japanese: "古い", type: "adj", typeName: "形容詞", exEs: "Un amigo viejo.", exEn: "An old friend.", exJa: "古い友人。" },
-    { id:"67", spanish:"primero", japanese: "最初の", type: "adj", typeName: "形容詞", exEs: "Es el primer paso.", exEn: "It is the first step.", exJa: "これが一歩目です。" },
-    { id:"68", spanish:"último", japanese: "最後の、最近の", type: "adj", typeName: "形容詞", exEs: "La última versión.", exEn: "The latest version.", exJa: "最新バージョン。" },
-    { id:"69", spanish:"mismo", japanese: "同じ", type: "adj", typeName: "形容詞", exEs: "Es lo mismo.", exEn: "It's the same thing.", exJa: "同じことです。" },
-    { id:"70", spanish:"otro", japanese: "別の", type: "adj", typeName: "形容詞", exEs: "Otra pregunta, por favor.", exEn: "Another question, please.", exJa: "もう一つ質問をお願いします。" },
-    { id:"71", spanish:"mucho", japanese: "たくさんの", type: "adj", typeName: "形容詞", exEs: "Muchas gracias.", exEn: "Thank you very much.", exJa: "本当にありがとうございます。" },
-    { id:"72", spanish:"poco", japanese: "少ない、少しの", type: "adj", typeName: "形容詞", exEs: "Un poco de tiempo.", exEn: "A little time.", exJa: "少しの時間。" },
-    { id:"73", spanish:"importante", japanese: "重要な", type: "adj", typeName: "形容詞", exEs: "Es un dato importante.", exEn: "It is important data.", exJa: "重要なデータです。" },
-    { id:"74", spanish:"posible", japanese: "可能な", type: "adj", typeName: "形容詞", exEs: "Lo antes posible.", exEn: "As soon as possible.", exJa: "できるだけ早く。" },
-    { id:"75", spanish:"fácil", japanese: "簡単な", type: "adj", typeName: "形容詞", exEs: "Es muy fácil.", exEn: "It is very easy.", exJa: "とても簡単です。" },
-    { id:"76", spanish:"difícil", japanese: "難しい", type: "adj", typeName: "形容詞", exEs: "Es un examen difícil.", exEn: "It's a difficult exam.", exJa: "難しい試験です。" },
-    { id:"77", spanish:"constante", japanese: "一定の、絶え間ない", type: "adj", typeName: "形容詞", exEs: "Un esfuerzo constante.", exEn: "A constant effort.", exJa: "絶え間ない努力。" },
-    { id:"78", spanish:"ahora", japanese: "今", type: "adv", typeName: "副詞", exEs: "Empieza ahora.", exEn: "Start now.", exJa: "今すぐ始めなさい。" },
-    { id:"79", spanish:"hoy", japanese: "今日", type: "adv", typeName: "副詞", exEs: "Hoy es un gran día.", exEn: "Today is a great day.", exJa: "今日は素晴らしい日だ。" },
-    { id:"80", spanish:"siempre", japanese: "いつも", type: "adv", typeName: "副詞", exEs: "Siempre estás aquí.", exEn: "You are always here.", exJa: "君はいつもここにいるね。" },
-    { id:"81", spanish:"nunca", japanese: "決して〜ない", type: "adv", typeName: "副詞", exEs: "Nunca me rindo.", exEn: "I never give up.", exJa: "絶対に諦めない。" },
-    { id:"82", spanish:"también", japanese: "〜もまた", type: "adv", typeName: "副詞", exEs: "Yo también quiero ir.", exEn: "I also want to go.", exJa: "私も行きたいです。" },
-    { id:"83", spanish:"tampoco", japanese: "〜もまた〜ない", type: "adv", typeName: "副詞", exEs: "Tampoco lo sé.", exEn: "I don't know either.", exJa: "私もそれを知りません。" },
-    { id:"84", spanish:"muy", japanese: "とても", type: "adv", typeName: "副詞", exEs: "Muy bien, gracias.", exEn: "Very well, thank you.", exJa: "とても良いです、ありがとう。" },
-    { id:"85", spanish:"más", japanese: "より多く", type: "adv", typeName: "副詞", exEs: "Un poco más.", exEn: "A little more.", exJa: "もう少し。" },
-    { id:"86", spanish:"menos", japanese: "より少なく", type: "adv", typeName: "副詞", exEs: "Más o menos.", exEn: "More or less.", exJa: "だいたい。" },
-    { id:"87", spanish:"aquí", japanese: "ここ", type: "adv", typeName: "副詞", exEs: "Ven aquí.", exEn: "Come here.", exJa: "ここに来て。" },
-    { id:"88", spanish:"allí", japanese: "そこ、あそこ", type: "adv", typeName: "副詞", exEs: "Está allí.", exEn: "It is there.", exJa: "あそこにあります。" },
-    { id:"89", spanish:"bien", japanese: "よく、上手く", type: "adv", typeName: "副詞", exEs: "Todo está bien.", exEn: "Everything is fine.", exJa: "すべて順調です。" },
-    { id:"90", spanish:"así", japanese: "そのように", type: "adv", typeName: "副詞", exEs: "Así es.", exEn: "That's right.", exJa: "その通りです。" },
-    { id:"91", spanish:"casi", japanese: "ほとんど", type: "adv", typeName: "副詞", exEs: "Casi termino.", exEn: "I'm almost finished.", exJa: "もうすぐ終わります。" },
-    { id:"92", spanish:"luego", japanese: "後で", type: "adv", typeName: "副詞", exEs: "Hasta luego.", exEn: "See you later.", exJa: "また後で。" },
-    { id:"93", spanish:"entonces", japanese: "それでは", type: "conj", typeName: "接続詞", exEs: "¿Entonces qué hacemos?", exEn: "So what do we do?", exJa: "それではどうしましょうか？" },
-    { id:"94", spanish:"pero", japanese: "しかし", type: "conj", typeName: "接続詞", exEs: "Sí, pero es difícil.", exEn: "Yes, but it's difficult.", exJa: "はい、でも難しいです。" },
-    { id:"95", spanish:"porque", japanese: "〜だから", type: "conj", typeName: "接続詞", exEs: "Porque es importante.", exEn: "Because it's important.", exJa: "なぜなら重要だからです。" },
-    { id:"96", spanish:"cuando", japanese: "〜の時", type: "conj", typeName: "接続詞", exEs: "Llama cuando llegues.", exEn: "Call when you arrive.", exJa: "着いたら電話して。" },
-    { id:"97", spanish:"donde", japanese: "〜する場所", type: "conj", typeName: "接続詞", exEs: "¿Dónde está la estación?", exEn: "Where is the station?", exJa: "駅はどこですか？" },
-    { id:"98", spanish:"como", japanese: "〜のように", type: "conj", typeName: "接続詞", exEs: "Hazlo como quieras.", exEn: "Do it as you like.", exJa: "好きなようにやりなさい。" },
-    { id:"99", spanish:"si", japanese: "もし〜ならば", type: "conj", typeName: "接続詞", exEs: "Si tienes tiempo, ven.", exEn: "If you have time, come.", exJa: "時間があったら来てね。" },
-    { id:"100", spanish:"gracias", japanese: "ありがとう", type: "interj", typeName: "間投詞", exEs: "Muchas gracias por todo.", exEn: "Thank you very much for everything.", exJa: "いろいろとありがとう。" },
-    { id:"101", spanish:"afirmar", japanese: "主張する、断言する", type: "v", typeName: "動詞", exEs: "El experto afirmó su teoría.", exEn: "The expert affirmed his theory.", exJa: "専門家は自身の理論を主張した。" },
-    { id:"102", spanish:"asumir", japanese: "引き受ける、想定する", type: "v", typeName: "動詞", exEs: "Debemos asumir el riesgo.", exEn: "We must assume the risk.", exJa: "私たちはリスクを引き受けなければならない。" },
-    { id:"103", spanish:"comprobar", japanese: "確認する、証明する", type: "v", typeName: "動詞", exEs: "Voy a comprobar los datos.", exEn: "I am going to check the data.", exJa: "データを確認します。" },
-    { id:"104", spanish:"demostrar", japanese: "証明する、実演する", type: "v", typeName: "動詞", exEs: "Demostró su gran habilidad.", exEn: "He demonstrated his great skill.", exJa: "彼は素晴らしい能力を証明した。" },
-    { id:"105", spanish:"determinar", japanese: "決定する、特定する", type: "v", typeName: "動詞", exEs: "Determinar las causas del error.", exEn: "Determine the causes of the error.", exJa: "エラーの原因を特定する。" },
-    { id:"106", spanish:"evaluar", japanese: "評価する、査定する", type: "v", typeName: "動詞", exEs: "Evaluamos el rendimiento anual.", exEn: "We evaluate the annual performance.", exJa: "私たちは年間パフォーマンスを評価します。" },
-    { id:"107", spanish:"examinar", japanese: "検証する、調べる", type: "v", typeName: "動詞", exEs: "Examinar el documento con atención.", exEn: "Examine the document carefully.", exJa: "書類を慎重に調べる。" },
-    { id:"108", spanish:"identificar", japanese: "特定する、確認する", type: "v", typeName: "動詞", exEs: "Identificar el problema principal.", exEn: "Identify the main problem.", exJa: "問題の核心を特定する。" },
-    { id:"109", spanish:"interpretar", japanese: "解釈する、通訳する", type: "v", typeName: "動詞", exEs: "¿Cómo interpretas estos resultados?", exEn: "How do you interpret these results?", exJa: "これらの結果をどう解釈しますか？" },
-    { id:"110", spanish:"justificar", japanese: "正当化する、理由を述べる", type: "v", typeName: "動詞", exEs: "Tienes que justificar tu decisión.", exEn: "You have to justify your decision.", exJa: "決定の理由を説明しなければならない。" },
-    { id:"111", spanish:"observar", japanese: "観察する、注視する", type: "v", typeName: "動詞", exEs: "Observamos los cambios detalladamente.", exEn: "We observe the changes in detail.", exJa: "私たちは変化を詳細に観察する。" },
-    { id:"112", spanish:"percibir", japanese: "知覚する、察知する", type: "v", typeName: "動詞", exEs: "Puedo percibir la diferencia.", exEn: "I can perceive the difference.", exJa: "違いを察知することができる。" },
-    { id:"113", spanish:"adaptar", japanese: "適応させる、順応する", type: "v", typeName: "動詞", exEs: "Adaptarse al nuevo entorno.", exEn: "Adapt to the new environment.", exJa: "新しい環境に適応する。" },
-    { id:"114", spanish:"aplicar", japanese: "適用する、応用する", type: "v", typeName: "動詞", exEs: "Aplicar la nueva regla.", exEn: "Apply the new rule.", exJa: "新しいルールを適用する。" },
-    { id:"115", spanish:"afrontar", japanese: "立ち向かう、直面する", type: "v", typeName: "動詞", exEs: "Afrontar los desafíos futuros.", exEn: "Face future challenges.", exJa: "将来の課題に立ち向かう。" },
-    { id:"116", spanish:"alcanzar", japanese: "達する、到達する", type: "v", typeName: "動詞", exEs: "Alcanzar el nivel deseado.", exEn: "Reach the desired level.", exJa: "目標とするレベルに到達する。" },
-    { id:"117", spanish:"aportar", japanese: "貢献する、提供する", type: "v", typeName: "動詞", exEs: "Aportar nuevas ideas.", exEn: "Contribute new ideas.", exJa: "新しいアイデアを提供する。" },
-    { id:"118", spanish:"aprobar", japanese: "承認する、合格する", type: "v", typeName: "動詞", exEs: "Aprobar el presupuesto oficial.", exEn: "Approve the official budget.", exJa: "公式予算を承認する。" },
-    { id:"119", spanish:"asegurar", japanese: "確保する、保証する", type: "v", typeName: "動詞", exEs: "Asegurar la calidad del producto.", exEn: "Ensure the quality of the product.", exJa: "製品の品質を確保する。" },
-    { id:"120", spanish:"aumentar", japanese: "増加させる、増える", type: "v", typeName: "動詞", exEs: "Aumentar las ventas este mes.", exEn: "Increase sales this month.", exJa: "今月の売上を伸ばす。" },
-    { id:"121", spanish:"colaborar", japanese: "協力する、共同作業する", type: "v", typeName: "動詞", exEs: "Colaborar con otros equipos.", exEn: "Collaborate with other teams.", exJa: "他のチームと協力する。" },
-    { id:"122", spanish:"comparar", japanese: "比較する", type: "v", typeName: "動詞", exEs: "Comparar dos opciones distintas.", exEn: "Compare two different options.", exJa: "異なる2つの選択肢を比較する。" },
-    { id:"123", spanish:"conducir", japanese: "導く、運転する", type: "v", typeName: "動詞", exEs: "Esto puede conducir al éxito.", exEn: "This can lead to success.", exJa: "これが成功へと導く可能性がある。" },
-    { id:"124", spanish:"confirmar", japanese: "確認する、確定する", type: "v", typeName: "動詞", exEs: "Confirmar la asistencia hoy.", exEn: "Confirm attendance today.", exJa: "本日の出席を確定する。" },
-    { id:"125", spanish:"consolidar", japanese: "固める、統合・強固にする", type: "v", typeName: "動詞", exEs: "Consolidar la posición en el mercado.", exEn: "Consolidate market position.", exJa: "市場での地位を固める。" },
-    { id:"126", spanish:"contribuir", japanese: "寄与する、貢献する", type: "v", typeName: "動詞", exEs: "Contribuir al desarrollo local.", exEn: "Contribute to local development.", exJa: "地域社会の開発に貢献する。" },
-    { id:"127", spanish:"coordinar", japanese: "調整する、コーディネートする", type: "v", typeName: "動詞", exEs: "Coordinar las tareas del grupo.", exEn: "Coordinate group tasks.", exJa: "グループのタスクを調整する。" },
-    { id:"128", spanish:"definir", japanese: "定義する、明確にする", type: "v", typeName: "動詞", exEs: "Definir los objetivos clave.", exEn: "Define the key objectives.", exJa: "鍵となる目標を明確にする。" },
-    { id:"129", spanish:"diseñar", japanese: "設計する、デザインする", type: "v", typeName: "動詞", exEs: "Diseñar un nuevo sistema.", exEn: "Design a new system.", exJa: "新しいシステムを設計する。" },
-    { id:"130", spanish:"ejecutar", japanese: "実行する、遂行する", type: "v", typeName: "動詞", exEs: "Ejecutar el plan estratégico.", exEn: "Execute the strategic plan.", exJa: "戦略計画を実行に移す。" },
-    { id:"131", spanish:"elaborar", japanese: "作成する、精緻に作る", type: "v", typeName: "動詞", exEs: "Elaborar un informe detallado.", exEn: "Prepare a detailed report.", exJa: "詳細なレポートを作成する。" },
-    { id:"132", spanish:"facilitar", japanese: "容易にする、提供する", type: "v", typeName: "動詞", exEs: "Facilitar el acceso a la información.", exEn: "Facilitate access to information.", exJa: "情報へのアクセスを容易にする。" },
-    { id:"133", spanish:"generar", japanese: "生み出す、発生させる", type: "v", typeName: "動詞", exEs: "Generar nuevos ingresos.", exEn: "Generate new revenue.", exJa: "新しい収益を生み出す。" },
-    { id:"134", spanish:"gestionar", japanese: "管理・運用する、手配する", type: "v", typeName: "動詞", exEs: "Gestionar los recursos eficientemente.", exEn: "Manage resources efficiently.", exJa: "リソースを効率的に管理する。" },
-    { id:"135", spanish:"implementar", japanese: "実装する、導入する", type: "v", typeName: "動詞", exEs: "Implementar un nuevo proceso.", exEn: "Implement a new process.", exJa: "新しいプロセスを導入する。" },
-    { id:"136", spanish:"optimizar", japanese: "最適化する", type: "v", typeName: "動詞", exEs: "Optimizar el tiempo de respuesta.", exEn: "Optimize response time.", exJa: "応答時間を最適化する。" },
-    { id:"137", spanish:"prever", japanese: "予測する、予見する", type: "v", typeName: "動詞", exEs: "Es difícil prever el futuro.", exEn: "It is difficult to foresee the future.", exJa: "未来を予測するのは困難だ。" },
-    { id:"138", spanish:"renovar", japanese: "刷新する、更新する", type: "v", typeName: "動詞", exEs: "Renovar el contrato anual.", exEn: "Renew the annual contract.", exJa: "年間契約を更新する。" },
-    { id:"139", spanish:"transformar", japanese: "変革する、変化させる", type: "v", typeName: "動詞", exEs: "Transformar la estructura digital.", exEn: "Transform the digital structure.", exJa: "デジタル構造を変革する。" },
-    { id:"140", spanish:"actitud", japanese: "態度、姿勢", type: "f", typeName: "女性名詞", exEs: "Tener una actitud positiva.", exEn: "Have a positive attitude.", exJa: "前向きな姿勢を持つ。" },
-    { id:"141", spanish:"análisis", japanese: "分析、解析", type: "m", typeName: "男性名詞", exEs: "Un análisis riguroso de datos.", exEn: "A rigorous data analysis.", exJa: "厳密なデータ分析。" },
-    { id:"142", spanish:"capacidad", japanese: "能力、容量", type: "f", typeName: "女性名詞", exEs: "Demostrar capacidad técnica.", exEn: "Demonstrate technical capability.", exJa: "技術的能力を示す。" },
-    { id:"143", spanish:"compromiso", japanese: "約束、コミットメント、責任", type: "m", typeName: "男性名詞", exEs: "Demostrar compromiso total.", exEn: "Show full commitment.", exJa: "全面的なコミットメントを示す。" },
-    { id:"144", spanish:"concepto", japanese: "概念、コンセプト", type: "m", typeName: "男性名詞", exEs: "Entender el concepto básico.", exEn: "Understand the basic concept.", exJa: "基本概念を理解する。" },
-    { id:"145", spanish:"criterio", japanese: "基準、判断規範", type: "m", typeName: "男性名詞", exEs: "Establecer criterios claros.", exEn: "Establish clear criteria.", exJa: "明確な基準を確立する。" },
-    { id:"146", spanish:"eficiencia", japanese: "効率性、能率", type: "f", typeName: "女性名詞", exEs: "Mejorar la eficiencia operativa.", exEn: "Improve operational efficiency.", exJa: "業務の効率性を向上させる。" },
-    { id:"147", spanish:"estrategia", japanese: "戦略", type: "f", typeName: "女性名詞", exEs: "Una estrategia a largo plazo.", exEn: "A long-term strategy.", exJa: "長期的な戦略。" },
-    { id:"148", spanish:"estructura", japanese: "構造、仕組み", type: "f", typeName: "女性名詞", exEs: "La estructura del proyecto.", exEn: "The project structure.", exJa: "プロジェクトの構造。" },
-    { id:"149", spanish:"factor", japanese: "要因、要素", type: "m", typeName: "男性名詞", exEs: "Un factor determinante.", exEn: "A determining factor.", exJa: "決定的な要因。" },
-    { id:"150", spanish:"función", japanese: "機能、役割", type: "f", typeName: "女性名詞", exEs: "La función principal del sistema.", exEn: "The main function of the system.", exJa: "システムの主な機能。" },
-    { id:"151", spanish:"gestión", japanese: "管理、運営", type: "f", typeName: "女性名詞", exEs: "Gestión de proyectos complejos.", exEn: "Management of complex projects.", exJa: "複雑なプロジェクトの管理。" },
-    { id:"152", spanish:"hipótesis", japanese: "仮説", type: "f", typeName: "女性名詞", exEs: "Confirmar la hipótesis inicial.", exEn: "Confirm the initial hypothesis.", exJa: "初期の仮説を確認する。" },
-    { id:"153", spanish:"innovación", japanese: "革新、イノベーション", type: "f", typeName: "女性名詞", exEs: "Impulsar la innovación continua.", exEn: "Drive continuous innovation.", exJa: "継続的な革新を推進する。" },
-    { id:"154", spanish:"tendencia", japanese: "傾向、トレンド", type: "f", typeName: "女性名詞", exEs: "Seguir las tendencias del mercado.", exEn: "Follow market trends.", exJa: "市場のトレンドを追う。" },
-    { id:"155", spanish:"proceso", japanese: "プロセス、過程", type: "m", typeName: "男性名詞", exEs: "Un proceso automatizado.", exEn: "An automated process.", exJa: "自動化されたプロセス。" },
-    { id:"156", spanish:"revisión", japanese: "見直し、点検", type: "f", typeName: "女性名詞", exEs: "Hacer una revisión profunda.", exEn: "Conduct a thorough review.", exJa: "徹底的な見直しを行う。" },
-    { id:"157", spanish:"riesgo", japanese: "リスク、危険", type: "m", typeName: "男性名詞", exEs: "Evaluar el riesgo financiero.", exEn: "Evaluate the financial risk.", exJa: "財務リスクを評価する。" },
-    { id:"158", spanish:"sector", japanese: "分野、部門", type: "m", typeName: "男性名詞", exEs: "El sector tecnológico.", exEn: "The technology sector.", exJa: "テクノロジー分野。" },
-    { id:"159", spanish:"sistema", japanese: "システム、体系", type: "m", typeName: "男性名詞", exEs: "Un sistema integrado.", exEn: "An integrated system.", exJa: "統合されたシステム。" },
-    { id:"160", spanish:"adecuado", japanese: "適切な、適した", type: "adj", typeName: "形容詞", exEs: "Buscar el lugar adecuado.", exEn: "Find the appropriate place.", exJa: "適切な場所を探す。" },
-    { id:"161", spanish:"complejo", japanese: "複雑な", type: "adj", typeName: "形容詞", exEs: "Un problema muy complejo.", exEn: "A very complex problem.", exJa: "非常に複雑な問題。" },
-    { id:"162", spanish:"crítico", japanese: "批判的な、危機的な、決定的な", type: "adj", typeName: "形容詞", exEs: "Un momento crítico para la empresa.", exEn: "A critical moment for the company.", exJa: "会社にとって決定的な瞬間。" },
-    { id:"163", spanish:"eficiente", japanese: "効率的な", type: "adj", typeName: "形容詞", exEs: "Un flujo de trabajo eficiente.", exEn: "An efficient workflow.", exJa: "効率的なワークフロー。" },
-    { id:"164", spanish:"evidente", japanese: "明白な、明らかな", type: "adj", typeName: "形容詞", exEs: "Es una ventaja evidente.", exEn: "It is an obvious advantage.", exJa: "それは明白な利点だ。" },
-    { id:"165", spanish:"flexible", japanese: "柔軟な、融通の利く", type: "adj", typeName: "形容詞", exEs: "Horario de trabajo flexible.", exEn: "Flexible working hours.", exJa: "柔軟な勤務時間。" },
-    { id:"166", spanish:"fundamental", japanese: "根本的な、非常に重要な", type: "adj", typeName: "形容詞", exEs: "Es un principio fundamental.", exEn: "It is a fundamental principle.", exJa: "それは根本的な原則だ。" },
-    { id:"167", spanish:"inevitable", japanese: "避けられない、不可避の", type: "adj", typeName: "形容詞", exEs: "Un cambio inevitable.", exEn: "An inevitable change.", exJa: "避けられない変化。" },
-    { id:"168", spanish:"innovador", japanese: "革新的な", type: "adj", typeName: "形容詞", exEs: "Un enfoque muy innovador.", exEn: "A very innovative approach.", exJa: "非常に革新的なアプローチ。" },
-    { id:"169", spanish:"integral", japanese: "総合的な、欠かせない", type: "adj", typeName: "形容詞", exEs: "Una solución integral.", exEn: "A comprehensive solution.", exJa: "総合的な解決策。" },
-    { id:"170", spanish:"notable", japanese: "顕著な、目覚ましい", type: "adj", typeName: "形容詞", exEs: "Un progreso notable.", exEn: "Remarkable progress.", exJa: "目覚ましい進歩。" },
-    { id:"171", spanish:"preciso", japanese: "正確な、まさにその", type: "adj", typeName: "形容詞", exEs: "Datos muy precisos.", exEn: "Very precise data.", exJa: "非常に正確なデータ。" },
-    { id:"172", spanish:"principal", japanese: "主要な、メインの", type: "adj", typeName: "形容詞", exEs: "La razón principal.", exEn: "The main reason.", exJa: "主要な理由。" },
-    { id:"173", spanish:"relevante", japanese: "関連性のある、重要・顕著な", type: "adj", typeName: "形容詞", exEs: "Información relevante.", exEn: "Relevant information.", exJa: "関連する重要な情報。" },
-    { id:"174", spanish:"significativo", japanese: "重要な、意義深い", type: "adj", typeName: "形容詞", exEs: "Un aumento significativo.", exEn: "A significant increase.", exJa: "意味のある大きな増加。" },
-    { id:"175", spanish:"actualmente", japanese: "現在は、今や", type: "adv", typeName: "副詞", exEs: "Actualmente vivo aquí.", exEn: "Currently I live here.", exJa: "現在はここに住んでいます。" },
-    { id:"176", spanish:"definitivamente", japanese: "決定的に、間違いなく", type: "adv", typeName: "副詞", exEs: "Definitivamente es mejor.", exEn: "It is definitely better.", exJa: "間違いなくそちらの方が良い。" },
-    { id:"177", spanish:"especialmente", japanese: "特に、とりわけ", type: "adv", typeName: "副詞", exEs: "Especialmente en verano.", exEn: "Especially in summer.", exJa: "特に夏場において。" },
-    { id:"178", spanish:"eventualmente", japanese: "時折、ひょっとすると", type: "adv", typeName: "副詞", exEs: "Eventualmente todo cambiará.", exEn: "Possibly everything will change.", exJa: "ひょっとするとすべてが変わるかもしれない。" },
-    { id:"179", spanish:"fundamentalmente", japanese: "根本的に、基本的に", type: "adv", typeName: "副詞", exEs: "Es fundamentalmente correcto.", exEn: "It is fundamentally correct.", exJa: "根本的に正しい。" },
-    { id:"180", spanish:"obviamente", japanese: "明らかに、言うまでもなく", type: "adv", typeName: "副詞", exEs: "Obviamente no es fácil.", exEn: "Obviously it is not easy.", exJa: "言うまでもなく簡単ではない。" },
-    { id:"181", spanish:"posteriormente", japanese: "その後で、追って", type: "adv", typeName: "副詞", exEs: "Lo analizaremos posteriormente.", exEn: "We will analyze it later.", exJa: "後ほどそれを分析します。" },
-    { id:"182", spanish:"principalmente", japanese: "主として、主に", type: "adv", typeName: "副詞", exEs: "Trabajo principalmente con datos.", exEn: "I mainly work with data.", exJa: "主にデータを扱って仕事をしています。" },
-    { id:"183", spanish:"recientemente", japanese: "最近、近頃", type: "adv", typeName: "副詞", exEs: "He leído un libro recientemente.", exEn: "I read a book recently.", exJa: "最近本を読みました。" },
-    { id:"184", spanish:"relativamente", japanese: "比較的", type: "adv", typeName: "副詞", exEs: "Es un método relativamente nuevo.", exEn: "It is a relatively new method.", exJa: "比較的新しい方法です。" },
-    { id:"185", spanish:"a través de", japanese: "〜を通して、〜経由で", type: "phrase", typeName: "熟語", exEs: "A través del análisis de datos.", exEn: "Through data analysis.", exJa: "データ分析を通して。" },
-    { id:"186", spanish:"al mismo tiempo", japanese: "同時に", type: "phrase", typeName: "熟語", exEs: "Al mismo tiempo, hay riesgos.", exEn: "At the same time, there are risks.", exJa: "同時に、リスクも存在する。" },
-    { id:"187", spanish:"con el fin de", japanese: "〜する目的で", type: "phrase", typeName: "熟語", exEs: "Con el fin de mejorar la calidad.", exEn: "In order to improve quality.", exJa: "品質を向上させる目的で。" },
-    { id:"188", spanish:"con respecto a", japanese: "〜に関して", type: "phrase", typeName: "熟語", exEs: "Con respecto a este problema.", exEn: "With respect to this problem.", exJa: "この問題に関して。" },
-    { id:"189", spanish:"de modo que", japanese: "〜となるように、したがって", type: "conj", typeName: "接続詞", exEs: "Trabaja de modo que funcione.", exEn: "Work so that it functions.", exJa: "しっかり機能するように作業しなさい。" },
-    { id:"190", spanish:"en cambio", japanese: "それに対して、一方で", type: "phrase", typeName: "熟語", exEs: "En cambio, la segunda opción es mejor.", exEn: "In contrast, the second option is better.", exJa: "それに対して、2つ目の選択肢の方が良い。" },
-    { id:"191", spanish:"en consecuencia", japanese: "その結果として", type: "phrase", typeName: "熟語", exEs: "En consecuencia, tomamos medidas.", exEn: "Consequently, we took measures.", exJa: "その結果、私たちは対策を講じた。" },
-    { id:"192", spanish:"en todo caso", japanese: "いずれにせよ、ともかく", type: "phrase", typeName: "熟語", exEs: "En todo caso, debemos continuar.", exEn: "In any case, we must continue.", exJa: "いずれにせよ、私たちは続けなければならない。" },
-    { id:"193", spanish:"hasta cierto punto", japanese: "ある程度までは", type: "phrase", typeName: "熟語", exEs: "Es verdad hasta cierto punto.", exEn: "It is true up to a point.", exJa: "ある程度までは事実だ。" },
-    { id:"194", spanish:"por el contrario", japanese: "反対に、それどころか", type: "phrase", typeName: "熟語", exEs: "Por el contrario, esto ayuda.", exEn: "On the contrary, this helps.", exJa: "反対に、これは助けになる。" },
-    { id:"195", spanish:"sin duda", japanese: "疑いなく、確実に", type: "phrase", typeName: "熟語", exEs: "Sin duda es el mejor camino.", exEn: "Without a doubt it is the best way.", exJa: "疑いなくそれが最善の道だ。" },
-    { id:"196", spanish:"tarde o temprano", japanese: "遅かれ早かれ", type: "phrase", typeName: "熟語", exEs: "Tarde o temprano llegará.", exEn: "Sooner or later it will arrive.", exJa: "遅かれ早かれそれはやってくる。" },
-    { id:"197", spanish:"tener en cuenta", japanese: "考慮に入れる", type: "phrase", typeName: "熟語", exEs: "Hay que tener en cuenta el costo.", exEn: "One must take into account the cost.", exJa: "コストを考慮に入れる必要がある。" },
-    { id:"198", spanish:"vale la pena", japanese: "〜する価値がある", type: "phrase", typeName: "熟語", exEs: "Vale la pena intentarlo.", exEn: "It is worth trying.", exJa: "試してみる価値はある。" },
-    { id:"199", spanish:"ya que", japanese: "〜である以上、〜なので（= since / as）", type: "conj", typeName: "接続詞", exEs: "Ya que estás aquí, hablemos.", exEn: "Since you are here, let's talk.", exJa: "せっかくここにいるのだから、話しましょう。" },
-    { id:"200", spanish:"bueno", japanese: "えーと、そうだね、じゃあ", type: "interj", typeName: "間投詞", exEs: "Bueno, vamos a empezar.", exEn: "Well, let's start.", exJa: "じゃあ、始めようか。" },
-    { id:"201", spanish:"o sea", japanese: "つまり、要するに", type: "phrase", typeName: "熟語", exEs: "O sea, ¿no quieres ir?", exEn: "In other words, you don't want to go?", exJa: "つまり、行きたくないってこと？" },
-    { id:"202", spanish:"la verdad", japanese: "実は、正直なところ", type: "phrase", typeName: "熟語", exEs: "La verdad, no me gusta mucho.", exEn: "To be honest, I don't really like it.", exJa: "正直、あまり好きじゃないんだ。" },
-    { id:"203", spanish:"por cierto", japanese: "ところで、ちなみに", type: "phrase", typeName: "熟語", exEs: "Por cierto, ¿qué hiciste ayer?", exEn: "By the way, what did you do yesterday?", exJa: "ところで、昨日は何したの？" },
-    { id:"204", spanish:"en fin", japanese: "まあ何はともあれ、とにかく", type: "phrase", typeName: "熟語", exEs: "En fin, todo salió bien.", exEn: "Anyway, everything turned out well.", exJa: "まあ何はともあれ、すべて上手くいったよ。" },
-    { id:"205", spanish:"claro", japanese: "もちろん、なるほど、そうだよね", type: "interj", typeName: "間投詞", exEs: "¡Claro que sí!", exEn: "Of course!", exJa: "もちろんだよ！" },
-    { id:"206", spanish:"seguro", japanese: "たしかに、きっと", type: "adv", typeName: "副詞", exEs: "Seguro que viene.", exEn: "I'm sure he is coming.", exJa: "きっと彼は来るよ。" },
-    { id:"207", spanish:"¡Qué lástima!", japanese: "それは残念！", type: "interj", typeName: "間投詞", exEs: "¿No puedes venir? ¡Qué lástima!", exEn: "You can't come? What a pity!", exJa: "来られないの？残念！" },
-    { id:"208", spanish:"¡Qué bueno!", japanese: "よかったね！最高！", type: "interj", typeName: "間投詞", exEs: "¿Pasaste el examen? ¡Qué bueno!", exEn: "You passed the exam? That's great!", exJa: "試験受かったの？よかったね！" },
-    { id:"209", spanish:"depende", japanese: "〜による、場合による", type: "v", typeName: "動詞", exEs: "Depende del tiempo.", exEn: "It depends on the weather.", exJa: "天気次第かな。" },
-    { id:"210", spanish:"quedarse", japanese: "とどまる、〜に残る", type: "v", typeName: "動詞", exEs: "Me quedo en casa hoy.", exEn: "I'm staying at home today.", exJa: "今日は家にいます。" },
-    { id:"211", spanish:"olvidar", japanese: "忘れる", type: "v", typeName: "動詞", exEs: "Olvidé traer la llave.", exEn: "I forgot to bring the key.", exJa: "鍵を持ってくるのを忘れた。" },
-    { id:"212", spanish:"cambiar", japanese: "変える、変わる", type: "v", typeName: "動詞", exEs: "Todo cambia rápido.", exEn: "Everything changes quickly.", exJa: "すべてが素早く変わる。" },
-    { id:"213", spanish:"funcionar", japanese: "機能する、上手くいく", type: "v", typeName: "動詞", exEs: "Este plan funciona muy bien.", exEn: "This plan works very well.", exJa: "この計画はすごく上手くいっている。" },
-    { id:"214", spanish:"sentirse", japanese: "〜と感じる、〜な気分である", type: "v", typeName: "動詞", exEs: "Me siento muy bien hoy.", exEn: "I feel very good today.", exJa: "今日はとても気分が良いです。" },
-    { id:"215", spanish:"quizás", japanese: "たぶん、もしかすると", type: "adv", typeName: "副詞", exEs: "Quizás vaya mañana.", exEn: "Maybe I will go tomorrow.", exJa: "もしかしたら明日行くかも。" },
-    { id:"216", spanish:"de repente", japanese: "突然、いきなり", type: "adv", typeName: "副詞", exEs: "De repente empezó a llover.", exEn: "Suddenly it started to rain.", exJa: "突然雨が降り出した。" },
-    { id:"217", spanish:"despacio", japanese: "ゆっくり", type: "adv", typeName: "副詞", exEs: "Habla más despacio, por favor.", exEn: "Speak more slowly, please.", exJa: "もう少しゆっくり話してください。" },
-    { id:"218", spanish:"enseguida", japanese: "すぐに、ただちに", type: "adv", typeName: "副詞", exEs: "Vuelvo enseguida.", exEn: "I'll be right back.", exJa: "すぐ戻ります。" },
-    { id:"219", spanish:"bastante", japanese: "かなり、十分な", type: "adv", typeName: "副詞", exEs: "Es bastante interesante.", exEn: "It is quite interesting.", exJa: "かなり面白いね。" },
-    { id:"220", spanish:"esto", japanese: "これ（指示代名詞）", type: "other", typeName: "代名詞", exEs: "¿Qué es esto?", exEn: "What is this?", exJa: "これは何ですか？" },
-    { id:"221", spanish:"eso", japanese: "それ（指示代名詞）", type: "other", typeName: "代名詞", exEs: "Eso es使いやすさ. / Eso es verdad.", exEn: "That is true.", exJa: "それは本当です。" },
-    { id:"222", spanish:"alguien", japanese: "誰か", type: "other", typeName: "代名詞", exEs: "¿Hay alguien aquí?", exEn: "Is there anyone here?", exJa: "誰かここにいますか？" },
-    { id:"223", spanish:"algo", japanese: "何か", type: "other", typeName: "代名詞", exEs: "Quiero comer algo.", exEn: "I want to eat something.", exJa: "何か食べたいです。" },
-    { id:"224", spanish:"nada", japanese: "何も〜ない", type: "other", typeName: "代名詞", exEs: "No pasa nada.", exEn: "Nothing is happening. / It's fine.", exJa: "問題ないよ、何でもないよ。" },
-    { id:"225", spanish:"cerca", japanese: "近い、近くに", type: "adv", typeName: "副詞", exEs: "Está muy cerca de aquí.", exEn: "It is very close to here.", exJa: "ここからとても近いです。" },
-    { id:"226", spanish:"lejos", japanese: "遠い、遠くに", type: "adv", typeName: "副詞", exEs: "¿Está lejos la estación?", exEn: "Is the station far away?", exJa: "駅は遠いですか？" },
-    { id:"227", spanish:"antes", japanese: "以前に、前に", type: "adv", typeName: "副詞", exEs: "Llegué antes que tú.", exEn: "I arrived before you.", exJa: "君より前に着いたよ。" },
-    { id:"228", spanish:"después", japanese: "後で、〜の後に", type: "adv", typeName: "副詞", exEs: "Nos vemos después.", exEn: "See you later.", exJa: "また後で会いましょう。" },
-    { id:"229", spanish:"ya", japanese: "すでに、もう", type: "adv", typeName: "副詞", exEs: "Ya estoy listo.", exEn: "I am already ready.", exJa: "もう準備ができました。" },
-    { id:"230", spanish:"todavía", japanese: "まだ、今なお", type: "adv", typeName: "副詞", exEs: "Todavía no lo sé.", exEn: "I still don't know it.", exJa: "まだそれを知りません。" },
-    { id:"231", spanish:"seguro", japanese: "確信して、安全な", type: "adj", typeName: "形容詞", exEs: "¿Estás seguro?", exEn: "Are you sure?", exJa: "確かですか（本気ですか）？" },
-    { id:"232", spanish:"mismo", japanese: "同じ（代名詞・強調）", type: "adj", typeName: "形容詞", exEs: "Yo mismo lo hice.", exEn: "I did it myself.", exJa: "自分自身でそれをやりました。" },
-    { id:"233", spanish:"parecerse", japanese: "〜に似ている", type: "v", typeName: "動詞", exEs: "Te pareces a tu padre.", exEn: "You look like your father.", exJa: "お父さんに似ているね。" },
-    { id:"234", spanish:"darse cuenta", japanese: "〜に気づく", type: "phrase", typeName: "熟語", exEs: "Me di cuenta del error.", exEn: "I realized the error.", exJa: "エラー（間違い）に気づきました。" },
-    { id:"235", spanish:"tratar", japanese: "扱う、試みる（tratar de）", type: "v", typeName: "動詞", exEs: "Trato de aprender todos los días.", exEn: "I try to learn every day.", exJa: "毎日学ぶように努めています。" },
-    { id:"236", spanish:"significar", japanese: "意味する", type: "v", typeName: "動詞", exEs: "¿Qué significa esta palabra?", exEn: "What does this word mean?", exJa: "この単語はどういう意味ですか？" },
-    { id:"237", spanish:"suponer", japanese: "想定する、思い込む", type: "v", typeName: "動詞", exEs: "Supongo que sí.", exEn: "I suppose so.", exJa: "そうだと思います（たぶんね）。" },
-    { id:"238", spanish:"esperanza", japanese: "希望", type: "f", typeName: "女性名詞", exEs: "Tengo la esperanza de viajar.", exEn: "I have the hope of traveling.", exJa: "旅行に行けるという希望を持っています。" },
-    { id:"239", spanish:"éxito", japanese: "成功", type: "m", typeName: "男性名詞", exEs: "¡Mucho éxito en tu proyecto!", exEn: "Much success in your project!", exJa: "プロジェクトの成功を祈っています！" },
-    { id:"240", spanish:"opinión", japanese: "意見、考え", type: "f", typeName: "女性名詞", exEs: "¿Cuál es tu opinión al respecto?", exEn: "What is your opinion on this matter?", exJa: "これについての君の意見は何？" },
-    { id:"241", spanish:"posibilidad", japanese: "可能性", type: "f", typeName: "女性名詞", exEs: "Existe la posibilidad de cambio.", exEn: "There is a possibility of change.", exJa: "変更の可能性があります。" },
-    { id:"242", spanish:"solución", japanese: "解決策、ソリューション", type: "f", typeName: "女性名詞", exEs: "Encontramos una solución práctica.", exEn: "We found a practical solution.", exJa: "実用的な解決策を見つけました。" },
-    { id:"243", spanish:"duda", japanese: "疑問、ためらい", type: "f", typeName: "女性名詞", exEs: "No tengo ninguna duda.", exEn: "I have no doubt at all.", exJa: "何の疑問（迷い）もありません。" },
-    { id:"244", spanish:"propósito", japanese: "目的、意図", type: "m", typeName: "男性名詞", exEs: "¿Cuál es el propósito del plan?", exEn: "What is the purpose of the plan?", exJa: "その計画の目的は何ですか？" },
-    { id:"245", spanish:"depender", japanese: "依存する、〜次第である", type: "v", typeName: "動詞", exEs: "Todo depende de la situación.", exEn: "Everything depends on the situation.", exJa: "すべては状況次第です。" },
-    { id:"246", spanish:"sugerir", japanese: "提案する", type: "v", typeName: "動詞", exEs: "Te sugiero probar otra forma.", exEn: "I suggest you try another way.", exJa: "別の方法を試すことを提案します。" },
-    { id:"247", spanish:"explicar", japanese: "説明する", type: "v", typeName: "動詞", exEs: "¿Puedes explicar esto de nuevo?", exEn: "Can you explain this again?", exJa: "これをもっと詳しく説明できますか？" },
-    { id:"248", spanish:"aprovechar", japanese: "活かす、活用する、利用する", type: "v", typeName: "動詞", exEs: "Hay que aprovechar la oportunidad.", exEn: "We must take advantage of the opportunity.", exJa: "その機会を活かす必要があります。" },
-    { id:"249", spanish:"evitar", japanese: "避ける、防ぐ", type: "v", typeName: "動詞", exEs: "Debemos evitar errores graves.", exEn: "We must avoid serious mistakes.", exJa: "重大なミスを避けなければならない。" },
-    { id:"250", spanish:"suficiente", japanese: "十分な", type: "adj", typeName: "形容詞", exEs: "Tenemos tiempo suficiente.", exEn: "We have enough time.", exJa: "十分な時間があります。" },
-    { id:"251", spanish:"necesario", japanese: "必要な", type: "adj", typeName: "形容詞", exEs: "Es necesario hacer una prueba.", exEn: "It is necessary to run a test.", exJa: "テストを行うことが必要です。" },
-    { id:"252", spanish:"frecuente", japanese: "頻繁な、度々の", type: "adj", typeName: "形容詞", exEs: "Es un problema bastante frecuente.", exEn: "It is a fairly frequent problem.", exJa: "これはかなり頻繁に起きる問題です。" },
-    { id:"253", spanish:"probablemente", japanese: "たぶん、おそらく", type: "adv", typeName: "副詞", exEs: "Probablemente sea la mejor opción.", exEn: "It is probably the best option.", exJa: "おそらくそれが最善の選択肢でしょう。" },
-    { id:"254", spanish:"desafortunadamente", japanese: "あいにく、残念ながら", type: "adv", typeName: "副詞", exEs: "Desafortunadamente no puedo ir.", exEn: "Unfortunately I cannot go.", exJa: "残念ながら私は行けません。" },
-    { id:"255", spanish:"sin embargo", japanese: "しかしながら、けれども", type: "conj", typeName: "接続詞", exEs: "Es difícil, sin embargo posible.", exEn: "It is difficult, however possible.", exJa: "難しいですが、しかし可能です。" },
-    { id:"256", spanish:"por lo tanto", japanese: "したがって、それゆえに", type: "conj", typeName: "接続詞", exEs: "Por lo tanto, debemos decidir hoy.", exEn: "Therefore, we must decide today.", exJa: "したがって、今日決定する必要があります。" },
-    { id:"257", spanish:"a menos que", japanese: "〜でない限り（※要接続法）", type: "conj", typeName: "接続詞", exEs: "No iré a menos que me llames.", exEn: "I won't go unless you call me.", exJa: "君が電話してくらない限り行かないよ。" },
-    { id:"258", spanish:"en lugar de", japanese: "〜の代わりに", type: "phrase", typeName: "熟語", exEs: "Usamos agua en lugar de leche.", exEn: "We use water instead of milk.", exJa: "牛乳の代わりに水を使います。" },
-    { id:"259", spanish:"por supuesto", japanese: "もちろんです、当然ながら", type: "phrase", typeName: "熟語", exEs: "Por supuesto que te ayudaré.", exEn: "Of course I will help you.", exJa: "もちろん手伝いますよ。" },
-    { id:"260", spanish:"aconsejar", japanese: "助言する、勧められる", type: "v", typeName: "動詞", exEs: "Te aconsejo que estudies todos los días.", exEn: "I advise you to study every day.", exJa: "毎日勉強することをお勧めします。" },
-    { id:"261", spanish:"advertir", japanese: "警告する、気づかせる", type: "v", typeName: "動詞", exEs: "El experto advirtió sobre los riesgos del proyecto.", exEn: "The expert warned about the risks of the project.", exJa: "専門家はプロジェクトのリスクについて警告した。" },
-    { id:"262", spanish:"amenazar", japanese: "脅かす、脅迫する", type: "v", typeName: "動詞", exEs: "El cambio climático amenaza la biodiversidad.", exEn: "Climate change threatens biodiversity.", exJa: "気候変動は生物多様性を脅かしている。" },
-    { id:"263", spanish:"añadir", japanese: "追加する、付け加える", type: "v", typeName: "動詞", exEs: "Quisiera añadir un punto clave a la discusión.", exEn: "I would like to add a key point to the discussion.", exJa: "議論に重要なポイントを1つ付け加えたいと思います。" },
-    { id:"264", spanish:"anunciar", japanese: "発表する、告知する", type: "v", typeName: "動詞", exEs: "La empresa anunció el lanzamiento del nuevo producto.", exEn: "The company announced the launch of the new product.", exJa: "会社は新製品の発売を発表した。" },
-    { id:"265", spanish:"asegurar", japanese: "確信させる、保証する", type: "v", typeName: "動詞", exEs: "Nos aseguró que todo estaría listo a tiempo.", exEn: "He assured us that everything would be ready on time.", exJa: "彼はすべて時間通りに準備できると約束してくれた。" },
-    { id:"266", spanish:"atender", japanese: "対応する、世話をする", type: "v", typeName: "動詞", exEs: "Debemos atender las necesidades del cliente rápidamente.", exEn: "We must attend to the customer's needs quickly.", exJa: "私たちは顧客のニーズに迅速に対応しなければならない。" },
-    { id:"267", spanish:"aumentar", japanese: "増加する、増やす", type: "v", typeName: "動詞", exEs: "La demanda de tecnología sigue aumentando este año.", exEn: "The demand for technology continues to increase this year.", exJa: "テクノロジーの需要は今年増加し続けている。" },
-    { id:"268", spanish:"averiguar", japanese: "調べる、突き止める", type: "v", typeName: "動詞", exEs: "Voy a averiguar la causa principal del fallo.", exEn: "I'm going to find out the main cause of the failure.", exJa: "障害の主な原因を突き止めるつもりです。" },
-    { id:"269", spanish:"carecer", japanese: "欠けている、不足している", type: "v", typeName: "動詞", exEs: "El informe carece de datos suficientes para decidir.", exEn: "The report lacks sufficient data to make a decision.", exJa: "その報告書は決定を下すための十分なデータに欠けている。" },
-    { id:"270", spanish:"comprobar", japanese: "確かめる、検証する", type: "v", typeName: "動詞", exEs: "Es necesario comprobar los resultados antes de publicar.", exEn: "It is necessary to check the results before publishing.", exJa: "公開する前に結果を検証することが必要だ。" },
-    { id:"271", spanish:"conseguir", japanese: "手に入れる、達成する", type: "v", typeName: "動詞", exEs: "Consiguió solucionar el problema sin ayuda externa.", exEn: "He managed to solve the problem without external help.", exJa: "彼は外部の助けを借りずに問題を解決することができた。" },
-    { id:"272", spanish:"considerar", japanese: "検討する、〜とみなす", type: "v", typeName: "動詞", exEs: "Consideramos imprescindible mejorar el proceso actual.", exEn: "We consider it essential to improve the current process.", exJa: "現在のプロセスを改善することは不可欠であると考えています。" },
-    { id:"273", spanish:"convenir", japanese: "〜に都合が良い、望ましい", type: "v", typeName: "動詞", exEs: "Conviene revisar las cláusulas antes de firmar.", exEn: "It is advisable to review the clauses before signing.", exJa: "署名する前に条項を見直すのが望ましい。" },
-    { id:"274", spanish:"despertar", japanese: "目覚めさせる、喚起する", type: "v", typeName: "動詞", exEs: "La conferencia despertó un gran interés público.", exEn: "The lecture aroused great public interest.", exJa: "その講演は世間の大きな関心を呼び起こした。" },
-    { id:"275", spanish:"destacar", japanese: "強調する、目立つ", type: "v", typeName: "動詞", exEs: "Cabe destacar la importancia de la seguridad.", exEn: "It is worth highlighting the importance of security.", exJa: "セキュリティの重要性を強調しておく価値がある。" },
-    { id:"276", spanish:"disminuir", japanese: "減少する、減らす", type: "v", typeName: "動詞", exEs: "Buscamos disminuir los costos de producción este trimestre.", exEn: "We seek to reduce production costs this quarter.", exJa: "今四半期は製造コストを削減することを目指しています。" },
-    { id:"277", spanish:"exigir", japanese: "要求する、求める", type: "v", typeName: "動詞", exEs: "El nuevo cargo exige una alta responsabilidad.", exEn: "The new position requires high responsibility.", exJa: "新しい職務は高い責任を要求する。" },
-    { id:"278", spanish:"garantizar", japanese: "保証する、約束する", type: "v", typeName: "動詞", exEs: "No podemos garantizar un éxito inmediato sin esfuerzo.", exEn: "We cannot guarantee immediate success without effort.", exJa: "努力なしに即座の成功を保証することはできません。" },
-    { id:"279", spanish:"impedir", japanese: "妨げる、邪魔する", type: "v", typeName: "動詞", exEs: "La lluvia impidió que el evento se llevara a cabo.", exEn: "The rain prevented the event from taking place.", exJa: "雨のためイベントの実施が妨げられた。" },
-    { id:"280", spanish:"influir", japanese: "影響を与える", type: "v", typeName: "動詞", exEs: "Factores externos pueden influir en el resultado final.", exEn: "External factors can influence the final result.", exJa: "外部要因が最終結果に影響を与える可能性がある。" },
-    { id:"281", spanish:"insistir", japanese: "主張する、強く求める", type: "v", typeName: "動詞", exEs: "Ella insistió en revisar el documento otra vez.", exEn: "She insisted on reviewing the document again.", exJa: "彼女は文書をもう一度見直すことを強く主張した。" },
-    { id:"282", spanish:"investigar", japanese: "調査する、研究する", type: "v", typeName: "動詞", exEs: "Un equipo especializado investigará el incidente.", exEn: "A specialized team will investigate the incident.", exJa: "専門チームがそのインシデントを調査する。" },
-    { id:"283", spanish:"mantener", japanese: "維持する、保つ", type: "v", typeName: "動詞", exEs: "Es crucial mantener un equilibrio entre calidad y costo.", exEn: "It is crucial to maintain a balance between quality and cost.", exJa: "品質とコストのバランスを維持することが重要である。" },
-    { id:"284", spanish:"negarse", japanese: "拒否する、断る", type: "v", typeName: "動詞", exEs: "Se negó a aceptar las condiciones impuestas.", exEn: "He refused to accept the imposed conditions.", exJa: "彼は課された条件を受け入れることを拒否した。" },
-    { id:"285", spanish:"permitir", japanese: "許可する、可能にする", type: "v", typeName: "動詞", exEs: "Esta herramienta permite optimizar el flujo de trabajo.", exEn: "This tool allows optimizing the workflow.", exJa: "このツールによりワークフローを最適化できる。" },
-    { id:"286", spanish:"proponer", japanese: "提案する", type: "v", typeName: "動詞", exEs: "Propongo organizar una reunión la próxima semana.", exEn: "I propose organizing a meeting next week.", exJa: "来週ミーティングを開催することを提案します。" },
-    { id:"287", spanish:"recomendar", japanese: "勧める、推挙する", type: "v", typeName: "動詞", exEs: "Recomiendo que leas este libro de negocios.", exEn: "I recommend that you read this business book.", exJa: "このビジネス書を読むことをお勧めします。" },
-    { id:"288", spanish:"reconocer", japanese: "認める、認識する", type: "v", typeName: "動詞", exEs: "El director reconoció el esfuerzo de todo el equipo.", exEn: "The director recognized the effort of the whole team.", exJa: "ディレクターはチーム全員の努力を認めた。" },
-    { id:"289", spanish:"reducir", japanese: "減らす、縮小する", type: "v", typeName: "動詞", exEs: "Es urgente reducir la emisión de gases contaminantes.", exEn: "It is urgent to reduce the emission of polluting gases.", exJa: "汚染ガスの排出量を削減することは緊急の課題だ。" },
-    { id:"290", spanish:"resolver", japanese: "解決する、決断する", type: "v", typeName: "動詞", exEs: "Debemos resolver este conflicto lo antes posible.", exEn: "We must resolve this conflict as soon as possible.", exJa: "できるだけ早くこのコンフリクト（対立）を解決しなければならない。" },
-    { id:"291", spanish:"soportar", japanese: "耐える、我慢する", type: "v", typeName: "動詞", exEs: "No puedo soportar el ruido durante el trabajo.", exEn: "I cannot bear the noise during work.", exJa: "作業中の騒音には耐えられない。" },
-    { id:"292", spanish:"sostener", japanese: "支える、持論を主張する", type: "v", typeName: "動詞", exEs: "El ponente sostuvo su teoría con datos precisos.", exEn: "The speaker supported his theory with precise data.", exJa: "登壇者は正確なデータで持論を裏付けた。" },
-    { id:"293", spanish:"sustituir", japanese: "取って代わる、交換する", type: "v", typeName: "動詞", exEs: "Vamos a sustituir el sistema antiguo por uno moderno.", exEn: "We are going to replace the old system with a modern one.", exJa: "古いシステムを現代的なシステムにリプレイスする予定です。" },
-    { id:"294", spanish:"variar", japanese: "変化する、異なる", type: "v", typeName: "動詞", exEs: "Los precios pueden variar según la temporada.", exEn: "Prices may vary depending on the season.", exJa: "価格は季節によって変動することがある。" },
-    { id:"295", spanish:"avance", japanese: "進展、進歩", type: "m", typeName: "男性名詞", exEs: "El avance tecnológico cambia nuestra forma de vivir.", exEn: "Technological progress changes our way of living.", exJa: "技術の進歩は私たちの生き方を変える。" },
-    { id:"296", spanish:"consecuencia", japanese: "結果、影響", type: "f", typeName: "女性名詞", exEs: "Cada acción tiene una consecuencia inevitable.", exEn: "Every action has an inevitable consequence.", exJa: "あらゆる行動には避けられない結果が伴う。" },
-    { id:"297", spanish:"contexto", japanese: "文脈、状況・背景", type: "m", typeName: "男性名詞", exEs: "Es importante entender la palabra según el contexto.", exEn: "It is important to understand the word according to context.", exJa: "文脈に応じて単語を理解することが重要だ。" },
-    { id:"298", spanish:"desarrollo", japanese: "開発、成長", type: "m", typeName: "男性名詞", exEs: "El desarrollo personal requiere paciencia y constancia.", exEn: "Personal development requires patience and perseverance.", exJa: "自己成長には忍耐と継続が必要だ。" },
-    { id:"299", spanish:"discurso", japanese: "スピーチ、演説", type: "m", typeName: "男性名詞", exEs: "El presidente dio un discurso muy inspirador.", exEn: "The president gave a very inspiring speech.", exJa: "社長は非常に励みになるスピーチを行った。" },
-    { id:"300", spanish:"efecto", japanese: "効果、影響", type: "m", typeName: "男性名詞", exEs: "La medida tuvo un efecto positivo inmediato.", exEn: "The measure had an immediate positive effect.", exJa: "その施策は即座に好影響をもたらした。" },
-    { id:"301", spanish:"enfoque", japanese: "アプローチ、着眼点", type: "m", typeName: "男性名詞", exEs: "Necesitamos un nuevo enfoque para resolver el problema.", exEn: "We need a new approach to solve the problem.", exJa: "問題を解決するために新しいアプローチが必要です。" },
-    { id:"302", spanish:"entorno", japanese: "環境、周囲の状況", type: "m", typeName: "男性名詞", exEs: "Debemos adaptarnos a un entorno digital cambiante.", exEn: "We must adapt to a changing digital environment.", exJa: "変化するデジタル環境に適応しなければならない。" },
-    { id:"303", spanish:"evidencia", japanese: "証拠、明白さ", type: "f", typeName: "女性名詞", exEs: "No hay evidencia suficiente para confirmar la hipótesis.", exEn: "There is not enough evidence to confirm the hypothesis.", exJa: "仮説を証明する十分な証拠がない。" },
-    { id:"304", spanish:"experiencia", japanese: "経験、体験", type: "f", typeName: "女性名詞", exEs: "La experiencia práctica es tan valiosa como la teoría.", exEn: "Practical experience is as valuable as theory.", exJa: "実践的な経験は理論と同じくらい価値がある。" },
-    { id:"305", spanish:"impacto", japanese: "影響、インパクト", type: "m", typeName: "男性名詞", exEs: "El proyecto tuvo un gran impacto en la sociedad.", exEn: "The project had a great impact on society.", exJa: "そのプロジェクトは社会に大きなインパクトを与えた。" },
-    { id:"306", spanish:"objetivo", japanese: "目的、目標", type: "m", typeName: "男性名詞", exEs: "El objetivo principal es aumentar la satisfacción.", exEn: "The main objective is to increase satisfaction.", exJa: "主な目標は満足度を高めることだ。" },
-    { id:"307", spanish:"origen", japanese: "起源、由来", type: "m", typeName: "男性名詞", exEs: "El origen del problema aún es desconocido.", exEn: "The origin of the problem is still unknown.", exJa: "問題の原因（起源）は未だ不明である。" },
-    { id:"308", spanish:"perspectiva", japanese: "視点、見地", type: "f", typeName: "女性名詞", exEs: "Ver la situación desde otra perspectiva ayuda mucho.", exEn: "Seeing the situation from another perspective helps a lot.", exJa: "別の視点から状況を見ることが大きな助けになる。" },
-    { id:"309", spanish:"prioridad", japanese: "優先事項、優先順位", type: "f", typeName: "女性名詞", exEs: "Nuestra prioridad absoluta es la seguridad de los datos.", exEn: "Our absolute priority is data security.", exJa: "私たちの最優先事項はデータセキュリティです。" },
-    { id:"310", spanish:"recurso", japanese: "資源、リソース", type: "m", typeName: "男性名詞", exEs: "Optimizamos el uso de los recursos disponibles.", exEn: "We optimize the use of available resources.", exJa: "利用可能なリソースの活用を最適化します。" },
-    { id:"311", spanish:"resultado", japanese: "結果、成果", type: "m", typeName: "男性名詞", exEs: "Los resultados trimestrales superaron las expectativas.", exEn: "Quarterly results exceeded expectations.", exJa: "四半期業績は予想を上回った。" },
-    { id:"312", spanish:"solución", japanese: "解決策", type: "f", typeName: "女性名詞", exEs: "Buscamos una solución sostenible a largo plazo.", exEn: "We are looking for a long-term sustainable solution.", exJa: "長期的で持続可能な解決策を探しています。" },
-    { id:"313", spanish:"técnica", japanese: "技術、手法", type: "f", typeName: "女性名詞", exEs: "Esta técnica permite aprender más rápido.", exEn: "This technique allows you to learn faster.", exJa: "この手法を使えばより素早く学習できる。" },
-    { id:"314", spanish:"ventaja", japanese: "利点、アドバンテージ", type: "f", typeName: "女性名詞", exEs: "La automatización ofrece una ventaja competitiva.", exEn: "Automation offers a competitive advantage.", exJa: "自動化は競争上の優位性（強み）をもたらす。" },
-    { id:"315", spanish:"actual", japanese: "現在の、現代の", type: "adj", typeName: "形容詞", exEs: "La situación actual requiere decisiones rápidas.", exEn: "The current situation requires fast decisions.", exJa: "現在の状況は迅速な意思決定を求めている。" },
-    { id:"316", spanish:"amplio", japanese: "広い、広範な", type: "adj", typeName: "形容詞", exEs: "El candidato posee un amplio conocimiento técnico.", exEn: "The candidate has broad technical knowledge.", exJa: "その候補者は広範な技術的知識を持っている。" },
-    { id:"317", spanish:"anterior", japanese: "前の、前述の", type: "adj", typeName: "形容詞", exEs: "Como mencionamos en la sección anterior, es crucial.", exEn: "As mentioned in the previous section, it is crucial.", exJa: "前述のセクションで述べたように、これは重要である。" },
-    { id:"318", spanish:"capaz", japanese: "能力がある、〜できる", type: "adj", typeName: "形容詞", exEs: "Es un ingeniero capaz de resolver problemas complejos.", exEn: "He is an engineer capable of solving complex problems.", exJa: "彼は複雑な問題を解決できる能力を持ったエンジニアだ。" },
-    { id:"319", spanish:"clave", japanese: "鍵となる、決定的な", type: "adj", typeName: "形容詞", exEs: "El análisis de datos es el elemento clave.", exEn: "Data analysis is the key element.", exJa: "データ分析が鍵となる要素である。" },
-    { id:"320", spanish:"constante", japanese: "一定の、継続的な", type: "adj", typeName: "形容詞", exEs: "El aprendizaje constante es esencial para el éxito.", exEn: "Constant learning is essential for success.", exJa: "絶え間ない学習が成功には不可欠だ。" },
-    { id:"321", spanish:"diverso", japanese: "多様な、様々な", type: "adj", typeName: "形容詞", exEs: "El equipo está formado por personas de diversos orígenes.", exEn: "The team consists of people from diverse backgrounds.", exJa: "チームは多様なバックグラウンドを持つ人々で構成されている。" },
-    { id:"322", spanish:"efectivo", japanese: "効果的な、実質的な", type: "adj", typeName: "形容詞", exEs: "Buscamos una estrategia efectiva de comunicación.", exEn: "We are looking for an effective communication strategy.", exJa: "効果的なコミュニケーション戦略を探しています。" },
-    { id:"323", spanish:"esencial", japanese: "不可欠な、本質的な", type: "adj", typeName: "形容詞", exEs: "Es esencial verificar el código antes del despliegue.", exEn: "It is essential to verify code before deployment.", exJa: "デプロイ前にコードを検証することは不可欠だ。" },
-    { id:"324", spanish:"extraño", japanese: "奇妙な、珍しい", type: "adj", typeName: "形容詞", exEs: "Sucedió algo extraño durante la prueba.", exEn: "Something strange happened during the test.", exJa: "テスト中に何か奇妙なことが起きた。" },
-    { id:"325", spanish:"frecuente", japanese: "頻繁な", type: "adj", typeName: "形容詞", exEs: "Los errores humanos son la causa más frecuente.", exEn: "Human errors are the most frequent cause.", exJa: "ヒューマンエラーが最も頻繁な原因である。" },
-    { id:"326", spanish:"grave", japanese: "深刻な、重い", type: "adj", typeName: "形容詞", exEs: "Cometer un error grave puede costar caro.", exEn: "Making a serious error can cost dearly.", exJa: "重大なエラーを犯すと高くつく可能性がある。" },
-    { id:"327", spanish:"imprescindible", japanese: "絶対に不可欠な", type: "adj", typeName: "形容詞", exEs: "El trabajo en equipo es imprescindible hoy en día.", exEn: "Teamwork is indispensable nowadays.", exJa: "今日、チームワークは絶対に不可欠だ。" },
-    { id:"328", spanish:"incapaz", japanese: "〜できない、無能な", type: "adj", typeName: "形容詞", exEs: "Fue incapaz de dar una respuesta clara.", exEn: "He was unable to give a clear answer.", exJa: "彼は明確な回答を出すことができなかった。" },
-    { id:"329", spanish:"móvil", japanese: "可動性の、モバイルの", type: "adj", typeName: "形容詞", exEs: "El uso de dispositivos móviles sigue creciendo.", exEn: "The use of mobile devices continues to grow.", exJa: "モバイル端末の利用は拡大し続けている。" },
-    { id:"330", spanish:"obvio", japanese: "明白な、自明の", type: "adj", typeName: "形容詞", exEs: "Es un hecho obvio que no necesita explicación.", exEn: "It is an obvious fact that needs no explanation.", exJa: "説明を要しない明白な事実だ。" },
-    { id:"331", spanish:"posterior", japanese: "後方の、その後の", type: "adj", typeName: "形容詞", exEs: "Los detalles se discutirán en una reunión posterior.", exEn: "Details will be discussed in a later meeting.", exJa: "詳細は後日の会議で議論される。" },
-    { id:"332", spanish:"profundo", japanese: "深い、深刻な", type: "adj", typeName: "形容詞", exEs: "Hicimos un análisis profundo sobre el mercado.", exEn: "We conducted a deep analysis of the market.", exJa: "市場に関する深い分析を行った。" },
-    { id:"333", spanish:"sensible", japanese: "に敏感な、デリケートな", type: "adj", typeName: "形容詞", exEs: "Esta información es muy sensible y confidencial.", exEn: "This information is very sensitive and confidential.", exJa: "この情報は非常にデリケートで機密性が高い。" },
-    { id:"334", spanish:"sostenible", japanese: "持続可能な", type: "adj", typeName: "形容詞", exEs: "Debemos promover un crecimiento económico sostenible.", exEn: "We must promote sustainable economic growth.", exJa: "持続可能な経済成長を促進しなければならない。" },
-    { id:"335", spanish:"útil", japanese: "役に立つ、有用な", type: "adj", typeName: "形容詞", exEs: "Es una aplicación muy útil para la productividad.", exEn: "It is a very useful application for productivity.", exJa: "生産性向上に非常に役立つアプリです。" },
-    { id:"336", spanish:"valioso", japanese: "貴重な、価値のある", type: "adj", typeName: "形容詞", exEs: "El tiempo es el recurso más valioso que tenemos.", exEn: "Time is the most valuable resource we have.", exJa: "時間は私たちが持つ最も貴重なリソースだ。" },
-    { id:"337", spanish:"alrededor de", japanese: "〜の周りに、およそ", type: "phrase", typeName: "熟語", exEs: "Llegaremos alrededor de las tres de la tarde.", exEn: "We will arrive around three in the afternoon.", exJa: "午後3時頃に到着する予定です。" },
-    { id:"338", spanish:"a pesar de", japanese: "〜にもかかわらず", type: "phrase", typeName: "熟語", exEs: "A pesar de las dificultades, logramos el objetivo.", exEn: "Despite the difficulties, we achieved the goal.", exJa: "困難にもかかわらず、目標を達成した。" },
-    { id:"339", spanish:"a medida que", japanese: "〜するにつれて", type: "phrase", typeName: "熟語", exEs: "A medida que avanzamos, surgen nuevas ideas.", exEn: "As we move forward, new ideas emerge.", exJa: "前に進むにつれて、新しいアイデアが生まれる。" },
-    { id:"340", spanish:"a partir de", japanese: "〜以降、〜から", type: "phrase", typeName: "熟語", exEs: "A partir de mañana, el horario cambiará.", exEn: "Starting tomorrow, the schedule will change.", exJa: "明日以降、スケジュールが変更になります。" },
-    { id:"341", spanish:"a causa de", japanese: "〜が原因で", type: "phrase", typeName: "熟語", exEs: "El retraso se debió a causa del mal tiempo.", exEn: "The delay was due to bad weather.", exJa: "遅延は悪天候が原因であった。" },
-    { id:"342", spanish:"de acuerdo con", japanese: "〜に従って、〜によれば", type: "phrase", typeName: "熟語", exEs: "De acuerdo con los informes, las ventas aumentaron.", exEn: "According to the reports, sales increased.", exJa: "報告書によれば、売上は増加した。" },
-    { id:"343", spanish:"debido a", japanese: "〜に起因して、〜のために", type: "phrase", typeName: "熟語", exEs: "Cancelamos el evento debido a imprevistos.", exEn: "We canceled the event due to unforeseen circumstances.", exJa: "不測の事態のためにイベントを中止した。" },
-    { id:"344", spanish:"en cuanto a", japanese: "〜に関しては、〜について言うと", type: "phrase", typeName: "熟語", exEs: "En cuanto a los costos, los discutiremos luego.", exEn: "As for the costs, we will discuss them later.", exJa: "コストに関しては、後ほど議論します。" },
-    { id:"345", spanish:"en relación con", japanese: "〜に関連して", type: "phrase", typeName: "熟語", exEs: "Escribo en relación con su consulta reciente.", exEn: "I am writing in relation to your recent inquiry.", exJa: "最近のお問い合わせに関連してご連絡しております。" },
-    { id:"346", spanish:"frente a", japanese: "〜に直面して、〜に対して", type: "phrase", typeName: "熟語", exEs: "Frente a la crisis, debemos actuar con calma.", exEn: "In the face of the crisis, we must act calmly.", exJa: "危機に直面して、私たちは冷静に行動しなければならない。" },
-    { id:"347", spanish:"gracias a", japanese: "〜のおかげで", type: "phrase", typeName: "熟語", exEs: "Gracias a tu ayuda, terminamos a tiempo.", exEn: "Thanks to your help, we finished on time.", exJa: "君の助けのおかげで時間通りに終わった。" },
-    { id:"348", spanish:"junto a", japanese: "〜のとなりに、〜と共に", type: "phrase", typeName: "熟語", exEs: "Trabajamos junto a expertos en la materia.", exEn: "We work alongside experts in the field.", exJa: "私たちはその分野の専門家と共に働いている。" },
-    { id:"349", spanish:"por medio de", japanese: "〜手段によって、〜を通じて", type: "phrase", typeName: "熟語", exEs: "Comunicaremos la decisión por medio de un correo.", exEn: "We will communicate the decision by means of an email.", exJa: "メールを通じて決定を連絡します。" },
-    { id:"350", spanish:"respecto a", japanese: "〜に関して", type: "phrase", typeName: "熟語", exEs: "No tengo comentarios respecto a ese tema.", exEn: "I have no comments regarding that topic.", exJa: "そのテーマに関してはコメントはありません。" },
-    { id:"351", spanish:"sin embargo", japanese: "しかしながら、けれども", type: "conj", typeName: "接続詞", exEs: "Es un plan arriesgado; sin embargo, vale la pena.", exEn: "It is a risky plan; however, it is worth it.", exJa: "リスクのある計画だが、しかしやってみる価値はある。" },
-    { id:"352", spanish:"no obstante", japanese: "それにもかかわらず", type: "conj", typeName: "接続詞", exEs: "Estudió mucho; no obstante, el examen fue duro.", exEn: "He studied a lot; nevertheless, the exam was tough.", exJa: "彼はよく勉強したが、それにもかかわらず試験は厳しかった。" },
-    { id:"353", spanish:"por lo tanto", japanese: "したがって、それゆえに", type: "conj", typeName: "接続詞", exEs: "No hay presupuesto; por lo tanto, debemos esperar.", exEn: "There is no budget; therefore, we must wait.", exJa: "予算がない、したがって待たなければならない。" },
-    { id:"354", spanish:"por consiguiente", japanese: "結果として、したがって", type: "conj", typeName: "接続詞", exEs: "Falló la prueba; por consiguiente, debemos repetir.", exEn: "The test failed; consequently, we must repeat.", exJa: "テストに失敗した、したがってやり直さなければならない。" },
-    { id:"355", spanish:"siempre que", japanese: "〜する限り（※要接続法）", type: "conj", typeName: "接続詞", exEs: "Te ayudaré siempre que tengas una buena actitud.", exEn: "I will help you as long as you have a good attitude.", exJa: "前向きな姿勢でいる限り、手伝います。" },
-    { id:"356", spanish:"A fin de que", japanese: "〜となるように（※要接続法）", type: "conj", typeName: "接続詞", exEs: "Explicó todo a fin de que no hubiera dudas.", exEn: "He explained everything so that there would be no doubts.", exJa: "疑問が残らないよう、彼はすべてを説明した。" },
-
-
+      { id:"1", spanish:"ser", japanese: "〜である（本質）", type: "v", typeName: "動詞", exEs: "Soy de Japón.", exEn: "I am from Japan.", exJa: "私は日本出身です。" },
+      { id:"2", spanish:"estar", japanese: "〜である（状態・位置）", type: "v", typeName: "動詞", exEs: "¿Cómo estás hoy?", exEn: "How are you today?", exJa: "今日の調子はどう？" },
+      { id:"3", spanish:"haber", japanese: "〜がある、〜した", type: "v", typeName: "動詞", exEs: "Hay una duda.", exEn: "There is a doubt.", exJa: "疑問が一つあります。" },
+      { id:"4", spanish:"tener", japanese: "持っている", type: "v", typeName: "動詞", exEs: "Tengo mucho trabajo.", exEn: "I have a lot of work.", exJa: "仕事がたくさんあります。" },
+      { id:"5", spanish:"hacer", japanese: "する、作る", type: "v", typeName: "動詞", exEs: "¿Qué haces ahora?", exEn: "What are you doing now?", exJa: "今何してるの？" },
+      { id:"6", spanish:"ir", japanese: "行く", type: "v", typeName: "動詞", exEs: "Voy a la oficina.", exEn: "I am going to the office.", exJa: "オフィスに行きます。" },
+      { id:"7", spanish:"poder", japanese: "〜できる", type: "v", typeName: "動詞", exEs: "Puedo hacerlo solo.", exEn: "I can do it alone.", exJa: "一人でできます。" },
+      { id:"8", spanish:"decir", japanese: "言う", type: "v", typeName: "動詞", exEs: "Dime la verdad.", exEn: "Tell me the truth.", exJa: "本当のことを言って。" },
+      { id:"9", spanish:"ver", japanese: "見る、会う", type: "v", typeName: "動詞", exEs: "Nos vemos mañana.", exEn: "See you tomorrow.", exJa: "また明日会いましょう。" },
+      { id:"10", spanish:"comer", japanese: "食べる", type: "v", typeName: "動詞", exEs: "Vamos a comer algo.", exEn: "Let's eat something.", exJa: "何か食べに行こう。" },
+      { id:"11", spanish:"tomar", japanese: "取る、飲む、乗る", type: "v", typeName: "動詞", exEs: "Tomo un café.", exEn: "I'll have a coffee.", exJa: "コーヒーを一杯飲みます。" },
+      { id:"12", spanish:"querer", japanese: "〜したい、欲する", type: "v", typeName: "動詞", exEs: "Quiero aprender más.", exEn: "I want to learn more.", exJa: "もっと学びたいです。" },
+      { id:"13", spanish:"saber", japanese: "知っている、〜できる", type: "v", typeName: "動詞", exEs: "No sé la respuesta.", exEn: "I don't know the answer.", exJa: "答えが分かりません。" },
+      { id:"14", spanish:"conocer", japanese: "知っている、知り合う", type: "v", typeName: "動詞", exEs: "Mucho gusto en conocerte.", exEn: "Nice to meet you.", exJa: "お会いできて嬉しいです。" },
+      { id:"15", spanish:"llegar", japanese: "到着する", type: "v", typeName: "動詞", exEs: "Llego a tiempo.", exEn: "I arrive on time.", exJa: "時間通りに着きます。" },
+      { id:"16", spanish:"pasar", japanese: "通る、起こる", type: "v", typeName: "動詞", exEs: "¿Qué pasó?", exEn: "What happened?", exJa: "何があったの？" },
+      { id:"17", spanish:"deber", japanese: "〜すべきである", type: "v", typeName: "動詞", exEs: "Debo estudiar hoy.", exEn: "I must study today.", exJa: "今日勉強しなければならない。" },
+      { id:"18", spanish:"poner", japanese: "置く、つける", type: "v", typeName: "動詞", exEs: "Pon el libro aquí.", exEn: "Put the book here.", exJa: "本をここに置いて。" },
+      { id:"19", spanish:"parecer", japanese: "〜に見える、思える", type: "v", typeName: "動詞", exEs: "Me parece una buena idea.", exEn: "It seems like a good idea to me.", exJa: "良いアイデアだと思います。" },
+      { id:"20", spanish:"hablar", japanese: "話す", type: "v", typeName: "動詞", exEs: "Hablo un poco de español.", exEn: "I speak a little Spanish.", exJa: "スペイン語を少し話します。" },
+      { id:"21", spanish:"dar", japanese: "与える", type: "v", typeName: "動詞", exEs: "Dame un momento.", exEn: "Give me a moment.", exJa: "少し時間をください。" },
+      { id:"22", spanish:"llevar", japanese: "持っていく", type: "v", typeName: "動詞", exEs: "Llevo este bolso.", exEn: "I'll take this bag.", exJa: "このバッグを持っていきます。" },
+      { id:"23", spanish:"dejar", japanese: "残す、やめる", type: "v", typeName: "動詞", exEs: "Déjame ver.", exEn: "Let me see.", exJa: "私に見せて。" },
+      { id:"24", spanish:"seguir", japanese: "続ける、従う", type: "v", typeName: "動詞", exEs: "Sigue adelante.", exEn: "Keep going forward.", exJa: "前へ進み続けなさい。" },
+      { id:"25", spanish:"encontrar", japanese: "見つける", type: "v", typeName: "動詞", exEs: "No encuentro mis llaves.", exEn: "I can't find my keys.", exJa: "鍵が見つかりません。" },
+      { id:"26", spanish:"pensar", japanese: "考える", type: "v", typeName: "動詞", exEs: "Pienso que sí.", exEn: "I think so.", exJa: "そう思います。" },
+      { id:"27", spanish:"salir", japanese: "出る、出かける", type: "v", typeName: "動詞", exEs: "Salgo a las seis.", exEn: "I leave at six.", exJa: "6時に出かけます。" },
+      { id:"28", spanish:"volver", japanese: "戻る、帰る", type: "v", typeName: "動詞", exEs: "Vuelvo pronto.", exEn: "I'll return soon.", exJa: "すぐに戻ります。" },
+      { id:"29", spanish:"pedir", japanese: "頼む、注文する", type: "v", typeName: "動詞", exEs: "Quiero pedir esto.", exEn: "I want to order this.", exJa: "これを注文したいです。" },
+      { id:"30", spanish:"entender", japanese: "理解する", type: "v", typeName: "動詞", exEs: "Entiendo perfectamente.", exEn: "I understand perfectly.", exJa: "完全に理解しています。" },
+      { id:"31", spanish:"lograr", japanese: "達成する", type: "v", typeName: "動詞", exEs: "Logramos la meta.", exEn: "We achieved the goal.", exJa: "目標を達成しました。" },
+      { id:"32", spanish:"trabajar", japanese: "働く", type: "v", typeName: "動詞", exEs: "Trabajo desde casa.", exEn: "I work from home.", exJa: "在宅で働いています。" },
+      { id:"33", spanish:"necesitar", japanese: "必要とする", type: "v", typeName: "動詞", exEs: "Necesito ayuda.", exEn: "I need help.", exJa: "助けが必要です。" },
+      { id:"34", spanish:"esperar", japanese: "待つ、期待する", type: "v", typeName: "動詞", exEs: "Te espero aquí.", exEn: "I'll wait for you here.", exJa: "ここで君を待っているよ。" },
+      { id:"35", spanish:"buscar", japanese: "探す", type: "v", typeName: "動詞", exEs: "Busco una solución.", exEn: "I'm looking for a solution.", exJa: "解決策を探しています。" },
+      { id:"36", spanish:"tiempo", japanese: "時間、天候", type: "m", typeName: "男性名詞", exEs: "No tengo tiempo.", exEn: "I don't have time.", exJa: "時間がありません。" },
+      { id:"37", spanish:"vez", japanese: "回、度", type: "f", typeName: "女性名詞", exEs: "Una vez más, por favor.", exEn: "One more time, please.", exJa: "もう一度お願いします。" },
+      { id:"38", spanish:"día", japanese: "日", type: "m", typeName: "男性名詞", exEs: "¡Buen día!", exEn: "Good day!", exJa: "良い一日を！" },
+      { id:"39", spanish:"año", japanese: "年", type: "m", typeName: "男性名詞", exEs: "Feliz año nuevo.", exEn: "Happy New Year.", exJa: "明けましておめでとう。" },
+      { id:"40", spanish:"cosa", japanese: "もの、こと", type: "f", typeName: "女性名詞", exEs: "Hay otra cosa.", exEn: "There is another thing.", exJa: "もう一つ別のことがあります。" },
+      { id:"41", spanish:"hombre", japanese: "男性", type: "m", typeName: "男性名詞", exEs: "Es un hombre sabio.", exEn: "He is a wise man.", exJa: "彼は賢い人です。" },
+      { id:"42", spanish:"mujer", japanese: "女性", type: "f", typeName: "女性名詞", exEs: "Es una mujer fuerte.", exEn: "She is a strong woman.", exJa: "彼女は強い女性です。" },
+      { id:"43", spanish:"vida", japanese: "生活、人生", type: "f", typeName: "女性名詞", exEs: "La vida es bella.", exEn: "Life is beautiful.", exJa: "人生は美しい。" },
+      { id:"44", spanish:"forma", japanese: "方法、形", type: "f", typeName: "女性名詞", exEs: "De esta forma es fácil.", exEn: "In this way it's easy.", exJa: "この方法なら簡単です。" },
+      { id:"45", spanish:"casa", japanese: "家", type: "f", typeName: "女性名詞", exEs: "Estoy en casa.", exEn: "I'm at home.", exJa: "家にいます。" },
+      { id:"46", spanish:"mundo", japanese: "世界", type: "m", typeName: "男性名詞", exEs: "En todo el mundo.", exEn: "All over the world.", exJa: "世界中で。" },
+      { id:"47", spanish:"trabajo", japanese: "仕事", type: "m", typeName: "男性名詞", exEs: "Buen trabajo.", exEn: "Good job.", exJa: "お疲れ様。" },
+      { id:"48", spanish:"lugar", japanese: "場所", type: "m", typeName: "男性名詞", exEs: "Un lugar tranquilo.", exEn: "A quiet place.", exJa: "静かな場所。" },
+      { id:"49", spanish:"problema", japanese: "問題", type: "m", typeName: "男性名詞", exEs: "No hay problema.", exEn: "No problem.", exJa: "問題ありません。" },
+      { id:"50", spanish:"persona", japanese: "人", type: "f", typeName: "女性名詞", exEs: "Es una buena persona.", exEn: "He/She is a good person.", exJa: "良い人です。" },
+      { id:"51", spanish:"parte", japanese: "部分", type: "f", typeName: "女性名詞", exEs: "Una gran parte del proyecto.", exEn: "A big part of the project.", exJa: "プロジェクトの大きな部分。" },
+      { id:"52", spanish:"momento", japanese: "瞬間、時間", type: "m", typeName: "男性名詞", exEs: "Un momento, por favor.", exEn: "One moment, please.", exJa: "少々お待ちください。" },
+      { id:"53", spanish:"ciudad", japanese: "都市", type: "f", typeName: "女性名詞", exEs: "Vivo en esta ciudad.", exEn: "I live in this city.", exJa: "私はこの街に住んでいます。" },
+      { id:"54", spanish:"nombre", japanese: "名前", type: "m", typeName: "男性名詞", exEs: "¿Cuál es tu nombre?", exEn: "What is your name?", exJa: "お名前は何ですか？" },
+      { id:"55", spanish:"país", japanese: "国", type: "m", typeName: "男性名詞", exEs: "Es un país hermoso.", exEn: "It is a beautiful country.", exJa: "美しい国です。" },
+      { id:"56", spanish:"hora", japanese: "時間、時刻", type: "f", typeName: "女性名詞", exEs: "¿Qué hora es?", exEn: "What time is it?", exJa: "今何時ですか？" },
+      { id:"57", spanish:"calle", japanese: "通り", type: "f", typeName: "女性名詞", exEs: "Cruza la calle.", exEn: "Cross the street.", exJa: "通りを渡りなさい。" },
+      { id:"58", spanish:"verdad", japanese: "真実", type: "f", typeName: "女性名詞", exEs: "Es la verdad.", exEn: "It's the truth.", exJa: "それは真実です。" },
+      { id:"59", spanish:"desarrollo", japanese: "開発、発展", type: "m", typeName: "男性名詞", exEs: "Desarrollo de software.", exEn: "Software development.", exJa: "ソフトウェア開発。" },
+      { id:"60", spanish:"desafío", japanese: "挑戦、課題", type: "m", typeName: "男性名詞", exEs: "Es un nuevo desafío.", exEn: "It's a new challenge.", exJa: "新しい挑戦です。" },
+      { id:"61", spanish:"bueno", japanese: "良い", type: "adj", typeName: "形容詞", exEs: "¡Es muy bueno!", exEn: "It's very good!", exJa: "とても良いですね！" },
+      { id:"62", spanish:"malo", japanese: "悪い", type: "adj", typeName: "形容詞", exEs: "No es una mala idea.", exEn: "It's not a bad idea.", exJa: "悪いアイデアではない。" },
+      { id:"63", spanish:"grande", japanese: "大きい", type: "adj", typeName: "形容詞", exEs: "Una casa grande.", exEn: "A big house.", exJa: "大きな家。" },
+      { id:"64", spanish:"pequeño", japanese: "小さい", type: "adj", typeName: "形容詞", exEs: "Un detalle pequeño.", exEn: "A small detail.", exJa: "小さな詳細。" },
+      { id:"65", spanish:"nuevo", japanese: "新しい", type: "adj", typeName: "形容詞", exEs: "Tengo un nuevo plan.", exEn: "I have a new plan.", exJa: "新しい計画があります。" },
+      { id:"66", spanish:"viejo", japanese: "古い", type: "adj", typeName: "形容詞", exEs: "Un amigo viejo.", exEn: "An old friend.", exJa: "古い友人。" },
+      { id:"67", spanish:"primero", japanese: "最初の", type: "adj", typeName: "形容詞", exEs: "Es el primer paso.", exEn: "It is the first step.", exJa: "これが一歩目です。" },
+      { id:"68", spanish:"último", japanese: "最後の、最近の", type: "adj", typeName: "形容詞", exEs: "La última versión.", exEn: "The latest version.", exJa: "最新バージョン。" },
+      { id:"69", spanish:"mismo", japanese: "同じ", type: "adj", typeName: "形容詞", exEs: "Es lo mismo.", exEn: "It's the same thing.", exJa: "同じことです。" },
+      { id:"70", spanish:"otro", japanese: "別の", type: "adj", typeName: "形容詞", exEs: "Otra pregunta, por favor.", exEn: "Another question, please.", exJa: "もう一つ質問をお願いします。" },
+      { id:"71", spanish:"mucho", japanese: "たくさんの", type: "adj", typeName: "形容詞", exEs: "Muchas gracias.", exEn: "Thank you very much.", exJa: "本当にありがとうございます。" },
+      { id:"72", spanish:"poco", japanese: "少ない、少しの", type: "adj", typeName: "形容詞", exEs: "Un poco de tiempo.", exEn: "A little time.", exJa: "少しの時間。" },
+      { id:"73", spanish:"importante", japanese: "重要な", type: "adj", typeName: "形容詞", exEs: "Es un dato importante.", exEn: "It is important data.", exJa: "重要なデータです。" },
+      { id:"74", spanish:"posible", japanese: "可能な", type: "adj", typeName: "形容詞", exEs: "Lo antes posible.", exEn: "As soon as possible.", exJa: "できるだけ早く。" },
+      { id:"75", spanish:"fácil", japanese: "簡単な", type: "adj", typeName: "形容詞", exEs: "Es muy fácil.", exEn: "It is very easy.", exJa: "とても簡単です。" },
+      { id:"76", spanish:"difícil", japanese: "難しい", type: "adj", typeName: "形容詞", exEs: "Es un examen difícil.", exEn: "It's a difficult exam.", exJa: "難しい試験です。" },
+      { id:"77", spanish:"constante", japanese: "一定の、絶え間ない", type: "adj", typeName: "形容詞", exEs: "Un esfuerzo constante.", exEn: "A constant effort.", exJa: "絶え間ない努力。" },
+      { id:"78", spanish:"ahora", japanese: "今", type: "adv", typeName: "副詞", exEs: "Empieza ahora.", exEn: "Start now.", exJa: "今すぐ始めなさい。" },
+      { id:"79", spanish:"hoy", japanese: "今日", type: "adv", typeName: "副詞", exEs: "Hoy es un gran día.", exEn: "Today is a great day.", exJa: "今日は素晴らしい日だ。" },
+      { id:"80", spanish:"siempre", japanese: "いつも", type: "adv", typeName: "副詞", exEs: "Siempre estás aquí.", exEn: "You are always here.", exJa: "君はいつもここにいるね。" },
+      { id:"81", spanish:"nunca", japanese: "決して〜ない", type: "adv", typeName: "副詞", exEs: "Nunca me rindo.", exEn: "I never give up.", exJa: "絶対に諦めない。" },
+      { id:"82", spanish:"también", japanese: "〜もまた", type: "adv", typeName: "副詞", exEs: "Yo también quiero ir.", exEn: "I also want to go.", exJa: "私も行きたいです。" },
+      { id:"83", spanish:"tampoco", japanese: "〜もまた〜ない", type: "adv", typeName: "副詞", exEs: "Tampoco lo sé.", exEn: "I don't know either.", exJa: "私もそれを知りません。" },
+      { id:"84", spanish:"muy", japanese: "とても", type: "adv", typeName: "副詞", exEs: "Muy bien, gracias.", exEn: "Very well, thank you.", exJa: "とても良いです、ありがとう。" },
+      { id:"85", spanish:"más", japanese: "より多く", type: "adv", typeName: "副詞", exEs: "Un poco más.", exEn: "A little more.", exJa: "もう少し。" },
+      { id:"86", spanish:"menos", japanese: "より少なく", type: "adv", typeName: "副詞", exEs: "Más o menos.", exEn: "More or less.", exJa: "だいたい。" },
+      { id:"87", spanish:"aquí", japanese: "ここ", type: "adv", typeName: "副詞", exEs: "Ven aquí.", exEn: "Come here.", exJa: "ここに来て。" },
+      { id:"88", spanish:"allí", japanese: "そこ、あそこ", type: "adv", typeName: "副詞", exEs: "Está allí.", exEn: "It is there.", exJa: "あそこにあります。" },
+      { id:"89", spanish:"bien", japanese: "よく、上手く", type: "adv", typeName: "副詞", exEs: "Todo está bien.", exEn: "Everything is fine.", exJa: "すべて順調です。" },
+      { id:"90", spanish:"así", japanese: "そのように", type: "adv", typeName: "副詞", exEs: "Así es.", exEn: "That's right.", exJa: "その通りです。" },
+      { id:"91", spanish:"casi", japanese: "ほとんど", type: "adv", typeName: "副詞", exEs: "Casi termino.", exEn: "I'm almost finished.", exJa: "もうすぐ終わります。" },
+      { id:"92", spanish:"luego", japanese: "後で", type: "adv", typeName: "副詞", exEs: "Hasta luego.", exEn: "See you later.", exJa: "また後で。" },
+      { id:"93", spanish:"entonces", japanese: "それでは", type: "conj", typeName: "接続詞", exEs: "¿Entonces qué hacemos?", exEn: "So what do we do?", exJa: "それではどうしましょうか？" },
+      { id:"94", spanish:"pero", japanese: "しかし", type: "conj", typeName: "接続詞", exEs: "Sí, pero es difícil.", exEn: "Yes, but it's difficult.", exJa: "はい、でも難しいです。" },
+      { id:"95", spanish:"porque", japanese: "〜だから", type: "conj", typeName: "接続詞", exEs: "Porque es importante.", exEn: "Because it's important.", exJa: "なぜなら重要だからです。" },
+      { id:"96", spanish:"cuando", japanese: "〜の時", type: "conj", typeName: "接続詞", exEs: "Llama cuando llegues.", exEn: "Call when you arrive.", exJa: "着いたら電話して。" },
+      { id:"97", spanish:"donde", japanese: "〜する場所", type: "conj", typeName: "接続詞", exEs: "¿Dónde está la estación?", exEn: "Where is the station?", exJa: "駅はどこですか？" },
+      { id:"98", spanish:"como", japanese: "〜のように", type: "conj", typeName: "接続詞", exEs: "Hazlo como quieras.", exEn: "Do it as you like.", exJa: "好きなようにやりなさい。" },
+      { id:"99", spanish:"si", japanese: "もし〜ならば", type: "conj", typeName: "接続詞", exEs: "Si tienes tiempo, ven.", exEn: "If you have time, come.", exJa: "時間があったら来てね。" },
+      { id:"100", spanish:"gracias", japanese: "ありがとう", type: "interj", typeName: "間投詞", exEs: "Muchas gracias por todo.", exEn: "Thank you very much for everything.", exJa: "いろいろとありがとう。" },
+      { id:"101", spanish:"afirmar", japanese: "主張する、断言する", type: "v", typeName: "動詞", exEs: "El experto afirmó su teoría.", exEn: "The expert affirmed his theory.", exJa: "専門家は自身の理論を主張した。" },
+      { id:"102", spanish:"asumir", japanese: "引き受ける、想定する", type: "v", typeName: "動詞", exEs: "Debemos asumir el riesgo.", exEn: "We must assume the risk.", exJa: "私たちはリスクを引き受けなければならない。" },
+      { id:"103", spanish:"comprobar", japanese: "確認する、証明する", type: "v", typeName: "動詞", exEs: "Voy a comprobar los datos.", exEn: "I am going to check the data.", exJa: "データを確認します。" },
+      { id:"104", spanish:"demostrar", japanese: "証明する、実演する", type: "v", typeName: "動詞", exEs: "Demostró su gran habilidad.", exEn: "He demonstrated his great skill.", exJa: "彼は素晴らしい能力を証明した。" },
+      { id:"105", spanish:"determinar", japanese: "決定する、特定する", type: "v", typeName: "動詞", exEs: "Determinar las causas del error.", exEn: "Determine the causes of the error.", exJa: "エラーの原因を特定する。" },
+      { id:"106", spanish:"evaluar", japanese: "評価する、査定する", type: "v", typeName: "動詞", exEs: "Evaluamos el rendimiento anual.", exEn: "We evaluate the annual performance.", exJa: "私たちは年間パフォーマンスを評価します。" },
+      { id:"107", spanish:"examinar", japanese: "検証する、調べる", type: "v", typeName: "動詞", exEs: "Examinar el documento con atención.", exEn: "Examine the document carefully.", exJa: "書類を慎重に調べる。" },
+      { id:"108", spanish:"identificar", japanese: "特定する、確認する", type: "v", typeName: "動詞", exEs: "Identificar el problema principal.", exEn: "Identify the main problem.", exJa: "問題の核心を特定する。" },
+      { id:"109", spanish:"interpretar", japanese: "解釈する、通訳する", type: "v", typeName: "動詞", exEs: "¿Cómo interpretas estos resultados?", exEn: "How do you interpret these results?", exJa: "これらの結果をどう解釈しますか？" },
+      { id:"110", spanish:"justificar", japanese: "正当化する、理由を述べる", type: "v", typeName: "動詞", exEs: "Tienes que justificar tu decisión.", exEn: "You have to justify your decision.", exJa: "決定の理由を説明しなければならない。" },
+      { id:"111", spanish:"observar", japanese: "観察する、注視する", type: "v", typeName: "動詞", exEs: "Observamos los cambios detalladamente.", exEn: "We observe the changes in detail.", exJa: "私たちは変化を詳細に観察する。" },
+      { id:"112", spanish:"percibir", japanese: "知覚する、察知する", type: "v", typeName: "動詞", exEs: "Puedo percibir la diferencia.", exEn: "I can perceive the difference.", exJa: "違いを察知することができる。" },
+      { id:"113", spanish:"adaptar", japanese: "適応させる、順応する", type: "v", typeName: "動詞", exEs: "Adaptarse al nuevo entorno.", exEn: "Adapt to the new environment.", exJa: "新しい環境に適応する。" },
+      { id:"114", spanish:"aplicar", japanese: "適用する、応用する", type: "v", typeName: "動詞", exEs: "Aplicar la nueva regla.", exEn: "Apply the new rule.", exJa: "新しいルールを適用する。" },
+      { id:"115", spanish:"afrontar", japanese: "立ち向かう、直面する", type: "v", typeName: "動詞", exEs: "Afrontar los desafíos futuros.", exEn: "Face future challenges.", exJa: "将来の課題に立ち向かう。" },
+      { id:"116", spanish:"alcanzar", japanese: "達する、到達する", type: "v", typeName: "動詞", exEs: "Alcanzar el nivel deseado.", exEn: "Reach the desired level.", exJa: "目標とするレベルに到達する。" },
+      { id:"117", spanish:"aportar", japanese: "貢献する、提供する", type: "v", typeName: "動詞", exEs: "Aportar nuevas ideas.", exEn: "Contribute new ideas.", exJa: "新しいアイデアを提供する。" },
+      { id:"118", spanish:"aprobar", japanese: "承認する、合格する", type: "v", typeName: "動詞", exEs: "Aprobar el presupuesto oficial.", exEn: "Approve the official budget.", exJa: "公式予算を承認する。" },
+      { id:"119", spanish:"asegurar", japanese: "確保する、保証する", type: "v", typeName: "動詞", exEs: "Asegurar la calidad del producto.", exEn: "Ensure the quality of the product.", exJa: "製品の品質を確保する。" },
+      { id:"120", spanish:"aumentar", japanese: "増加させる、増える", type: "v", typeName: "動詞", exEs: "Aumentar las ventas este mes.", exEn: "Increase sales this month.", exJa: "今月の売上を伸ばす。" },
+      { id:"121", spanish:"colaborar", japanese: "協力する、共同作業する", type: "v", typeName: "動詞", exEs: "Colaborar con otros equipos.", exEn: "Collaborate with other teams.", exJa: "他のチームと協力する。" },
+      { id:"122", spanish:"comparar", japanese: "比較する", type: "v", typeName: "動詞", exEs: "Comparar dos opciones distintas.", exEn: "Compare two different options.", exJa: "異なる2つの選択肢を比較する。" },
+      { id:"123", spanish:"conducir", japanese: "導く、運転する", type: "v", typeName: "動詞", exEs: "Esto puede conducir al éxito.", exEn: "This can lead to success.", exJa: "これが成功へと導く可能性がある。" },
+      { id:"124", spanish:"confirmar", japanese: "確認する、確定する", type: "v", typeName: "動詞", exEs: "Confirmar la asistencia hoy.", exEn: "Confirm attendance today.", exJa: "本日の出席を確定する。" },
+      { id:"125", spanish:"consolidar", japanese: "固める、統合・強固にする", type: "v", typeName: "動詞", exEs: "Consolidar la posición en el mercado.", exEn: "Consolidate market position.", exJa: "市場での地位を固める。" },
+      { id:"126", spanish:"contribuir", japanese: "寄与する、貢献する", type: "v", typeName: "動詞", exEs: "Contribuir al desarrollo local.", exEn: "Contribute to local development.", exJa: "地域社会の開発に貢献する。" },
+      { id:"127", spanish:"coordinar", japanese: "調整する、コーディネートする", type: "v", typeName: "動詞", exEs: "Coordinar las tareas del grupo.", exEn: "Coordinate group tasks.", exJa: "グループのタスクを調整する。" },
+      { id:"128", spanish:"definir", japanese: "定義する、明確にする", type: "v", typeName: "動詞", exEs: "Definir los objetivos clave.", exEn: "Define the key objectives.", exJa: "鍵となる目標を明確にする。" },
+      { id:"129", spanish:"diseñar", japanese: "設計する、デザインする", type: "v", typeName: "動詞", exEs: "Diseñar un nuevo sistema.", exEn: "Design a new system.", exJa: "新しいシステムを設計する。" },
+      { id:"130", spanish:"ejecutar", japanese: "実行する、遂行する", type: "v", typeName: "動詞", exEs: "Ejecutar el plan estratégico.", exEn: "Execute the strategic plan.", exJa: "戦略計画を実行に移す。" },
+      { id:"131", spanish:"elaborar", japanese: "作成する、精緻に作る", type: "v", typeName: "動詞", exEs: "Elaborar un informe detallado.", exEn: "Prepare a detailed report.", exJa: "詳細なレポートを作成する。" },
+      { id:"132", spanish:"facilitar", japanese: "容易にする、提供する", type: "v", typeName: "動詞", exEs: "Facilitar el acceso a la información.", exEn: "Facilitate access to information.", exJa: "情報へのアクセスを容易にする。" },
+      { id:"133", spanish:"generar", japanese: "生み出す、発生させる", type: "v", typeName: "動詞", exEs: "Generar nuevos ingresos.", exEn: "Generate new revenue.", exJa: "新しい収益を生み出す。" },
+      { id:"134", spanish:"gestionar", japanese: "管理・運用する、手配する", type: "v", typeName: "動詞", exEs: "Gestionar los recursos eficientemente.", exEn: "Manage resources efficiently.", exJa: "リソースを効率的に管理する。" },
+      { id:"135", spanish:"implementar", japanese: "実装する、導入する", type: "v", typeName: "動詞", exEs: "Implementar un nuevo proceso.", exEn: "Implement a new process.", exJa: "新しいプロセスを導入する。" },
+      { id:"136", spanish:"optimizar", japanese: "最適化する", type: "v", typeName: "動詞", exEs: "Optimizar el tiempo de respuesta.", exEn: "Optimize response time.", exJa: "応答時間を最適化する。" },
+      { id:"137", spanish:"prever", japanese: "予測する、予見する", type: "v", typeName: "動詞", exEs: "Es difícil prever el futuro.", exEn: "It is difficult to foresee the future.", exJa: "未来を予測するのは困難だ。" },
+      { id:"138", spanish:"renovar", japanese: "刷新する、更新する", type: "v", typeName: "動詞", exEs: "Renovar el contrato anual.", exEn: "Renew the annual contract.", exJa: "年間契約を更新する。" },
+      { id:"139", spanish:"transformar", japanese: "変革する、変化させる", type: "v", typeName: "動詞", exEs: "Transformar la estructura digital.", exEn: "Transform the digital structure.", exJa: "デジタル構造を変革する。" },
+      { id:"140", spanish:"actitud", japanese: "態度、姿勢", type: "f", typeName: "女性名詞", exEs: "Tener una actitud positiva.", exEn: "Have a positive attitude.", exJa: "前向きな姿勢を持つ。" },
+      { id:"141", spanish:"análisis", japanese: "分析、解析", type: "m", typeName: "男性名詞", exEs: "Un análisis riguroso de datos.", exEn: "A rigorous data analysis.", exJa: "厳密なデータ分析。" },
+      { id:"142", spanish:"capacidad", japanese: "能力、容量", type: "f", typeName: "女性名詞", exEs: "Demostrar capacidad técnica.", exEn: "Demonstrate technical capability.", exJa: "技術的能力を示す。" },
+      { id:"143", spanish:"compromiso", japanese: "約束、コミットメント、責任", type: "m", typeName: "男性名詞", exEs: "Demostrar compromiso total.", exEn: "Show full commitment.", exJa: "全面的なコミットメントを示す。" },
+      { id:"144", spanish:"concepto", japanese: "概念、コンセプト", type: "m", typeName: "男性名詞", exEs: "Entender el concepto básico.", exEn: "Understand the basic concept.", exJa: "基本概念を理解する。" },
+      { id:"145", spanish:"criterio", japanese: "基準、判断規範", type: "m", typeName: "男性名詞", exEs: "Establecer criterios claros.", exEn: "Establish clear criteria.", exJa: "明確な基準を確立する。" },
+      { id:"146", spanish:"eficiencia", japanese: "効率性、能率", type: "f", typeName: "女性名詞", exEs: "Mejorar la eficiencia operativa.", exEn: "Improve operational efficiency.", exJa: "業務の効率性を向上させる。" },
+      { id:"147", spanish:"estrategia", japanese: "戦略", type: "f", typeName: "女性名詞", exEs: "Una estrategia a largo plazo.", exEn: "A long-term strategy.", exJa: "長期的な戦略。" },
+      { id:"148", spanish:"estructura", japanese: "構造、仕組み", type: "f", typeName: "女性名詞", exEs: "La estructura del proyecto.", exEn: "The project structure.", exJa: "プロジェクトの構造。" },
+      { id:"149", spanish:"factor", japanese: "要因、要素", type: "m", typeName: "男性名詞", exEs: "Un factor determinante.", exEn: "A determining factor.", exJa: "決定的な要因。" },
+      { id:"150", spanish:"función", japanese: "機能、役割", type: "f", typeName: "女性名詞", exEs: "La función principal del sistema.", exEn: "The main function of the system.", exJa: "システムの主な機能。" },
+      { id:"151", spanish:"gestión", japanese: "管理、運営", type: "f", typeName: "女性名詞", exEs: "Gestión de proyectos complejos.", exEn: "Management of complex projects.", exJa: "複雑なプロジェクトの管理。" },
+      { id:"152", spanish:"hipótesis", japanese: "仮説", type: "f", typeName: "女性名詞", exEs: "Confirmar la hipótesis inicial.", exEn: "Confirm the initial hypothesis.", exJa: "初期の仮説を確認する。" },
+      { id:"153", spanish:"innovación", japanese: "革新、イノベーション", type: "f", typeName: "女性名詞", exEs: "Impulsar la innovación continua.", exEn: "Drive continuous innovation.", exJa: "継続的な革新を推進する。" },
+      { id:"154", spanish:"tendencia", japanese: "傾向、トレンド", type: "f", typeName: "女性名詞", exEs: "Seguir las tendencias del mercado.", exEn: "Follow market trends.", exJa: "市場のトレンドを追う。" },
+      { id:"155", spanish:"proceso", japanese: "プロセス、過程", type: "m", typeName: "男性名詞", exEs: "Un proceso automatizado.", exEn: "An automated process.", exJa: "自動化されたプロセス。" },
+      { id:"156", spanish:"revisión", japanese: "見直し、点検", type: "f", typeName: "女性名詞", exEs: "Hacer una revisión profunda.", exEn: "Conduct a thorough review.", exJa: "徹底的な見直しを行う。" },
+      { id:"157", spanish:"riesgo", japanese: "リスク、危険", type: "m", typeName: "男性名詞", exEs: "Evaluar el riesgo financiero.", exEn: "Evaluate the financial risk.", exJa: "財務リスクを評価する。" },
+      { id:"158", spanish:"sector", japanese: "分野、部門", type: "m", typeName: "男性名詞", exEs: "El sector tecnológico.", exEn: "The technology sector.", exJa: "テクノロジー分野。" },
+      { id:"159", spanish:"sistema", japanese: "システム、体系", type: "m", typeName: "男性名詞", exEs: "Un sistema integrado.", exEn: "An integrated system.", exJa: "統合されたシステム。" },
+      { id:"160", spanish:"adecuado", japanese: "適切な、適した", type: "adj", typeName: "形容詞", exEs: "Buscar el lugar adecuado.", exEn: "Find the appropriate place.", exJa: "適切な場所を探す。" },
+      { id:"161", spanish:"complejo", japanese: "複雑な", type: "adj", typeName: "形容詞", exEs: "Un problema muy complejo.", exEn: "A very complex problem.", exJa: "非常に複雑な問題。" },
+      { id:"162", spanish:"crítico", japanese: "批判的な、危機的な、決定的な", type: "adj", typeName: "形容詞", exEs: "Un momento crítico para la empresa.", exEn: "A critical moment for the company.", exJa: "会社にとって決定的な瞬間。" },
+      { id:"163", spanish:"eficiente", japanese: "効率的な", type: "adj", typeName: "形容詞", exEs: "Un flujo de trabajo eficiente.", exEn: "An efficient workflow.", exJa: "効率的なワークフロー。" },
+      { id:"164", spanish:"evidente", japanese: "明白な、明らかな", type: "adj", typeName: "形容詞", exEs: "Es una ventaja evidente.", exEn: "It is an obvious advantage.", exJa: "それは明白な利点だ。" },
+      { id:"165", spanish:"flexible", japanese: "柔軟な、融通の利く", type: "adj", typeName: "形容詞", exEs: "Horario de trabajo flexible.", exEn: "Flexible working hours.", exJa: "柔軟な勤務時間。" },
+      { id:"166", spanish:"fundamental", japanese: "根本的な、非常に重要な", type: "adj", typeName: "形容詞", exEs: "Es un principio fundamental.", exEn: "It is a fundamental principle.", exJa: "それは根本的な原則だ。" },
+      { id:"167", spanish:"inevitable", japanese: "避けられない、不可避の", type: "adj", typeName: "形容詞", exEs: "Un cambio inevitable.", exEn: "An inevitable change.", exJa: "避けられない変化。" },
+      { id:"168", spanish:"innovador", japanese: "革新的な", type: "adj", typeName: "形容詞", exEs: "Un enfoque muy innovador.", exEn: "A very innovative approach.", exJa: "非常に革新的なアプローチ。" },
+      { id:"169", spanish:"integral", japanese: "総合的な、欠かせない", type: "adj", typeName: "形容詞", exEs: "Una solución integral.", exEn: "A comprehensive solution.", exJa: "総合的な解決策。" },
+      { id:"170", spanish:"notable", japanese: "顕著な、目覚ましい", type: "adj", typeName: "形容詞", exEs: "Un progreso notable.", exEn: "Remarkable progress.", exJa: "目覚ましい進歩。" },
+      { id:"171", spanish:"preciso", japanese: "正確な、まさにその", type: "adj", typeName: "形容詞", exEs: "Datos muy precisos.", exEn: "Very precise data.", exJa: "非常に正確なデータ。" },
+      { id:"172", spanish:"principal", japanese: "主要な、メインの", type: "adj", typeName: "形容詞", exEs: "La razón principal.", exEn: "The main reason.", exJa: "主要な理由。" },
+      { id:"173", spanish:"relevante", japanese: "関連性のある、重要・顕著な", type: "adj", typeName: "形容詞", exEs: "Información relevante.", exEn: "Relevant information.", exJa: "関連する重要な情報。" },
+      { id:"174", spanish:"significativo", japanese: "重要な、意義深い", type: "adj", typeName: "形容詞", exEs: "Un aumento significativo.", exEn: "A significant increase.", exJa: "意味のある大きな増加。" },
+      { id:"175", spanish:"actualmente", japanese: "現在は、今や", type: "adv", typeName: "副詞", exEs: "Actualmente vivo aquí.", exEn: "Currently I live here.", exJa: "現在はここに住んでいます。" },
+      { id:"176", spanish:"definitivamente", japanese: "決定的に、間違いなく", type: "adv", typeName: "副詞", exEs: "Definitivamente es mejor.", exEn: "It is definitely better.", exJa: "間違いなくそちらの方が良い。" },
+      { id:"177", spanish:"especialmente", japanese: "特に、とりわけ", type: "adv", typeName: "副詞", exEs: "Especialmente en verano.", exEn: "Especially in summer.", exJa: "特に夏場において。" },
+      { id:"178", spanish:"eventualmente", japanese: "時折、ひょっとすると", type: "adv", typeName: "副詞", exEs: "Eventualmente todo cambiará.", exEn: "Possibly everything will change.", exJa: "ひょっとするとすべてが変わるかもしれない。" },
+      { id:"179", spanish:"fundamentalmente", japanese: "根本的に、基本的に", type: "adv", typeName: "副詞", exEs: "Es fundamentalmente correcto.", exEn: "It is fundamentally correct.", exJa: "根本的に正しい。" },
+      { id:"180", spanish:"obviamente", japanese: "明らかに、言うまでもなく", type: "adv", typeName: "副詞", exEs: "Obviamente no es fácil.", exEn: "Obviously it is not easy.", exJa: "言うまでもなく簡単ではない。" },
+      { id:"181", spanish:"posteriormente", japanese: "その後で、追って", type: "adv", typeName: "副詞", exEs: "Lo analizaremos posteriormente.", exEn: "We will analyze it later.", exJa: "後ほどそれを分析します。" },
+      { id:"182", spanish:"principalmente", japanese: "主として、主に", type: "adv", typeName: "副詞", exEs: "Trabajo principalmente con datos.", exEn: "I mainly work with data.", exJa: "主にデータを扱って仕事をしています。" },
+      { id:"183", spanish:"recientemente", japanese: "最近、近頃", type: "adv", typeName: "副詞", exEs: "He leído un libro recientemente.", exEn: "I read a book recently.", exJa: "最近本を読みました。" },
+      { id:"184", spanish:"relativamente", japanese: "比較的", type: "adv", typeName: "副詞", exEs: "Es un método relativamente nuevo.", exEn: "It is a relatively new method.", exJa: "比較的新しい方法です。" },
+      { id:"185", spanish:"a través de", japanese: "〜を通して、〜経由で", type: "phrase", typeName: "熟語", exEs: "A través del análisis de datos.", exEn: "Through data analysis.", exJa: "データ分析を通して。" },
+      { id:"186", spanish:"al mismo tiempo", japanese: "同時に", type: "phrase", typeName: "熟語", exEs: "Al mismo tiempo, hay riesgos.", exEn: "At the same time, there are risks.", exJa: "同時に、リスクも存在する。" },
+      { id:"187", spanish:"con el fin de", japanese: "〜する目的で", type: "phrase", typeName: "熟語", exEs: "Con el fin de mejorar la calidad.", exEn: "In order to improve quality.", exJa: "品質を向上させる目的で。" },
+      { id:"188", spanish:"con respecto a", japanese: "〜に関して", type: "phrase", typeName: "熟語", exEs: "Con respecto a este problema.", exEn: "With respect to this problem.", exJa: "この問題に関して。" },
+      { id:"189", spanish:"de modo que", japanese: "〜となるように、したがって", type: "conj", typeName: "接続詞", exEs: "Trabaja de modo que funcione.", exEn: "Work so that it functions.", exJa: "しっかり機能するように作業しなさい。" },
+      { id:"190", spanish:"en cambio", japanese: "それに対して、一方で", type: "phrase", typeName: "熟語", exEs: "En cambio, la segunda opción es mejor.", exEn: "In contrast, the second option is better.", exJa: "それに対して、2つ目の選択肢の方が良い。" },
+      { id:"191", spanish:"en consecuencia", japanese: "その結果として", type: "phrase", typeName: "熟語", exEs: "En consecuencia, tomamos medidas.", exEn: "Consequently, we took measures.", exJa: "その結果、私たちは対策を講じた。" },
+      { id:"192", spanish:"en todo caso", japanese: "いずれにせよ、ともかく", type: "phrase", typeName: "熟語", exEs: "En todo caso, debemos continuar.", exEn: "In any case, we must continue.", exJa: "いずれにせよ、私たちは続けなければならない。" },
+      { id:"193", spanish:"hasta cierto punto", japanese: "ある程度までは", type: "phrase", typeName: "熟語", exEs: "Es verdad hasta cierto punto.", exEn: "It is true up to a point.", exJa: "ある程度までは事実だ。" },
+      { id:"194", spanish:"por el contrario", japanese: "反対に、それどころか", type: "phrase", typeName: "熟語", exEs: "Por el contrario, esto ayuda.", exEn: "On the contrary, this helps.", exJa: "反対に、これは助けになる。" },
+      { id:"195", spanish:"sin duda", japanese: "疑いなく、確実に", type: "phrase", typeName: "熟語", exEs: "Sin duda es el mejor camino.", exEn: "Without a doubt it is the best way.", exJa: "疑いなくそれが最善の道だ。" },
+      { id:"196", spanish:"tarde o temprano", japanese: "遅かれ早かれ", type: "phrase", typeName: "熟語", exEs: "Tarde o temprano llegará.", exEn: "Sooner or later it will arrive.", exJa: "遅かれ早かれそれはやってくる。" },
+      { id:"197", spanish:"tener en cuenta", japanese: "考慮に入れる", type: "phrase", typeName: "熟語", exEs: "Hay que tener en cuenta el costo.", exEn: "One must take into account the cost.", exJa: "コストを考慮に入れる必要がある。" },
+      { id:"198", spanish:"vale la pena", japanese: "〜する価値がある", type: "phrase", typeName: "熟語", exEs: "Vale la pena intentarlo.", exEn: "It is worth trying.", exJa: "試してみる価値はある。" },
+      { id:"199", spanish:"ya que", japanese: "〜である以上、〜なので（= since / as）", type: "conj", typeName: "接続詞", exEs: "Ya que estás aquí, hablemos.", exEn: "Since you are here, let's talk.", exJa: "せっかくここにいるのだから、話しましょう。" },
+      { id:"200", spanish:"bueno", japanese: "えーと、そうだね、じゃあ", type: "interj", typeName: "間投詞", exEs: "Bueno, vamos a empezar.", exEn: "Well, let's start.", exJa: "じゃあ、始めようか。" },
+      { id:"201", spanish:"o sea", japanese: "つまり、要するに", type: "phrase", typeName: "熟語", exEs: "O sea, ¿no quieres ir?", exEn: "In other words, you don't want to go?", exJa: "つまり、行きたくないってこと？" },
+      { id:"202", spanish:"la verdad", japanese: "実は、正直なところ", type: "phrase", typeName: "熟語", exEs: "La verdad, no me gusta mucho.", exEn: "To be honest, I don't really like it.", exJa: "正直、あまり好きじゃないんだ。" },
+      { id:"203", spanish:"por cierto", japanese: "ところで、ちなみに", type: "phrase", typeName: "熟語", exEs: "Por cierto, ¿qué hiciste ayer?", exEn: "By the way, what did you do yesterday?", exJa: "ところで、昨日は何したの？" },
+      { id:"204", spanish:"en fin", japanese: "まあ何はともあれ、とにかく", type: "phrase", typeName: "熟語", exEs: "En fin, todo salió bien.", exEn: "Anyway, everything turned out well.", exJa: "まあ何はともあれ、すべて上手くいったよ。" },
+      { id:"205", spanish:"claro", japanese: "もちろん、なるほど、そうだよね", type: "interj", typeName: "間投詞", exEs: "¡Claro que sí!", exEn: "Of course!", exJa: "もちろんだよ！" },
+      { id:"206", spanish:"seguro", japanese: "たしかに、きっと", type: "adv", typeName: "副詞", exEs: "Seguro que viene.", exEn: "I'm sure he is coming.", exJa: "きっと彼は来るよ。" },
+      { id:"207", spanish:"¡Qué lástima!", japanese: "それは残念！", type: "interj", typeName: "間投詞", exEs: "¿No puedes venir? ¡Qué lástima!", exEn: "You can't come? What a pity!", exJa: "来られないの？残念！" },
+      { id:"208", spanish:"¡Qué bueno!", japanese: "よかったね！最高！", type: "interj", typeName: "間投詞", exEs: "¿Pasaste el examen? ¡Qué bueno!", exEn: "You passed the exam? That's great!", exJa: "試験受かったの？よかったね！" },
+      { id:"209", spanish:"depende", japanese: "〜による、場合による", type: "v", typeName: "動詞", exEs: "Depende del tiempo.", exEn: "It depends on the weather.", exJa: "天気次第かな。" },
+      { id:"210", spanish:"quedarse", japanese: "とどまる、〜に残る", type: "v", typeName: "動詞", exEs: "Me quedo en casa hoy.", exEn: "I'm staying at home today.", exJa: "今日は家にいます。" },
+      { id:"211", spanish:"olvidar", japanese: "忘れる", type: "v", typeName: "動詞", exEs: "Olvidé traer la llave.", exEn: "I forgot to bring the key.", exJa: "鍵を持ってくるのを忘れた。" },
+      { id:"212", spanish:"cambiar", japanese: "変える、変わる", type: "v", typeName: "動詞", exEs: "Todo cambia rápido.", exEn: "Everything changes quickly.", exJa: "すべてが素早く変わる。" },
+      { id:"213", spanish:"funcionar", japanese: "機能する、上手くいく", type: "v", typeName: "動詞", exEs: "Este plan funciona muy bien.", exEn: "This plan works very well.", exJa: "この計画はすごく上手くいっている。" },
+      { id:"214", spanish:"sentirse", japanese: "〜と感じる、〜な気分である", type: "v", typeName: "動詞", exEs: "Me siento muy bien hoy.", exEn: "I feel very good today.", exJa: "今日はとても気分が良いです。" },
+      { id:"215", spanish:"quizás", japanese: "たぶん、もしかすると", type: "adv", typeName: "副詞", exEs: "Quizás vaya mañana.", exEn: "Maybe I will go tomorrow.", exJa: "もしかしたら明日行くかも。" },
+      { id:"216", spanish:"de repente", japanese: "突然、いきなり", type: "adv", typeName: "副詞", exEs: "De repente empezó a llover.", exEn: "Suddenly it started to rain.", exJa: "突然雨が降り出した。" },
+      { id:"217", spanish:"despacio", japanese: "ゆっくり", type: "adv", typeName: "副詞", exEs: "Habla más despacio, por favor.", exEn: "Speak more slowly, please.", exJa: "もう少しゆっくり話してください。" },
+      { id:"218", spanish:"enseguida", japanese: "すぐに、ただちに", type: "adv", typeName: "副詞", exEs: "Vuelvo enseguida.", exEn: "I'll be right back.", exJa: "すぐ戻ります。" },
+      { id:"219", spanish:"bastante", japanese: "かなり、十分な", type: "adv", typeName: "副詞", exEs: "Es bastante interesante.", exEn: "It is quite interesting.", exJa: "かなり面白いね。" },
+      { id:"220", spanish:"esto", japanese: "これ（指示代名詞）", type: "other", typeName: "代名詞", exEs: "¿Qué es esto?", exEn: "What is this?", exJa: "これは何ですか？" },
+      { id:"221", spanish:"eso", japanese: "それ（指示代名詞）", type: "other", typeName: "代名詞", exEs: "Eso es使いやすさ. / Eso es verdad.", exEn: "That is true.", exJa: "それは本当です。" },
+      { id:"222", spanish:"alguien", japanese: "誰か", type: "other", typeName: "代名詞", exEs: "¿Hay alguien aquí?", exEn: "Is there anyone here?", exJa: "誰かここにいますか？" },
+      { id:"223", spanish:"algo", japanese: "何か", type: "other", typeName: "代名詞", exEs: "Quiero comer algo.", exEn: "I want to eat something.", exJa: "何か食べたいです。" },
+      { id:"224", spanish:"nada", japanese: "何も〜ない", type: "other", typeName: "代名詞", exEs: "No pasa nada.", exEn: "Nothing is happening. / It's fine.", exJa: "問題ないよ、何でもないよ。" },
+      { id:"225", spanish:"cerca", japanese: "近い、近くに", type: "adv", typeName: "副詞", exEs: "Está muy cerca de aquí.", exEn: "It is very close to here.", exJa: "ここからとても近いです。" },
+      { id:"226", spanish:"lejos", japanese: "遠い、遠くに", type: "adv", typeName: "副詞", exEs: "¿Está lejos la estación?", exEn: "Is the station far away?", exJa: "駅は遠いですか？" },
+      { id:"227", spanish:"antes", japanese: "以前に、前に", type: "adv", typeName: "副詞", exEs: "Llegué antes que tú.", exEn: "I arrived before you.", exJa: "君より前に着いたよ。" },
+      { id:"228", spanish:"después", japanese: "後で、〜の後に", type: "adv", typeName: "副詞", exEs: "Nos vemos después.", exEn: "See you later.", exJa: "また後で会いましょう。" },
+      { id:"229", spanish:"ya", japanese: "すでに、もう", type: "adv", typeName: "副詞", exEs: "Ya estoy listo.", exEn: "I am already ready.", exJa: "もう準備ができました。" },
+      { id:"230", spanish:"todavía", japanese: "まだ、今なお", type: "adv", typeName: "副詞", exEs: "Todavía no lo sé.", exEn: "I still don't know it.", exJa: "まだそれを知りません。" },
+      { id:"231", spanish:"seguro", japanese: "確信して、安全な", type: "adj", typeName: "形容詞", exEs: "¿Estás seguro?", exEn: "Are you sure?", exJa: "確かですか（本気ですか）？" },
+      { id:"232", spanish:"mismo", japanese: "同じ（代名詞・強調）", type: "adj", typeName: "形容詞", exEs: "Yo mismo lo hice.", exEn: "I did it myself.", exJa: "自分自身でそれをやりました。" },
+      { id:"233", spanish:"parecerse", japanese: "〜に似ている", type: "v", typeName: "動詞", exEs: "Te pareces a tu padre.", exEn: "You look like your father.", exJa: "お父さんに似ているね。" },
+      { id:"234", spanish:"darse cuenta", japanese: "〜に気づく", type: "phrase", typeName: "熟語", exEs: "Me di cuenta del error.", exEn: "I realized the error.", exJa: "エラー（間違い）に気づきました。" },
+      { id:"235", spanish:"tratar", japanese: "扱う、試みる（tratar de）", type: "v", typeName: "動詞", exEs: "Trato de aprender todos los días.", exEn: "I try to learn every day.", exJa: "毎日学ぶように努めています。" },
+      { id:"236", spanish:"significar", japanese: "意味する", type: "v", typeName: "動詞", exEs: "¿Qué significa esta palabra?", exEn: "What does this word mean?", exJa: "この単語はどういう意味ですか？" },
+      { id:"237", spanish:"suponer", japanese: "想定する、思い込む", type: "v", typeName: "動詞", exEs: "Supongo que sí.", exEn: "I suppose so.", exJa: "そうだと思います（たぶんね）。" },
+      { id:"238", spanish:"esperanza", japanese: "希望", type: "f", typeName: "女性名詞", exEs: "Tengo la esperanza de viajar.", exEn: "I have the hope of traveling.", exJa: "旅行に行けるという希望を持っています。" },
+      { id:"239", spanish:"éxito", japanese: "成功", type: "m", typeName: "男性名詞", exEs: "¡Mucho éxito en tu proyecto!", exEn: "Much success in your project!", exJa: "プロジェクトの成功を祈っています！" },
+      { id:"240", spanish:"opinión", japanese: "意見、考え", type: "f", typeName: "女性名詞", exEs: "¿Cuál es tu opinión al respecto?", exEn: "What is your opinion on this matter?", exJa: "これについての君の意見は何？" },
+      { id:"241", spanish:"posibilidad", japanese: "可能性", type: "f", typeName: "女性名詞", exEs: "Existe la posibilidad de cambio.", exEn: "There is a possibility of change.", exJa: "変更の可能性があります。" },
+      { id:"242", spanish:"solución", japanese: "解決策、ソリューション", type: "f", typeName: "女性名詞", exEs: "Encontramos una solución práctica.", exEn: "We found a practical solution.", exJa: "実用的な解決策を見つけました。" },
+      { id:"243", spanish:"duda", japanese: "疑問、ためらい", type: "f", typeName: "女性名詞", exEs: "No tengo ninguna duda.", exEn: "I have no doubt at all.", exJa: "何の疑問（迷い）もありません。" },
+      { id:"244", spanish:"propósito", japanese: "目的、意図", type: "m", typeName: "男性名詞", exEs: "¿Cuál es el propósito del plan?", exEn: "What is the purpose of the plan?", exJa: "その計画の目的は何ですか？" },
+      { id:"245", spanish:"depender", japanese: "依存する、〜次第である", type: "v", typeName: "動詞", exEs: "Todo depende de la situación.", exEn: "Everything depends on the situation.", exJa: "すべては状況次第です。" },
+      { id:"246", spanish:"sugerir", japanese: "提案する", type: "v", typeName: "動詞", exEs: "Te sugiero probar otra forma.", exEn: "I suggest you try another way.", exJa: "別の方法を試すことを提案します。" },
+      { id:"247", spanish:"explicar", japanese: "説明する", type: "v", typeName: "動詞", exEs: "¿Puedes explicar esto de nuevo?", exEn: "Can you explain this again?", exJa: "これをもっと詳しく説明できますか？" },
+      { id:"248", spanish:"aprovechar", japanese: "活かす、活用する、利用する", type: "v", typeName: "動詞", exEs: "Hay que aprovechar la oportunidad.", exEn: "We must take advantage of the opportunity.", exJa: "その機会を活かす必要があります。" },
+      { id:"249", spanish:"evitar", japanese: "避ける、防ぐ", type: "v", typeName: "動詞", exEs: "Debemos evitar errores graves.", exEn: "We must avoid serious mistakes.", exJa: "重大なミスを避けなければならない。" },
+      { id:"250", spanish:"suficiente", japanese: "十分な", type: "adj", typeName: "形容詞", exEs: "Tenemos tiempo suficiente.", exEn: "We have enough time.", exJa: "十分な時間があります。" },
+      { id:"251", spanish:"necesario", japanese: "必要な", type: "adj", typeName: "形容詞", exEs: "Es necesario hacer una prueba.", exEn: "It is necessary to run a test.", exJa: "テストを行うことが必要です。" },
+      { id:"252", spanish:"frecuente", japanese: "頻繁な、度々の", type: "adj", typeName: "形容詞", exEs: "Es un problema bastante frecuente.", exEn: "It is a fairly frequent problem.", exJa: "これはかなり頻繁に起きる問題です。" },
+      { id:"253", spanish:"probablemente", japanese: "たぶん、おそらく", type: "adv", typeName: "副詞", exEs: "Probablemente sea la mejor opción.", exEn: "It is probably the best option.", exJa: "おそらくそれが最善の選択肢でしょう。" },
+      { id:"254", spanish:"desafortunadamente", japanese: "あいにく、残念ながら", type: "adv", typeName: "副詞", exEs: "Desafortunadamente no puedo ir.", exEn: "Unfortunately I cannot go.", exJa: "残念ながら私は行けません。" },
+      { id:"255", spanish:"sin embargo", japanese: "しかしながら、けれども", type: "conj", typeName: "接続詞", exEs: "Es difícil, sin embargo posible.", exEn: "It is difficult, however possible.", exJa: "難しいですが、しかし可能です。" },
+      { id:"256", spanish:"por lo tanto", japanese: "したがって、それゆえに", type: "conj", typeName: "接続詞", exEs: "Por lo tanto, debemos decidir hoy.", exEn: "Therefore, we must decide today.", exJa: "したがって、今日決定する必要があります。" },
+      { id:"257", spanish:"a menos que", japanese: "〜でない限り（※要接続法）", type: "conj", typeName: "接続詞", exEs: "No iré a menos que me llames.", exEn: "I won't go unless you call me.", exJa: "君が電話してくらない限り行かないよ。" },
+      { id:"258", spanish:"en lugar de", japanese: "〜の代わりに", type: "phrase", typeName: "熟語", exEs: "Usamos agua en lugar de leche.", exEn: "We use water instead of milk.", exJa: "牛乳の代わりに水を使います。" },
+      { id:"259", spanish:"por supuesto", japanese: "もちろんです、当然ながら", type: "phrase", typeName: "熟語", exEs: "Por supuesto que te ayudaré.", exEn: "Of course I will help you.", exJa: "もちろん手伝いますよ。" },
+      { id:"260", spanish:"aconsejar", japanese: "助言する、勧められる", type: "v", typeName: "動詞", exEs: "Te aconsejo que estudies todos los días.", exEn: "I advise you to study every day.", exJa: "毎日勉強することをお勧めします。" },
+      { id:"261", spanish:"advertir", japanese: "警告する、気づかせる", type: "v", typeName: "動詞", exEs: "El experto advirtió sobre los riesgos del proyecto.", exEn: "The expert warned about the risks of the project.", exJa: "専門家はプロジェクトのリスクについて警告した。" },
+      { id:"262", spanish:"amenazar", japanese: "脅かす、脅迫する", type: "v", typeName: "動詞", exEs: "El cambio climático amenaza la biodiversidad.", exEn: "Climate change threatens biodiversity.", exJa: "気候変動は生物多様性を脅かしている。" },
+      { id:"263", spanish:"añadir", japanese: "追加する、付け加える", type: "v", typeName: "動詞", exEs: "Quisiera añadir un punto clave a la discusión.", exEn: "I would like to add a key point to the discussion.", exJa: "議論に重要なポイントを1つ付け加えたいと思います。" },
+      { id:"264", spanish:"anunciar", japanese: "発表する、告知する", type: "v", typeName: "動詞", exEs: "La empresa anunció el lanzamiento del nuevo producto.", exEn: "The company announced the launch of the new product.", exJa: "会社は新製品の発売を発表した。" },
+      { id:"265", spanish:"asegurar", japanese: "確信させる、保証する", type: "v", typeName: "動詞", exEs: "Nos aseguró que todo estaría listo a tiempo.", exEn: "He assured us that everything would be ready on time.", exJa: "彼はすべて時間通りに準備できると約束してくれた。" },
+      { id:"266", spanish:"atender", japanese: "対応する、世話をする", type: "v", typeName: "動詞", exEs: "Debemos atender las necesidades del cliente rápidamente.", exEn: "We must attend to the customer's needs quickly.", exJa: "私たちは顧客のニーズに迅速に対応しなければならない。" },
+      { id:"267", spanish:"aumentar", japanese: "増加する、増やす", type: "v", typeName: "動詞", exEs: "La demanda de tecnología sigue aumentando este año.", exEn: "The demand for technology continues to increase this year.", exJa: "テクノロジーの需要は今年増加し続けている。" },
+      { id:"268", spanish:"averiguar", japanese: "調べる、突き止める", type: "v", typeName: "動詞", exEs: "Voy a averiguar la causa principal del fallo.", exEn: "I'm going to find out the main cause of the failure.", exJa: "障害の主な原因を突き止めるつもりです。" },
+      { id:"269", spanish:"carecer", japanese: "欠けている、不足している", type: "v", typeName: "動詞", exEs: "El informe carece de datos suficientes para decidir.", exEn: "The report lacks sufficient data to make a decision.", exJa: "その報告書は決定を下すための十分なデータに欠けている。" },
+      { id:"270", spanish:"comprobar", japanese: "確かめる、検証する", type: "v", typeName: "動詞", exEs: "Es necesario comprobar los resultados antes de publicar.", exEn: "It is necessary to check the results before publishing.", exJa: "公開する前に結果を検証することが必要だ。" },
+      { id:"271", spanish:"conseguir", japanese: "手に入れる、達成する", type: "v", typeName: "動詞", exEs: "Consiguió solucionar el problema sin ayuda externa.", exEn: "He managed to solve the problem without external help.", exJa: "彼は外部の助けを借りずに問題を解決することができた。" },
+      { id:"272", spanish:"considerar", japanese: "検討する、〜とみなす", type: "v", typeName: "動詞", exEs: "Consideramos imprescindible mejorar el proceso actual.", exEn: "We consider it essential to improve the current process.", exJa: "現在のプロセスを改善することは不可欠であると考えています。" },
+      { id:"273", spanish:"convenir", japanese: "〜に都合が良い、望ましい", type: "v", typeName: "動詞", exEs: "Conviene revisar las cláusulas antes de firmar.", exEn: "It is advisable to review the clauses before signing.", exJa: "署名する前に条項を見直すのが望ましい。" },
+      { id:"274", spanish:"despertar", japanese: "目覚めさせる、喚起する", type: "v", typeName: "動詞", exEs: "La conferencia despertó un gran interés público.", exEn: "The lecture aroused great public interest.", exJa: "その講演は世間の大きな関心を呼び起こした。" },
+      { id:"275", spanish:"destacar", japanese: "強調する、目立つ", type: "v", typeName: "動詞", exEs: "Cabe destacar la importancia de la seguridad.", exEn: "It is worth highlighting the importance of security.", exJa: "セキュリティの重要性を強調しておく価値がある。" },
+      { id:"276", spanish:"disminuir", japanese: "減少する、減らす", type: "v", typeName: "動詞", exEs: "Buscamos disminuir los costos de producción este trimestre.", exEn: "We seek to reduce production costs this quarter.", exJa: "今四半期は製造コストを削減することを目指しています。" },
+      { id:"277", spanish:"exigir", japanese: "要求する、求める", type: "v", typeName: "動詞", exEs: "El nuevo cargo exige una alta responsabilidad.", exEn: "The new position requires high responsibility.", exJa: "新しい職務は高い責任を要求する。" },
+      { id:"278", spanish:"garantizar", japanese: "保証する、約束する", type: "v", typeName: "動詞", exEs: "No podemos garantizar un éxito inmediato sin esfuerzo.", exEn: "We cannot guarantee immediate success without effort.", exJa: "努力なしに即座の成功を保証することはできません。" },
+      { id:"279", spanish:"impedir", japanese: "妨げる、邪魔する", type: "v", typeName: "動詞", exEs: "La lluvia impidió que el evento se llevara a cabo.", exEn: "The rain prevented the event from taking place.", exJa: "雨のためイベントの実施が妨げられた。" },
+      { id:"280", spanish:"influir", japanese: "影響を与える", type: "v", typeName: "動詞", exEs: "Factores externos pueden influir en el resultado final.", exEn: "External factors can influence the final result.", exJa: "外部要因が最終結果に影響を与える可能性がある。" },
+      { id:"281", spanish:"insistir", japanese: "主張する、強く求める", type: "v", typeName: "動詞", exEs: "Ella insistió en revisar el documento otra vez.", exEn: "She insisted on reviewing the document again.", exJa: "彼女は文書をもう一度見直すことを強く主張した。" },
+      { id:"282", spanish:"investigar", japanese: "調査する、研究する", type: "v", typeName: "動詞", exEs: "Un equipo especializado investigará el incidente.", exEn: "A specialized team will investigate the incident.", exJa: "専門チームがそのインシデントを調査する。" },
+      { id:"283", spanish:"mantener", japanese: "維持する、保つ", type: "v", typeName: "動詞", exEs: "Es crucial mantener un equilibrio entre calidad y costo.", exEn: "It is crucial to maintain a balance between quality and cost.", exJa: "品質とコストのバランスを維持することが重要である。" },
+      { id:"284", spanish:"negarse", japanese: "拒否する、断る", type: "v", typeName: "動詞", exEs: "Se negó a aceptar las condiciones impuestas.", exEn: "He refused to accept the imposed conditions.", exJa: "彼は課された条件を受け入れることを拒否した。" },
+      { id:"285", spanish:"permitir", japanese: "許可する、可能にする", type: "v", typeName: "動詞", exEs: "Esta herramienta permite optimizar el flujo de trabajo.", exEn: "This tool allows optimizing the workflow.", exJa: "このツールによりワークフローを最適化できる。" },
+      { id:"286", spanish:"proponer", japanese: "提案する", type: "v", typeName: "動詞", exEs: "Propongo organizar una reunión la próxima semana.", exEn: "I propose organizing a meeting next week.", exJa: "来週ミーティングを開催することを提案します。" },
+      { id:"287", spanish:"recomendar", japanese: "勧める、推挙する", type: "v", typeName: "動詞", exEs: "Recomiendo que leas este libro de negocios.", exEn: "I recommend that you read this business book.", exJa: "このビジネス書を読むことをお勧めします。" },
+      { id:"288", spanish:"reconocer", japanese: "認める、認識する", type: "v", typeName: "動詞", exEs: "El director reconoció el esfuerzo de todo el equipo.", exEn: "The director recognized the effort of the whole team.", exJa: "ディレクターはチーム全員の努力を認めた。" },
+      { id:"289", spanish:"reducir", japanese: "減らす、縮小する", type: "v", typeName: "動詞", exEs: "Es urgente reducir la emisión de gases contaminantes.", exEn: "It is urgent to reduce the emission of polluting gases.", exJa: "汚染ガスの排出量を削減することは緊急の課題だ。" },
+      { id:"290", spanish:"resolver", japanese: "解決する、決断する", type: "v", typeName: "動詞", exEs: "Debemos resolver este conflicto lo antes posible.", exEn: "We must resolve this conflict as soon as possible.", exJa: "できるだけ早くこのコンフリクト（対立）を解決しなければならない。" },
+      { id:"291", spanish:"soportar", japanese: "耐える、我慢する", type: "v", typeName: "動詞", exEs: "No puedo soportar el ruido durante el trabajo.", exEn: "I cannot bear the noise during work.", exJa: "作業中の騒音には耐えられない。" },
+      { id:"292", spanish:"sostener", japanese: "支える、持論を主張する", type: "v", typeName: "動詞", exEs: "El ponente sostuvo su teoría con datos precisos.", exEn: "The speaker supported his theory with precise data.", exJa: "登壇者は正確なデータで持論を裏付けた。" },
+      { id:"293", spanish:"sustituir", japanese: "取って代わる、交換する", type: "v", typeName: "動詞", exEs: "Vamos a sustituir el sistema antiguo por uno moderno.", exEn: "We are going to replace the old system with a modern one.", exJa: "古いシステムを現代的なシステムにリプレイスする予定です。" },
+      { id:"294", spanish:"variar", japanese: "変化する、異なる", type: "v", typeName: "動詞", exEs: "Los precios pueden variar según la temporada.", exEn: "Prices may vary depending on the season.", exJa: "価格は季節によって変動することがある。" },
+      { id:"295", spanish:"avance", japanese: "進展、進歩", type: "m", typeName: "男性名詞", exEs: "El avance tecnológico cambia nuestra forma de vivir.", exEn: "Technological progress changes our way of living.", exJa: "技術の進歩は私たちの生き方を変える。" },
+      { id:"296", spanish:"consecuencia", japanese: "結果、影響", type: "f", typeName: "女性名詞", exEs: "Cada acción tiene una consecuencia inevitable.", exEn: "Every action has an inevitable consequence.", exJa: "あらゆる行動には避けられない結果が伴う。" },
+      { id:"297", spanish:"contexto", japanese: "文脈、状況・背景", type: "m", typeName: "男性名詞", exEs: "Es importante entender la palabra según el contexto.", exEn: "It is important to understand the word according to context.", exJa: "文脈に応じて単語を理解することが重要だ。" },
+      { id:"298", spanish:"desarrollo", japanese: "開発、成長", type: "m", typeName: "男性名詞", exEs: "El desarrollo personal requiere paciencia y constancia.", exEn: "Personal development requires patience and perseverance.", exJa: "自己成長には忍耐と継続が必要だ。" },
+      { id:"299", spanish:"discurso", japanese: "スピーチ、演説", type: "m", typeName: "男性名詞", exEs: "El presidente dio un discurso muy inspirador.", exEn: "The president gave a very inspiring speech.", exJa: "社長は非常に励みになるスピーチを行った。" },
+      { id:"300", spanish:"efecto", japanese: "効果、影響", type: "m", typeName: "男性名詞", exEs: "La medida tuvo un efecto positivo inmediato.", exEn: "The measure had an immediate positive effect.", exJa: "その施策は即座に好影響をもたらした。" },
+      { id:"301", spanish:"enfoque", japanese: "アプローチ、着眼点", type: "m", typeName: "男性名詞", exEs: "Necesitamos un nuevo enfoque para resolver el problema.", exEn: "We need a new approach to solve the problem.", exJa: "問題を解決するために新しいアプローチが必要です。" },
+      { id:"302", spanish:"entorno", japanese: "環境、周囲の状況", type: "m", typeName: "男性名詞", exEs: "Debemos adaptarnos a un entorno digital cambiante.", exEn: "We must adapt to a changing digital environment.", exJa: "変化するデジタル環境に適応しなければならない。" },
+      { id:"303", spanish:"evidencia", japanese: "証拠、明白さ", type: "f", typeName: "女性名詞", exEs: "No hay evidencia suficiente para confirmar la hipótesis.", exEn: "There is not enough evidence to confirm the hypothesis.", exJa: "仮説を証明する十分な証拠がない。" },
+      { id:"304", spanish:"experiencia", japanese: "経験、体験", type: "f", typeName: "女性名詞", exEs: "La experiencia práctica es tan valiosa como la teoría.", exEn: "Practical experience is as valuable as theory.", exJa: "実践的な経験は理論と同じくらい価値がある。" },
+      { id:"305", spanish:"impacto", japanese: "影響、インパクト", type: "m", typeName: "男性名詞", exEs: "El proyecto tuvo un gran impacto en la sociedad.", exEn: "The project had a great impact on society.", exJa: "そのプロジェクトは社会に大きなインパクトを与えた。" },
+      { id:"306", spanish:"objetivo", japanese: "目的、目標", type: "m", typeName: "男性名詞", exEs: "El objetivo principal es aumentar la satisfacción.", exEn: "The main objective is to increase satisfaction.", exJa: "主な目標は満足度を高めることだ。" },
+      { id:"307", spanish:"origen", japanese: "起源、由来", type: "m", typeName: "男性名詞", exEs: "El origen del problema aún es desconocido.", exEn: "The origin of the problem is still unknown.", exJa: "問題の原因（起源）は未だ不明である。" },
+      { id:"308", spanish:"perspectiva", japanese: "視点、見地", type: "f", typeName: "女性名詞", exEs: "Ver la situación desde otra perspectiva ayuda mucho.", exEn: "Seeing the situation from another perspective helps a lot.", exJa: "別の視点から状況を見ることが大きな助けになる。" },
+      { id:"309", spanish:"prioridad", japanese: "優先事項、優先順位", type: "f", typeName: "女性名詞", exEs: "Nuestra prioridad absoluta es la seguridad de los datos.", exEn: "Our absolute priority is data security.", exJa: "私たちの最優先事項はデータセキュリティです。" },
+      { id:"310", spanish:"recurso", japanese: "資源、リソース", type: "m", typeName: "男性名詞", exEs: "Optimizamos el uso de los recursos disponibles.", exEn: "We optimize the use of available resources.", exJa: "利用可能なリソースの活用を最適化します。" },
+      { id:"311", spanish:"resultado", japanese: "結果、成果", type: "m", typeName: "男性名詞", exEs: "Los resultados trimestrales superaron las expectativas.", exEn: "Quarterly results exceeded expectations.", exJa: "四半期業績は予想を上回った。" },
+      { id:"312", spanish:"solución", japanese: "解決策", type: "f", typeName: "女性名詞", exEs: "Buscamos una solución sostenible a largo plazo.", exEn: "We are looking for a long-term sustainable solution.", exJa: "長期的で持続可能な解決策を探しています。" },
+      { id:"313", spanish:"técnica", japanese: "技術、手法", type: "f", typeName: "女性名詞", exEs: "Esta técnica permite aprender más rápido.", exEn: "This technique allows you to learn faster.", exJa: "この手法を使えばより素早く学習できる。" },
+      { id:"314", spanish:"ventaja", japanese: "利点、アドバンテージ", type: "f", typeName: "女性名詞", exEs: "La automatización ofrece una ventaja competitiva.", exEn: "Automation offers a competitive advantage.", exJa: "自動化は競争上の優位性（強み）をもたらす。" },
+      { id:"315", spanish:"actual", japanese: "現在の、現代の", type: "adj", typeName: "形容詞", exEs: "La situación actual requiere decisiones rápidas.", exEn: "The current situation requires fast decisions.", exJa: "現在の状況は迅速な意思決定を求めている。" },
+      { id:"316", spanish:"amplio", japanese: "広い、広範な", type: "adj", typeName: "形容詞", exEs: "El candidato posee un amplio conocimiento técnico.", exEn: "The candidate has broad technical knowledge.", exJa: "その候補者は広範な技術的知識を持っている。" },
+      { id:"317", spanish:"anterior", japanese: "前の、前述の", type: "adj", typeName: "形容詞", exEs: "Como mencionamos en la sección anterior, es crucial.", exEn: "As mentioned in the previous section, it is crucial.", exJa: "前述のセクションで述べたように、これは重要である。" },
+      { id:"318", spanish:"capaz", japanese: "能力がある、〜できる", type: "adj", typeName: "形容詞", exEs: "Es un ingeniero capaz de resolver problemas complejos.", exEn: "He is an engineer capable of solving complex problems.", exJa: "彼は複雑な問題を解決できる能力を持ったエンジニアだ。" },
+      { id:"319", spanish:"clave", japanese: "鍵となる、決定的な", type: "adj", typeName: "形容詞", exEs: "El análisis de datos es el elemento clave.", exEn: "Data analysis is the key element.", exJa: "データ分析が鍵となる要素である。" },
+      { id:"320", spanish:"constante", japanese: "一定の、継続的な", type: "adj", typeName: "形容詞", exEs: "El aprendizaje constante es esencial para el éxito.", exEn: "Constant learning is essential for success.", exJa: "絶え間ない学習が成功には不可欠だ。" },
+      { id:"321", spanish:"diverso", japanese: "多様な、様々な", type: "adj", typeName: "形容詞", exEs: "El equipo está formado por personas de diversos orígenes.", exEn: "The team consists of people from diverse backgrounds.", exJa: "チームは多様なバックグラウンドを持つ人々で構成されている。" },
+      { id:"322", spanish:"efectivo", japanese: "効果的な、実質的な", type: "adj", typeName: "形容詞", exEs: "Buscamos una estrategia efectiva de comunicación.", exEn: "We are looking for an effective communication strategy.", exJa: "効果的なコミュニケーション戦略を探しています。" },
+      { id:"323", spanish:"esencial", japanese: "不可欠な、本質的な", type: "adj", typeName: "形容詞", exEs: "Es esencial verificar el código antes del despliegue.", exEn: "It is essential to verify code before deployment.", exJa: "デプロイ前にコードを検証することは不可欠だ。" },
+      { id:"324", spanish:"extraño", japanese: "奇妙な、珍しい", type: "adj", typeName: "形容詞", exEs: "Sucedió algo extraño durante la prueba.", exEn: "Something strange happened during the test.", exJa: "テスト中に何か奇妙なことが起きた。" },
+      { id:"325", spanish:"frecuente", japanese: "頻繁な", type: "adj", typeName: "形容詞", exEs: "Los errores humanos son la causa más frecuente.", exEn: "Human errors are the most frequent cause.", exJa: "ヒューマンエラーが最も頻繁な原因である。" },
+      { id:"326", spanish:"grave", japanese: "深刻な、重い", type: "adj", typeName: "形容詞", exEs: "Cometer un error grave puede costar caro.", exEn: "Making a serious error can cost dearly.", exJa: "重大なエラーを犯すと高くつく可能性がある。" },
+      { id:"327", spanish:"imprescindible", japanese: "絶対に不可欠な", type: "adj", typeName: "形容詞", exEs: "El trabajo en equipo es imprescindible hoy en día.", exEn: "Teamwork is indispensable nowadays.", exJa: "今日、チームワークは絶対に不可欠だ。" },
+      { id:"328", spanish:"incapaz", japanese: "〜できない、無能な", type: "adj", typeName: "形容詞", exEs: "Fue incapaz de dar una respuesta clara.", exEn: "He was unable to give a clear answer.", exJa: "彼は明確な回答を出すことができなかった。" },
+      { id:"329", spanish:"móvil", japanese: "可動性の、モバイルの", type: "adj", typeName: "形容詞", exEs: "El uso de dispositivos móviles sigue creciendo.", exEn: "The use of mobile devices continues to grow.", exJa: "モバイル端末の利用は拡大し続けている。" },
+      { id:"330", spanish:"obvio", japanese: "明白な、自明の", type: "adj", typeName: "形容詞", exEs: "Es un hecho obvio que no necesita explicación.", exEn: "It is an obvious fact that needs no explanation.", exJa: "説明を要しない明白な事実だ。" },
+      { id:"331", spanish:"posterior", japanese: "後方の、その後の", type: "adj", typeName: "形容詞", exEs: "Los detalles se discutirán en una reunión posterior.", exEn: "Details will be discussed in a later meeting.", exJa: "詳細は後日の会議で議論される。" },
+      { id:"332", spanish:"profundo", japanese: "深い、深刻な", type: "adj", typeName: "形容詞", exEs: "Hicimos un análisis profundo sobre el mercado.", exEn: "We conducted a deep analysis of the market.", exJa: "市場に関する深い分析を行った。" },
+      { id:"333", spanish:"sensible", japanese: "に敏感な、デリケートな", type: "adj", typeName: "形容詞", exEs: "Esta información es muy sensible y confidencial.", exEn: "This information is very sensitive and confidential.", exJa: "この情報は非常にデリケートで機密性が高い。" },
+      { id:"334", spanish:"sostenible", japanese: "持続可能な", type: "adj", typeName: "形容詞", exEs: "Debemos promover un crecimiento económico sostenible.", exEn: "We must promote sustainable economic growth.", exJa: "持続可能な経済成長を促進しなければならない。" },
+      { id:"335", spanish:"útil", japanese: "役に立つ、有用な", type: "adj", typeName: "形容詞", exEs: "Es una aplicación muy útil para la productividad.", exEn: "It is a very useful application for productivity.", exJa: "生産性向上に非常に役立つアプリです。" },
+      { id:"336", spanish:"valioso", japanese: "貴重な、価値のある", type: "adj", typeName: "形容詞", exEs: "El tiempo es el recurso más valioso que tenemos.", exEn: "Time is the most valuable resource we have.", exJa: "時間は私たちが持つ最も貴重なリソースだ。" },
+      { id:"337", spanish:"alrededor de", japanese: "〜の周りに、およそ", type: "phrase", typeName: "熟語", exEs: "Llegaremos alrededor de las tres de la tarde.", exEn: "We will arrive around three in the afternoon.", exJa: "午後3時頃に到着する予定です。" },
+      { id:"338", spanish:"a pesar de", japanese: "〜にもかかわらず", type: "phrase", typeName: "熟語", exEs: "A pesar de las dificultades, logramos el objetivo.", exEn: "Despite the difficulties, we achieved the goal.", exJa: "困難にもかかわらず、目標を達成した。" },
+      { id:"339", spanish:"a medida que", japanese: "〜するにつれて", type: "phrase", typeName: "熟語", exEs: "A medida que avanzamos, surgen nuevas ideas.", exEn: "As we move forward, new ideas emerge.", exJa: "前に進むにつれて、新しいアイデアが生まれる。" },
+      { id:"340", spanish:"a partir de", japanese: "〜以降、〜から", type: "phrase", typeName: "熟語", exEs: "A partir de mañana, el horario cambiará.", exEn: "Starting tomorrow, the schedule will change.", exJa: "明日以降、スケジュールが変更になります。" },
+      { id:"341", spanish:"a causa de", japanese: "〜が原因で", type: "phrase", typeName: "熟語", exEs: "El retraso se debió a causa del mal tiempo.", exEn: "The delay was due to bad weather.", exJa: "遅延は悪天候が原因であった。" },
+      { id:"342", spanish:"de acuerdo con", japanese: "〜に従って、〜によれば", type: "phrase", typeName: "熟語", exEs: "De acuerdo con los informes, las ventas aumentaron.", exEn: "According to the reports, sales increased.", exJa: "報告書によれば、売上は増加した。" },
+      { id:"343", spanish:"debido a", japanese: "〜に起因して、〜のために", type: "phrase", typeName: "熟語", exEs: "Cancelamos el evento debido a imprevistos.", exEn: "We canceled the event due to unforeseen circumstances.", exJa: "不測の事態のためにイベントを中止した。" },
+      { id:"344", spanish:"en cuanto a", japanese: "〜に関しては、〜について言うと", type: "phrase", typeName: "熟語", exEs: "En cuanto a los costos, los discutiremos luego.", exEn: "As for the costs, we will discuss them later.", exJa: "コストに関しては、後ほど議論します。" },
+      { id:"345", spanish:"en relación con", japanese: "〜に関連して", type: "phrase", typeName: "熟語", exEs: "Escribo en relación con su consulta reciente.", exEn: "I am writing in relation to your recent inquiry.", exJa: "最近のお問い合わせに関連してご連絡しております。" },
+      { id:"346", spanish:"frente a", japanese: "〜に直面して、〜に対して", type: "phrase", typeName: "熟語", exEs: "Frente a la crisis, debemos actuar con calma.", exEn: "In the face of the crisis, we must act calmly.", exJa: "危機に直面して、私たちは冷静に行動しなければならない。" },
+      { id:"347", spanish:"gracias a", japanese: "〜のおかげで", type: "phrase", typeName: "熟語", exEs: "Gracias a tu ayuda, terminamos a tiempo.", exEn: "Thanks to your help, we finished on time.", exJa: "君の助けのおかげで時間通りに終わった。" },
+      { id:"348", spanish:"junto a", japanese: "〜のとなりに、〜と共に", type: "phrase", typeName: "熟語", exEs: "Trabajamos junto a expertos en la materia.", exEn: "We work alongside experts in the field.", exJa: "私たちはその分野の専門家と共に働いている。" },
+      { id:"349", spanish:"por medio de", japanese: "〜手段によって、〜を通じて", type: "phrase", typeName: "熟語", exEs: "Comunicaremos la decisión por medio de un correo.", exEn: "We will communicate the decision by means of an email.", exJa: "メールを通じて決定を連絡します。" },
+      { id:"350", spanish:"respecto a", japanese: "〜に関して", type: "phrase", typeName: "熟語", exEs: "No tengo comentarios respecto a ese tema.", exEn: "I have no comments regarding that topic.", exJa: "そのテーマに関してはコメントはありません。" },
+      { id:"351", spanish:"sin embargo", japanese: "しかしながら、けれども", type: "conj", typeName: "接続詞", exEs: "Es un plan arriesgado; sin embargo, vale la pena.", exEn: "It is a risky plan; however, it is worth it.", exJa: "リスクのある計画だが、しかしやってみる価値はある。" },
+      { id:"352", spanish:"no obstante", japanese: "それにもかかわらず", type: "conj", typeName: "接続詞", exEs: "Estudió mucho; no obstante, el examen fue duro.", exEn: "He studied a lot; nevertheless, the exam was tough.", exJa: "彼はよく勉強したが、それにもかかわらず試験は厳しかった。" },
+      { id:"353", spanish:"por lo tanto", japanese: "したがって、それゆえに", type: "conj", typeName: "接続詞", exEs: "No hay presupuesto; por lo tanto, debemos esperar.", exEn: "There is no budget; therefore, we must wait.", exJa: "予算がない、したがって待たなければならない。" },
+      { id:"354", spanish:"por consiguiente", japanese: "結果として、したがって", type: "conj", typeName: "接続詞", exEs: "Falló la prueba; por consiguiente, debemos repetir.", exEn: "The test failed; consequently, we must repeat.", exJa: "テストに失敗した、したがってやり直さなければならない。" },
+      { id:"355", spanish:"siempre que", japanese: "〜する限り（※要接続法）", type: "conj", typeName: "接続詞", exEs: "Te ayudaré siempre que tengas una buena actitud.", exEn: "I will help you as long as you have a good attitude.", exJa: "前向きな姿勢でいる限り、手伝います。" },
+      { id:"356", spanish:"A fin de que", japanese: "〜となるように（※要接続法）", type: "conj", typeName: "接続詞", exEs: "Explicó todo a fin de que no hubiera dudas.", exEn: "He explained everything so that there would be no doubts.", exJa: "疑問が残らないよう、彼はすべてを説明した。" },
     ];
 
-    // 配列をシャッフル（フィッシャー–イェーツのシャッフル）
-    function shuffle(array) {
+    // --- ローカルストレージ操作関数 ---
+    const STORAGE_KEY = 'fav_vocab_ids';
+
+    function getFavorites() {
+      const favs = localStorage.getItem(STORAGE_KEY);
+      return favs ? JSON.parse(favs) : [];
+    }
+
+    function toggleFavorite(id, btnElement) {
+      let favs = getFavorites();
+      if (favs.includes(id)) {
+        favs = favs.filter(favId => favId !== id);
+        btnElement.classList.remove('active');
+        btnElement.textContent = '☆';
+      } else {
+        favs.push(id);
+        btnElement.classList.add('active');
+        btnElement.textContent = '★';
+      }
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(favs));
+    }
+
+    // --- データ初期化（シャッフル ＋ お気に入り先頭並べ替え） ---
+    function prepareVocabulary(array) {
+      // 1. 配列をシャッフル
       const arr = [...array];
       for (let i = arr.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [arr[i], arr[j]] = [arr[j], arr[i]];
       }
-      return arr;
+
+      // 2. お気に入りを抽出して先頭に配置
+      const favs = getFavorites();
+      const favItems = arr.filter(item => favs.includes(item.id));
+      const nonFavItems = arr.filter(item => !favs.includes(item.id));
+
+      return [...favItems, ...nonFavItems];
     }
 
-    const vocabulary = shuffle(rawVocabulary);
-    //const vocabulary = rawVocabulary;
+    const vocabulary = prepareVocabulary(rawVocabulary);
+    const totalCount = vocabulary.length;
+
+    // 進捗（1/4, 2/4, 3/4）の閾値インデックスを算出
+    const milestone1 = Math.floor(totalCount * 0.25);
+    const milestone2 = Math.floor(totalCount * 0.50);
+    const milestone3 = Math.floor(totalCount * 0.75);
+
+    // フラグで各マイルストーンメッセージが1度だけ表示されるよう制御
+    let milestonePassed = { m1: false, m2: false, m3: false };
 
     let dataIndex = 0;
     let isLoading = false;
@@ -556,12 +632,37 @@
       }
     }
 
+    // マイルストーンカードを追加する関数
+    function renderMilestone(text) {
+      const card = document.createElement("div");
+      card.className = "milestone-card";
+      card.textContent = text;
+      cardList.appendChild(card);
+    }
+
     function loadMoreCards(batchSize = 10) {
-      if (isLoading) return;
+      if (isLoading || dataIndex >= totalCount) return;
       isLoading = true;
 
+      const favs = getFavorites();
+
       for (let i = 0; i < batchSize; i++) {
+        if (dataIndex >= totalCount) break;
+
+        // 進捗メッセージチェック
+        if (dataIndex === milestone1 && !milestonePassed.m1) {
+          renderMilestone("¡Has completado 1/4 del vocabulario! ¡Buen trabajo!");
+          milestonePassed.m1 = true;
+        } else if (dataIndex === milestone2 && !milestonePassed.m2) {
+          renderMilestone("¡Ya has llegado a la mitad (2/4)! ¡Sigue así!");
+          milestonePassed.m2 = true;
+        } else if (dataIndex === milestone3 && !milestonePassed.m3) {
+          renderMilestone("¡Casi terminas (3/4)! ¡Un último esfuerzo!");
+          milestonePassed.m3 = true;
+        }
+
         const item = vocabulary[dataIndex];
+        const isFav = favs.includes(item.id);
 
         const card = document.createElement("div");
         card.className = "card";
@@ -569,6 +670,9 @@
         const badgeClass = getBadgeClass(item.type);
 
         card.innerHTML = `
+          <button class="fav-btn ${isFav ? 'active' : ''}" onclick="toggleFavorite('${item.id}', this)">
+            ${isFav ? '★' : '☆'}
+          </button>
           <div class="word-header">
             <span class="word">${item.spanish}</span>
             <span class="type-badge ${badgeClass}">${item.typeName}</span>
@@ -582,10 +686,16 @@
         `;
 
         cardList.appendChild(card);
-        dataIndex = (dataIndex + 1) % vocabulary.length;
+        dataIndex++;
       }
 
-      cardList.after(sentinel);
+      // 全件閲覧完了時の処理
+      if (dataIndex >= totalCount) {
+        sentinel.innerHTML = `<div class="end-message">¡Has visto todas las palabras!</div>`;
+        if (observer) observer.disconnect();
+      } else {
+        cardList.after(sentinel);
+      }
       
       setTimeout(() => {
         isLoading = false;
@@ -594,7 +704,7 @@
 
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
-        if (entry.isIntersecting && !isLoading) {
+        if (entry.isIntersecting && !isLoading && dataIndex < totalCount) {
           loadMoreCards(10);
         }
       });
@@ -608,4 +718,4 @@
     loadMoreCards(15);
   </script>
 </body>
-</html>d
+</html>
