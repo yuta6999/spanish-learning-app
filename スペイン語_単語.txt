@@ -353,6 +353,5 @@ sin embargo	しかしながら、けれども	conj	接続詞	Es un plan arriesga
 no obstante	それにもかかわらず	conj	接続詞	Estudió mucho; no obstante, el examen fue duro.	He studied a lot; nevertheless, the exam was tough.	彼はよく勉強したが、それにもかかわらず試験は厳しかった。
 por lo tanto	したがって、それゆえに	conj	接続詞	No hay presupuesto; por lo tanto, debemos esperar.	There is no budget; therefore, we must wait.	予算がない、したがって待たなければならない。
 por consiguiente	結果として、したがって	conj	接続詞	Falló la prueba; por consiguiente, debemos repetir.	The test failed; consequently, we must repeat.	テストに失敗した、したがってやり直さなければならない。
-enの代わりに（en vez de）	〜の代わりに	other	その他	Es mejor prevenir en vez de lamentar.	It is better to prevent instead of regret.	後悔する代わりに予防する（転ばぬ先の杖）方が良い。
 siempre que	〜する限り（※要接続法）	conj	接続詞	Te ayudaré siempre que tengas una buena actitud.	I will help you as long as you have a good attitude.	前向きな姿勢でいる限り、手伝います。
 A fin de que	〜となるように（※要接続法）	conj	接続詞	Explicó todo a fin de que no hubiera dudas.	He explained everything so that there would be no doubts.	疑問が残らないよう、彼はすべてを説明した。
