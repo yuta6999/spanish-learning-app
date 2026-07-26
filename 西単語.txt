@@ -65,7 +65,7 @@ grande	大きい	adj	形容詞	Una casa grande.	A big house.	大きな家。
 pequeño	小さい	adj	形容詞	Un detalle pequeño.	A small detail.	小さな詳細。
 nuevo	新しい	adj	形容詞	Tengo un nuevo plan.	I have a new plan.	新しい計画があります。
 viejo	古い	adj	形容詞	Un amigo viejo.	An old friend.	古い友人。
-primer	最初の	adj	形容詞	Es el primer paso.	It is the first step.	これが一歩目です。
+primero	最初の	adj	形容詞	Es el primer paso.	It is the first step.	これが一歩目です。
 último	最後の、最近の	adj	形容詞	La última versión.	The latest version.	最新バージョン。
 mismo	同じ	adj	形容詞	Es lo mismo.	It's the same thing.	同じことです。
 otro	別の	adj	形容詞	Otra pregunta, por favor.	Another question, please.	もう一つ質問をお願いします。
@@ -95,10 +95,10 @@ entonces	それでは	conj	接続詞	¿Entonces qué hacemos?	So what do we do?	
 pero	しかし	conj	接続詞	Sí, pero es difícil.	Yes, but it's difficult.	はい、でも難しいです。
 porque	〜だから	conj	接続詞	Porque es importante.	Because it's important.	なぜなら重要だからです。
 cuando	〜の時	conj	接続詞	Llama cuando llegues.	Call when you arrive.	着いたら電話して。
-donde	〜する場所	other	関係詞	¿Dónde está la estación?	Where is the station?	駅はどこですか？
+donde	〜する場所	conj	接続詞	¿Dónde está la estación?	Where is the station?	駅はどこですか？
 como	〜のように	conj	接続詞	Hazlo como quieras.	Do it as you like.	好きなようにやりなさい。
 si	もし〜ならば	conj	接続詞	Si tienes tiempo, ven.	If you have time, come.	時間があったら来てね。
-gracias	ありがとう	other	間投詞	Muchas gracias por todo.	Thank you very much for everything.	いろいろとありがとう。
+gracias	ありがとう	interj	間投詞	Muchas gracias por todo.	Thank you very much for everything.	いろいろとありがとう。
 afirmar	主張する、断言する	v	動詞	El experto afirmó su teoría.	The expert affirmed his theory.	専門家は自身の理論を主張した。
 asumir	引き受ける、想定する	v	動詞	Debemos asumir el riesgo.	We must assume the risk.	私たちはリスクを引き受けなければならない。
 comprobar	確認する、証明する	v	動詞	Voy a comprobar los datos.	I am going to check the data.	データを確認します。
@@ -160,7 +160,7 @@ sector	分野、部門	m	男性名詞	El sector tecnológico.	The technology sec
 sistema	システム、体系	m	男性名詞	Un sistema integrado.	An integrated system.	統合されたシステム。
 adecuado	適切な、適した	adj	形容詞	Buscar el lugar adecuado.	Find the appropriate place.	適切な場所を探す。
 complejo	複雑な	adj	形容詞	Un problema muy complejo.	A very complex problem.	非常に複雑な問題。
-critico	批判的な、危機的な、決定的な	adj	形容詞	Un momento crítico para la empresa.	A critical moment for the company.	会社にとって決定的な瞬間。
+crítico	批判的な、危機的な、決定的な	adj	形容詞	Un momento crítico para la empresa.	A critical moment for the company.	会社にとって決定的な瞬間。
 eficiente	効率的な	adj	形容詞	Un flujo de trabajo eficiente.	An efficient workflow.	効率的なワークフロー。
 evidente	明白な、明らかな	adj	形容詞	Es una ventaja evidente.	It is an obvious advantage.	それは明白な利点だ。
 flexible	柔軟な、融通の利く	adj	形容詞	Horario de trabajo flexible.	Flexible working hours.	柔軟な勤務時間。
@@ -176,25 +176,25 @@ significativo	重要な、意義深い	adj	形容詞	Un aumento significativo.	A
 actualmente	現在は、今や	adv	副詞	Actualmente vivo aquí.	Currently I live here.	現在はここに住んでいます。
 definitivamente	決定的に、間違いなく	adv	副詞	Definitivamente es mejor.	It is definitely better.	間違いなくそちらの方が良い。
 especialmente	特に、とりわけ	adv	副詞	Especialmente en verano.	Especially in summer.	特に夏場において。
-eventualmente	最終的には（※英語の'eventually'とは異なり、条件次第で/ゆくゆくはの意味）	adv	副詞	Eventualmente todo cambiará.	Eventually everything will change.	いずれすべてが変わるだろう。
+eventualmente	時折、ひょっとすると	adv	副詞	Eventualmente todo cambiará.	Possibly everything will change.	ひょっとするとすべてが変わるかもしれない。
 fundamentalmente	根本的に、基本的に	adv	副詞	Es fundamentalmente correcto.	It is fundamentally correct.	根本的に正しい。
 obviamente	明らかに、言うまでもなく	adv	副詞	Obviamente no es fácil.	Obviously it is not easy.	言うまでもなく簡単ではない。
 posteriormente	その後で、追って	adv	副詞	Lo analizaremos posteriormente.	We will analyze it later.	後ほどそれを分析します。
 principalmente	主として、主に	adv	副詞	Trabajo principalmente con datos.	I mainly work with data.	主にデータを扱って仕事をしています。
 recientemente	最近、近頃	adv	副詞	He leído un libro recientemente.	I read a book recently.	最近本を読みました。
 relativamente	比較的	adv	副詞	Es un método relativamente nuevo.	It is a relatively new method.	比較的新しい方法です。
-a través de	〜を通して、〜経由で	other	その他	A través del análisis de datos.	Through data analysis.	データ分析を通して。
-al mismo tiempo	同時に	other	その他	Al mismo tiempo, hay riesgos.	At the same time, there are risks.	同時に、リスクも存在する。
-con el fin de	〜する目的で	other	その他	Con el fin de mejorar la calidad.	In order to improve quality.	品質を向上させる目的で。
-con respecto a	〜に関して	other	その他	Con respecto a este problema.	With respect to this problem.	この問題に関して。
+a través de	〜を通して、〜経由で	phrase	熟語・成句	A través del análisis de datos.	Through data analysis.	データ分析を通して。
+al mismo tiempo	同時に	phrase	熟語・成句	Al mismo tiempo, hay riesgos.	At the same time, there are risks.	同時に、リスクも存在する。
+con el fin de	〜する目的で	phrase	熟語・成句	Con el fin de mejorar la calidad.	In order to improve quality.	品質を向上させる目的で。
+con respecto a	〜に関して	phrase	熟語・成句	Con respecto a este problema.	With respect to this problem.	この問題に関して。
 de modo que	〜となるように、したがって	conj	接続詞	Trabaja de modo que funcione.	Work so that it functions.	しっかり機能するように作業しなさい。
-en cambio	それに対して、一方で	other	その他	En cambio, la segunda opción es mejor.	In contrast, the second option is better.	それに対して、2つ目の選択肢の方が良い。
-en consecuencia	その結果として	other	その他	En consecuencia, tomamos medidas.	Consequently, we took measures.	その結果、私たちは対策を講じた。
-en todo caso	いずれにせよ、ともかく	other	その他	En todo caso, debemos continuar.	In any case, we must continue.	いずれにせよ、私たちは続けなければならない。
-hasta cierto punto	ある程度までは	other	その他	Es verdad hasta cierto punto.	It is true up to a point.	ある程度までは事実だ。
-por el contrario	反対に、それどころか	other	その他	Por el contrario, esto ayuda.	On the contrary, this helps.	反対に、これは助けになる。
-sin duda	疑いなく、確実に	other	その他	Sin duda es el mejor camino.	Without a doubt it is the best way.	疑いなくそれが最善の道だ。
-tarde o temprano	遅かれ早かれ	other	その他	Tarde o temprano llegará.	Sooner or later it will arrive.	遅かれ早かれそれはやってくる。
-tener en cuenta	考慮に入れる	other	その他	Hay que tener en cuenta el costo.	One must take into account the cost.	コストを考慮に入れる必要がある。
-vale la pena	〜する価値がある	other	その他	Vale la pena intentarlo.	It is worth trying.	試してみる価値はある。
+en cambio	それに対して、一方で	phrase	熟語・成句	En cambio, la segunda opción es mejor.	In contrast, the second option is better.	それに対して、2つ目の選択肢の方が良い。
+en consecuencia	その結果として	phrase	熟語・成句	En consecuencia, tomamos medidas.	Consequently, we took measures.	その結果、私たちは対策を講じた。
+en todo caso	いずれにせよ、ともかく	phrase	熟語・成句	En todo caso, debemos continuar.	In any case, we must continue.	いずれにせよ、私たちは続けなければならない。
+hasta cierto punto	ある程度までは	phrase	熟語・成句	Es verdad hasta cierto punto.	It is true up to a point.	ある程度までは事実だ。
+por el contrario	反対に、それどころか	phrase	熟語・成句	Por el contrario, esto ayuda.	On the contrary, this helps.	反対に、これは助けになる。
+sin duda	疑いなく、確実に	phrase	熟語・成句	Sin duda es el mejor camino.	Without a doubt it is the best way.	疑いなくそれが最善の道だ。
+tarde o temprano	遅かれ早かれ	phrase	熟語・成句	Tarde o temprano llegará.	Sooner or later it will arrive.	遅かれ早かれそれはやってくる。
+tener en cuenta	考慮に入れる	phrase	熟語・成句	Hay que tener en cuenta el costo.	One must take into account the cost.	コストを考慮に入れる必要がある。
+vale la pena	〜する価値がある	phrase	熟語・成句	Vale la pena intentarlo.	It is worth trying.	試してみる価値はある。
 ya que	〜である以上、〜なので（= since / as）	conj	接続詞	Ya que estás aquí, hablemos.	Since you are here, let's talk.	せっかくここにいるのだから、話しましょう。
